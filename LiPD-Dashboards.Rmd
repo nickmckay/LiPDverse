@@ -1,28 +1,25 @@
 ---
 title: "LiPD-Dashboards"
-author: Nick McKay
 output: 
   flexdashboard::flex_dashboard:
-    theme: journal
+    theme: bootstrap
     social: menu
     source_code: embed
+    orientation: rows
 ---
 
 ```{r setup, include = FALSE}
 library(flexdashboard)
-library(shiny)
-library(jsonlite)
 library(maptools)
 library(tidyverse)
 library(purrr)
 library(leaflet)
 library(plotly)
 library(lipdR)
-library(geoChronR)
 #prepare LiPD data..
-D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
-TS <- extractTs(D)
-
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("temp.Rdata")
 
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
@@ -49,40 +46,44 @@ map.meta <- data.frame(dataSetName = udsn, #datasetname
                        archiveType = factor(archiveType),#archiveType
                        link = link)#Link
 
-i <- 1
+#set index number
+i = 1
 
-# sites <- fromJSON(flatten=TRUE,
-#   "https://raw.githubusercontent.com/52vis/2016-15/master/ottlngr/sites.json")
-# 
-# sites$locations <- map(sites$locations, function(x) {
-#   if (nrow(x) == 0) {
-#     data_frame(latitude=NA, longitude=NA, postal_code=NA, name=NA, street_address=NA)
-#   } else {
-#     x
-#   }
-# })
-# 
-# sites <- unnest(sites)
-# sites <- sites[complete.cases(sites[,c("longitude", "latitude")]),]
-# 
-# sites$ratingcol <- ifelse(sites$site.rating == 0, "orange",
-#                           ifelse(sites$site.rating == 1, "green",
-#                                  ifelse(sites$site.rating == 2, "red", "black")))
-# 
-# sites$ratingf <- factor(sites$site.rating,
-#                         levels=c(3:0),
-#                         labels=c("Remote or no potential for radioactive contamination.",
-#                                  "No authority to clean up or status unclear.",
-#                                  "Cleanup declared complete.",
-#                                  "Cleanup in progress."))
-# 
-# sites$campus <- ifelse(grepl("University", sites$site.name) | 
-#                        grepl("University", pattern = sites$street_address) | 
-#                        grepl("Campus", sites$street_address), 1, 0)
-# sites$campuscol <- ifelse(sites$campus == 1, "red", "black")
 ```
+#This.Data.1999
 
-Column {data-width=400}
+Metadata {.sidebar}
+-------------------------------------
+
+<details>
+  <summary>Question 1</summary>
+  <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+  <details>
+    <summary>Related documents</summary>
+    <ul>
+      <li><a href="#">Lorem ipsum dolor sit amet,  consectetuer adipiscing elit.</a></li>
+      <li><a href="#">Aliquam tincidunt mauris eu  risus.</a></li>
+      <li><a href="#">Lorem ipsum dolor sit amet,  consectetuer adipiscing elit.</a></li>
+      <li><a href="#">Aliquam tincidunt mauris eu  risus.</a></li>
+    </ul>
+  </details>
+</details>
+<details>
+  <summary>Question 1</summary>
+  <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+  <details>
+    <summary>Related documents</summary>
+    <ul>
+      <li><a href="#">Lorem ipsum dolor sit amet,  consectetuer adipiscing elit.</a></li>
+      <li><a href="#">Aliquam tincidunt mauris eu  risus.</a></li>
+      <li><a href="#">Lorem ipsum dolor sit amet,  consectetuer adipiscing elit.</a></li>
+      <li><a href="#">Aliquam tincidunt mauris eu  risus.</a></li>
+    </ul>
+  </details>
+</details>
+
+
+Row
 -----------------------------------------------------------------------
 
 ### All sites and their current status
@@ -150,22 +151,21 @@ return(dy.plot)
 }
 
 ```
-Column {.tabset .tabset-fade}
+Row {.tabset .tabset-fade}
 -----------------------------------------------------------------------
 
 ### Variable 1
+
 ```{r}
 ind = 1
+
+str_c("variable = ",(thisTS[[ind]]$paleoData_variableName))
+str_c("units = ",(thisTS[[ind]]$paleoData_units))
 plotCol(thisTS,ind = ind)
 
 ```
 
-### Variable Metadata
-```{r}
-str_c("variable = ",print(thisTS[[ind]]$paleoData_variableName))
-str_c("units = ",print(thisTS[[ind]]$paleoData_variableName))
 
-```
 
 
 
