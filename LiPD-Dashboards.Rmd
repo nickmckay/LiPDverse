@@ -1,0 +1,179 @@
+---
+title: "LiPD-Dashboards"
+author: Nick McKay
+output: 
+  flexdashboard::flex_dashboard:
+    theme: journal
+    social: menu
+    source_code: embed
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(shiny)
+library(jsonlite)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(geoChronR)
+#prepare LiPD data..
+D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+TS <- extractTs(D)
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- sapply(TS,"[[","geo_latitude")[ui]
+lon <- sapply(TS,"[[","geo_longitude")[ui]
+elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                       elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+i <- 1
+
+# sites <- fromJSON(flatten=TRUE,
+#   "https://raw.githubusercontent.com/52vis/2016-15/master/ottlngr/sites.json")
+# 
+# sites$locations <- map(sites$locations, function(x) {
+#   if (nrow(x) == 0) {
+#     data_frame(latitude=NA, longitude=NA, postal_code=NA, name=NA, street_address=NA)
+#   } else {
+#     x
+#   }
+# })
+# 
+# sites <- unnest(sites)
+# sites <- sites[complete.cases(sites[,c("longitude", "latitude")]),]
+# 
+# sites$ratingcol <- ifelse(sites$site.rating == 0, "orange",
+#                           ifelse(sites$site.rating == 1, "green",
+#                                  ifelse(sites$site.rating == 2, "red", "black")))
+# 
+# sites$ratingf <- factor(sites$site.rating,
+#                         levels=c(3:0),
+#                         labels=c("Remote or no potential for radioactive contamination.",
+#                                  "No authority to clean up or status unclear.",
+#                                  "Cleanup declared complete.",
+#                                  "Cleanup in progress."))
+# 
+# sites$campus <- ifelse(grepl("University", sites$site.name) | 
+#                        grepl("University", pattern = sites$street_address) | 
+#                        grepl("Campus", sites$street_address), 1, 0)
+# sites$campuscol <- ifelse(sites$campus == 1, "red", "black")
+```
+
+Column {data-width=400}
+-----------------------------------------------------------------------
+
+### All sites and their current status
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 5
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```
+
+
+
+```{r setupTimeseries,include=FALSE}
+library(dygraphs)
+thisTS <- filterTs(TS, str_c("dataSetName == ",udsn[i]))
+
+plotCol <- function(thisTS,ind){
+
+  #bin into annual chunks
+bo <- bin(time = thisTS[[ind]]$year, values = thisTS[[ind]]$paleoData_values,binvec = seq(floor(min(thisTS[[ind]]$year)),ceiling(max(thisTS[[ind]]$year))))
+
+#interpolate NAs
+if(any(is.nan(bo$y))){
+  bo$y[which(is.nan(bo$y))] <- approx(x = bo$x,y = bo$y,xout = bo$x[which(is.nan(bo$y))])$y
+}
+
+cts <- ts(data = bo$y,start = floor(min(bo$x)),end = ceiling(max(bo$x)))
+
+dy.plot <- dygraph(cts, main = thisTS[[ind]]$paleoData_variableName) %>% 
+  dyAxis("x", drawGrid = FALSE, label = "Year AD") %>%
+  dyAxis("y", label = str_c(thisTS[[ind]]$paleoData_variableName," (",thisTS[[ind]]$paleoData_units,")")) %>%
+  dyOptions(includeZero = TRUE, 
+            axisLineColor = "navy", 
+            gridLineColor = "lightblue") %>% 
+  dyRangeSelector()
+
+return(dy.plot)
+}
+
+```
+Column {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Variable 1
+```{r}
+ind = 1
+plotCol(thisTS,ind = ind)
+
+```
+
+### Variable Metadata
+```{r}
+str_c("variable = ",print(thisTS[[ind]]$paleoData_variableName))
+str_c("units = ",print(thisTS[[ind]]$paleoData_variableName))
+
+```
+
+
+
+### Variable 2
+
+```{r}
+
+plotCol(thisTS,ind = 2)
+
+
+```
