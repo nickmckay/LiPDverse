@@ -1,0 +1,444 @@
+---
+title: "NAm-SleepingDeerRoad.Hughes.2005"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- sapply(TS,"[[","geo_latitude")[ui]
+lon <- sapply(TS,"[[","geo_longitude")[ui]
+elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                       elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 474
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#NAm-SleepingDeerRoad.Hughes.2005
+
+Metadata {.sidebar}
+-------------------------------------
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>tree
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/3576
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>Hughes, M.K. and Woodhouse, C.A. and Brown, P.M.
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Hughes, M.K.
+<p style="margin-left: 10px"><strong>citeKey: </strong>hughes2005httpswwwncdcnoaagovpaleostudy3576DataCitation
+<p style="margin-left: 10px"><strong>title: </strong>World Data Center for Paleoclimatology
+<p style="margin-left: 10px"><strong>DOI: </strong>No publication
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>44.6
+<p style="margin-left: 0px"><strong>longitude: </strong>-114.5
+<p style="margin-left: 0px"><strong>elevation: </strong>2820
+<p style="margin-left: 0px"><strong>siteName: </strong>Sleeping Deer Road
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>NAm
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>trsgi</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2656
+<p style="margin-left: 10px"><strong>variableName: </strong>trsgi
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>first principles and instrumental correlation
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>MXD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2668
+<p style="margin-left: 10px"><strong>variableName: </strong>MXD
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>first principles and instrumental correlation
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>sampleCount</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2653
+<p style="margin-left: 10px"><strong>variableName: </strong>sampleCount
+<p style="margin-left: 10px"><strong>units: </strong>count
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>segment</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2654
+<p style="margin-left: 10px"><strong>variableName: </strong>segment
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ringWidth</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2655
+<p style="margin-left: 10px"><strong>variableName: </strong>ringWidth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>residual</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2657
+<p style="margin-left: 10px"><strong>variableName: </strong>residual
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ARS</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2658
+<p style="margin-left: 10px"><strong>variableName: </strong>ARS
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>corrs</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2659
+<p style="margin-left: 10px"><strong>variableName: </strong>corrs
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>RBar</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2660
+<p style="margin-left: 10px"><strong>variableName: </strong>RBar
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2661
+<p style="margin-left: 10px"><strong>variableName: </strong>SD
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SE</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2662
+<p style="margin-left: 10px"><strong>variableName: </strong>SE
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>EPS</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2663
+<p style="margin-left: 10px"><strong>variableName: </strong>EPS
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>core</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2664
+<p style="margin-left: 10px"><strong>variableName: </strong>core
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>sampleCount</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2665
+<p style="margin-left: 10px"><strong>variableName: </strong>sampleCount
+<p style="margin-left: 10px"><strong>units: </strong>count
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>segment</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2666
+<p style="margin-left: 10px"><strong>variableName: </strong>segment
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>density</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2667
+<p style="margin-left: 10px"><strong>variableName: </strong>density
+<p style="margin-left: 10px"><strong>units: </strong>g/cm3
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>residual</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2669
+<p style="margin-left: 10px"><strong>variableName: </strong>residual
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ARS</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2670
+<p style="margin-left: 10px"><strong>variableName: </strong>ARS
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>corrs</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2671
+<p style="margin-left: 10px"><strong>variableName: </strong>corrs
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>RBar</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2672
+<p style="margin-left: 10px"><strong>variableName: </strong>RBar
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2673
+<p style="margin-left: 10px"><strong>variableName: </strong>SD
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SE</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2674
+<p style="margin-left: 10px"><strong>variableName: </strong>SE
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>EPS</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2675
+<p style="margin-left: 10px"><strong>variableName: </strong>EPS
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>core</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_2676
+<p style="margin-left: 10px"><strong>variableName: </strong>core
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### trsgi
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### MXD
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### sampleCount
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### segment
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### ringWidth
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### residual
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### ARS
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### corrs
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### RBar
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### SD
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### SE
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### EPS
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### core
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### sampleCount
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### segment
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### density
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### residual
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### ARS
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### corrs
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### RBar
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### SD
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### SE
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### EPS
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### core
+```{r}
+plotCol(thisTS,ind = 24)
+```

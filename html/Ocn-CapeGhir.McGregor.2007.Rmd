@@ -1,0 +1,296 @@
+---
+title: "Ocn-CapeGhir.McGregor.2007"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- sapply(TS,"[[","geo_latitude")[ui]
+lon <- sapply(TS,"[[","geo_longitude")[ui]
+elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                       elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 519
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Ocn-CapeGhir.McGregor.2007
+
+Metadata {.sidebar}
+-------------------------------------
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>marine sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>http://doi.pangaea.de/10.1594/PANGAEA.603183?format=html
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>HVM
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>McGregor, H. V.;Dima, M.;Fischer, H. W.;Mulitza, S.
+<p style="margin-left: 10px"><strong>citeKey: </strong>mcgregor2007rapid20thcenturyincreasei
+<p style="margin-left: 10px"><strong>journal: </strong>Science
+<p style="margin-left: 10px"><strong>volume: </strong>315
+<p style="margin-left: 10px"><strong>pages: </strong>637-639
+<p style="margin-left: 10px"><strong>pubYear: </strong>2007
+<p style="margin-left: 10px"><strong>title: </strong>Rapid 20th-century increase in coastal upwelling off northwest Africa
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1126/science.1134839
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>McGregor, Helen V.;Evans, Michael N.;Goosse, Hugues;Leduc, Guillaume;Martrat, Belen;Addison, Jason A.;Mortyn, P. Graham;Oppo, Delia W.;Seidenkrantz, Marit-Solveig;Sicre, Marie-Alexandrine;Phipps, Steven J.;Selvaraj, Kandasamy;Thirumalai, Kaustubh;Filipsson, Helena L.;Ersek, Vasile
+<p style="margin-left: 10px"><strong>citeKey: </strong>mcgregor2015robustglobaloceancoolingt
+<p style="margin-left: 10px"><strong>journal: </strong>Nature Geoscience
+<p style="margin-left: 10px"><strong>volume: </strong>8
+<p style="margin-left: 10px"><strong>pages: </strong>671-677
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>title: </strong>Robust global ocean cooling trend for the pre-industrial Common Era
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1038/ngeo2510
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>McGregor, H.V.
+<p style="margin-left: 10px"><strong>citeKey: </strong>mcgregor2007httpdoipangaeade101594pangaea603183DataCitation
+<p style="margin-left: 10px"><strong>title: </strong>PANGAEA
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>European Union
+<p style="margin-left: 10px"><strong>grant: </strong>Patterns of Climate Variability in the North Atlantic (PACLIVA) Project
+</details>
+<details style="margin-left: 10px">
+<summary>funding2</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>European Graduate College “Proxies in Earth History Program”
+</details>
+<details style="margin-left: 10px">
+<summary>funding3</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Deutsche Forschungsgemeinschaft
+<p style="margin-left: 10px"><strong>grant: </strong>Research Center Ocean Margins, University Bremen
+</details>
+<details style="margin-left: 10px">
+<summary>funding4</summary>
+<p style="margin-left: 10px"><strong>agency: </strong> Alexander von Humboldt Foundation
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>30.845
+<p style="margin-left: 0px"><strong>longitude: </strong>-10.0983
+<p style="margin-left: 0px"><strong>elevation: </strong>-355
+<p style="margin-left: 0px"><strong>siteName: </strong>Cape Ghir, NW Africa
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Ocean
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>temperature</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD84ab67b9
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>inferred sea-surface temperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Alkenone calibration to SST
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc08ab49e
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>inferred sea-surface temperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Alkenone calibration to SST
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea_surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Uk37</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD71606a7f
+<p style="margin-left: 10px"><strong>variableName: </strong>Uk37
+<p style="margin-left: 10px"><strong>description: </strong>unsaturation index
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>notes</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7c708633
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>description: </strong>quality-controlled data from McGregor et al. (2007) that was used in the O2K-LR analysis. Note that the cores overlap in age. For the O2K-LR analysis gravity core GeoB6008-2 and multicore GeoB6008-1 were merged and sorted in the depth/age domain.
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>notes</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7e5468c3
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>description: </strong>indicates samples which overlap
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Uk37</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9c86dbd0
+<p style="margin-left: 10px"><strong>variableName: </strong>Uk37
+<p style="margin-left: 10px"><strong>description: </strong>unsaturation index
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>notes</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD17d4c9be
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>description: </strong>Core ID
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>notes</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc302b237
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>description: </strong>Region of core overlap
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### temperature
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### Uk37
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### notes
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### notes
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### Uk37
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### notes
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### notes
+```{r}
+plotCol(thisTS,ind = 8)
+```

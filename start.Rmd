@@ -3,7 +3,6 @@ title: "LiPD-Dashboards"
 output: 
   flexdashboard::flex_dashboard:
     theme: bootstrap
-    social: menu
     source_code: embed
     orientation: rows
 ---
@@ -16,10 +15,16 @@ library(purrr)
 library(leaflet)
 library(plotly)
 library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
 #prepare LiPD data..
 # D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
 # TS <- extractTs(D)
-load("temp.Rdata")
+load("../temp.Rdata")
 
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
@@ -36,7 +41,8 @@ lat <- sapply(TS,"[[","geo_latitude")[ui]
 lon <- sapply(TS,"[[","geo_longitude")[ui]
 elev <- sapply(TS,"[[","geo_elevation")[ui]
 archiveType <- sapply(TS,"[[","archiveType")[ui]
-link <- paste0(udsn,".html")
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
 
 #Organize metadata for map
 map.meta <- data.frame(dataSetName = udsn, #datasetname

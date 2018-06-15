@@ -1,0 +1,38 @@
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```

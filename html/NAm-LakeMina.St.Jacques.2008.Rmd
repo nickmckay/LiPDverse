@@ -1,0 +1,226 @@
+---
+title: "NAm-LakeMina.St.Jacques.2008"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- sapply(TS,"[[","geo_latitude")[ui]
+lon <- sapply(TS,"[[","geo_longitude")[ui]
+elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                       elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 431
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#NAm-LakeMina.St.Jacques.2008
+
+Metadata {.sidebar}
+-------------------------------------
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/16761
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>JSJ
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>St. Jacques, Jeannine-Marie;Cumming, Brian F.;Smol, John P.
+<p style="margin-left: 10px"><strong>citeKey: </strong>st2008a900yearpolleninferredtem
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>27
+<p style="margin-left: 10px"><strong>pages: </strong>781-796
+<p style="margin-left: 10px"><strong>pubYear: </strong>2008
+<p style="margin-left: 10px"><strong>title: </strong>A 900-year pollen-inferred temperature and effective moisture record from varved Lake Mina, west-central Minnesota, USA
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2008.01.005
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>St. Jacques, Jeannine-Marie;Cumming, Brian F.;Sauchyn, David J.;Smol, John P.
+<p style="margin-left: 10px"><strong>citeKey: </strong>st2015thebiasandsignalattenuati
+<p style="margin-left: 10px"><strong>journal: </strong>PLOS ONE
+<p style="margin-left: 10px"><strong>volume: </strong>10
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>title: </strong>The bias and signal attenuation present in conventional pollen-based climate reconstructions as assessed by early climate data from Minnesota, USA
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1371/journal.pone.0113806
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>St. Jacques, J.-M.
+<p style="margin-left: 10px"><strong>citeKey: </strong>st2014httpswwwncdcnoaagovpaleostudy16761DataCitation
+<p style="margin-left: 10px"><strong>title: </strong>World Data Center for Paleoclimatology
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>45.89
+<p style="margin-left: 0px"><strong>longitude: </strong>-95.478
+<p style="margin-left: 0px"><strong>elevation: </strong>415
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Mina
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>NAm
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>effectiveMoisture</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_3869
+<p style="margin-left: 10px"><strong>variableName: </strong>effectiveMoisture
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>annual precipitation - potential evapotranspiration
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>eff
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_3868
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Pollen-based winter temperature reconstruction
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Oak(major pollen grain) badly affected by harsh cold winters; most oak spp near range limits here therefore record very sensitive to winter temperature.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>2
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm_3867
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Pollen-based summer temperature reconstruction
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Site in ecotone between northern coniferous forest and more southern deciduous forest, i.e., a good sensitive location for a paleo-record.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>5
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### effectiveMoisture
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### temperature
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### temperature
+```{r}
+plotCol(thisTS,ind = 3)
+```

@@ -1,0 +1,264 @@
+---
+title: "Ocn-MinorcaContourite.Moreno.2012"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- sapply(TS,"[[","geo_latitude")[ui]
+lon <- sapply(TS,"[[","geo_longitude")[ui]
+elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                       elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 584
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Ocn-MinorcaContourite.Moreno.2012
+
+Metadata {.sidebar}
+-------------------------------------
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>marine sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>http://doi.pangaea.de/10.1594/PANGAEA.780423
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>BM
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Moreno, Ana;Pérez, Ana;Frigola, Jaime;Nieto-Moreno, Vanesa;Rodrigo-Gámiz, Marta;Martrat, Belén;González-Sampériz, Penélope;Morellón, Mario;Martín-Puertas, Celia;Corella, Juan Pablo;Belmonte, Ánchel;Sancho, Carlos;Cacho, Isabel;Herrera, Gemma;Canals, Miquel;Grimalt, Joan O.;Jiménez-Espejo, Francisco;Martínez-Ruiz, Francisca;Vegas-Vilarrúbia, Teresa;Valero-Garcés, Blas L.
+<p style="margin-left: 10px"><strong>citeKey: </strong>moreno2012themedievalclimateanomaly
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>43
+<p style="margin-left: 10px"><strong>pages: </strong>16-32
+<p style="margin-left: 10px"><strong>pubYear: </strong>2012
+<p style="margin-left: 10px"><strong>title: </strong>The Medieval Climate Anomaly in the Iberian Peninsula reconstructed from marine and lake records
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2012.04.007
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>McGregor, Helen V.;Evans, Michael N.;Goosse, Hugues;Leduc, Guillaume;Martrat, Belen;Addison, Jason A.;Mortyn, P. Graham;Oppo, Delia W.;Seidenkrantz, Marit-Solveig;Sicre, Marie-Alexandrine;Phipps, Steven J.;Selvaraj, Kandasamy;Thirumalai, Kaustubh;Filipsson, Helena L.;Ersek, Vasile
+<p style="margin-left: 10px"><strong>citeKey: </strong>mcgregor2015robustglobaloceancoolingt
+<p style="margin-left: 10px"><strong>journal: </strong>Nature Geoscience
+<p style="margin-left: 10px"><strong>volume: </strong>8
+<p style="margin-left: 10px"><strong>pages: </strong>671-677
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>title: </strong>Robust global ocean cooling trend for the pre-industrial Common Era
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1038/ngeo2510
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Moreno, A.
+<p style="margin-left: 10px"><strong>citeKey: </strong>moreno2012httpdoipangaeade101594pangaea780423DataCitation
+<p style="margin-left: 10px"><strong>title: </strong>PANGAEA
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Programa Consolider-Ingenio 2010
+<p style="margin-left: 10px"><strong>grant: </strong>GRACCIE CSD2007-00067
+</details>
+<details style="margin-left: 10px">
+<summary>funding2</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>CSIC & The European Social Fund (ESF)
+<p style="margin-left: 10px"><strong>grant: </strong>JAE-Doc 093
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>40.5
+<p style="margin-left: 0px"><strong>longitude: </strong>4.03
+<p style="margin-left: 0px"><strong>elevation: </strong>-2394
+<p style="margin-left: 0px"><strong>siteName: </strong>Minorca contourite
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Ocean
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>temperature</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD10e9f8f7
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>inferred sea-surface temperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>alkenone calibration to SST
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6dbf8788
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>inferred sea-surface temperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>alkenone calibration to SST
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea_surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Uk37</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD312b2365
+<p style="margin-left: 10px"><strong>variableName: </strong>Uk37
+<p style="margin-left: 10px"><strong>description: </strong>native UK37 ratio from which SST was calculated
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>notes</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7129c65e
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>description: </strong>quality-controlled data from Moreno et al. (2012) that was used in the O2K-LR analysis; alkenone data were measured in two cores (MINMC06-1 and MINMC06-2) from the same site; these two records were combined with the data sorted based on age.
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Uk37</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7fd5bd52
+<p style="margin-left: 10px"><strong>variableName: </strong>Uk37
+<p style="margin-left: 10px"><strong>description: </strong>native UK37 ratio from which SST was calculated
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>notes</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1b77c35b
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>description: </strong>original datasets from Moreno et al. (2012); results from 2 multicores (MINMC06-1 and MINMC06-2), one after the other; they overlap in age  - PLEASE USE QC DATA FOR ANALYSIS!!!!
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### temperature
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### Uk37
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### notes
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### Uk37
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### notes
+```{r}
+plotCol(thisTS,ind = 6)
+```

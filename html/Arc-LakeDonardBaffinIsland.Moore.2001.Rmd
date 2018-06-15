@@ -1,0 +1,165 @@
+---
+title: "Arc-LakeDonardBaffinIsland.Moore.2001"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- sapply(TS,"[[","geo_latitude")[ui]
+lon <- sapply(TS,"[[","geo_longitude")[ui]
+elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                       elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 59
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Arc-LakeDonardBaffinIsland.Moore.2001
+
+Metadata {.sidebar}
+-------------------------------------
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/6234
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Moore, J.J.;Hughen, K.A.;Miller, G.H.;Overpeck, J.T.
+<p style="margin-left: 10px"><strong>citeKey: </strong>moore2001littleiceagerecordedinsum
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>25
+<p style="margin-left: 10px"><strong>pages: </strong>503-517
+<p style="margin-left: 10px"><strong>pubYear: </strong>2001
+<p style="margin-left: 10px"><strong>title: </strong>Little Ice Age recorded in summer temperature reconstruction from vared sediments of Donard Lake, Baffin Island, Canada
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1023/A:1011181301514
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Moore, J.J.
+<p style="margin-left: 10px"><strong>citeKey: </strong>moore2003httpswwwncdcnoaagovpaleostudy6234DataCitation
+<p style="margin-left: 10px"><strong>title: </strong>World Data Center for Paleoclimatology
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>66.73
+<p style="margin-left: 0px"><strong>longitude: </strong>-61.35
+<p style="margin-left: 0px"><strong>elevation: </strong>500
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Donard Baffin Island
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Arc
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>thickness</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Arc_024
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>linear regression 3yr average; corrcoef R = 0.82 between average JJA temperature from Cape Dyer average over 3 years and averaged varve thickness (2 cores) (n= 11). R=0.57 when annual records (n=32). In the bundle, it is 0,01
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>6 7 8
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+leaflet() %>% 
+  addTiles() %>% 
+  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
+  addCircleMarkers(map.meta$lon, 
+                   map.meta$lat, 
+                   color = factpal(map.meta$archiveType),
+                   radius = 5, 
+                   fill = T,
+                   fillOpacity = 1,
+                   opacity = 1,
+                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
+                                 str_c("Elevation: ",map.meta$elev),
+                                 str_c("Archive Type: ",map.meta$archiveType),
+                                 sep = "<br>")) %>%
+  addCircleMarkers(map.meta$lon[i], 
+                   map.meta$lat[i], 
+                   color = "black",
+                   radius = 12, 
+                   fill = F,
+                   opacity = 1) %>%
+  addLabelOnlyMarkers(map.meta$lon[i], 
+                      map.meta$lat[i], 
+                      label = map.meta$dataSetName[i]) %>%
+  addLegend("bottomleft",
+            colors = unique(factpal(map.meta$archiveType)),
+            labels = unique(map.meta$archiveType),
+            opacity = 0.8)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### thickness
+```{r}
+plotCol(thisTS,ind = 1)
+```
