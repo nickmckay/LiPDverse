@@ -37,9 +37,9 @@ TS <- TS[good]
 dsn <- sapply(TS,"[[","dataSetName")
 ui <- which(!duplicated(dsn))
 udsn <- dsn[ui]
-lat <- sapply(TS,"[[","geo_latitude")[ui]
-lon <- sapply(TS,"[[","geo_longitude")[ui]
-elev <- sapply(TS,"[[","geo_elevation")[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
 archiveType <- sapply(TS,"[[","archiveType")[ui]
 link <- paste0(udsn,".html") %>% 
   str_replace_all("'","_")
@@ -48,7 +48,7 @@ link <- paste0(udsn,".html") %>%
 map.meta <- data.frame(dataSetName = udsn, #datasetname
                        lat = lat,#lat
                        lon = lon,#lon
-                       elev = elev,#elevation
+                      # elev = elev,#elevation
                        archiveType = factor(archiveType),#archiveType
                        link = link)#Link
 

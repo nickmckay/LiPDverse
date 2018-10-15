@@ -1,0 +1,351 @@
+---
+title: "LS16THN301"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 345
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS16THN301
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS16THN301.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Geophysical Research Letters
+<p style="margin-left: 10px"><strong>volume: </strong>43
+<p style="margin-left: 10px"><strong>pages: </strong>5302-5308
+<p style="margin-left: 10px"><strong>title: </strong>A major increase in winter snowfall during the middle Holocene on western Greenland caused by reduced sea ice in Baffin Bay and the Labrador Sea
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1002/2016GL068513
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>909334
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding2</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>0520718
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding3</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Graduate Research Fellowship
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding4</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>1349595
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding5</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Geological Society of America
+<p style="margin-left: 10px"><strong>grant: </strong>Student Research Grant
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding6</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Geological Society of America
+<p style="margin-left: 10px"><strong>grant: </strong>Quaternary Geology and Geomorphology Division Marie Morisawa Research Award
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding7</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Geological Society of America
+<p style="margin-left: 10px"><strong>grant: </strong>Limnogeology Division Kerry Kelts Research Award
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>68.6374
+<p style="margin-left: 0px"><strong>longitude: </strong>-50.98
+<p style="margin-left: 0px"><strong>elevation: </strong>59
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake N3
+<p style="margin-left: 0px"><strong>country: </strong>Greenland
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>Core name</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3ccf3cbb
+<p style="margin-left: 10px"><strong>variableName: </strong>Core name
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Composite Midpoint Depth</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBddaef138
+<p style="margin-left: 10px"><strong>variableName: </strong>Composite Midpoint Depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>Mean Age</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB37c6f827
+<p style="margin-left: 10px"><strong>variableName: </strong>Mean Age
+<p style="margin-left: 10px"><strong>units: </strong>year BP
+</details>
+<details style="margin-left: 10px">
+<summary>Min Age</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB86feb1be
+<p style="margin-left: 10px"><strong>variableName: </strong>Min Age
+<p style="margin-left: 10px"><strong>units: </strong>year BP
+<p style="margin-left: 10px"><strong>description: </strong>minimum age of 95% confidence interval
+</details>
+<details style="margin-left: 10px">
+<summary>Max Age</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa4c3db78
+<p style="margin-left: 10px"><strong>variableName: </strong>Max Age
+<p style="margin-left: 10px"><strong>units: </strong>year BP
+<p style="margin-left: 10px"><strong>description: </strong>maximum age of 95% confidence interval
+</details>
+<details style="margin-left: 10px">
+<summary>d2H C24</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB69678476
+<p style="margin-left: 10px"><strong>variableName: </strong>d2H C24
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>stdev C24</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB08e3980f
+<p style="margin-left: 10px"><strong>variableName: </strong>stdev C24
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>n C24</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfd7e019e
+<p style="margin-left: 10px"><strong>variableName: </strong>n C24
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>d2H C26</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB00087524
+<p style="margin-left: 10px"><strong>variableName: </strong>d2H C26
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>stdev C26</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB61208225
+<p style="margin-left: 10px"><strong>variableName: </strong>stdev C26
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>n C26</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB956729cc
+<p style="margin-left: 10px"><strong>variableName: </strong>n C26
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>d2H C28</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2bbc35a8
+<p style="margin-left: 10px"><strong>variableName: </strong>d2H C28
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>stdev C28</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB63a13e10
+<p style="margin-left: 10px"><strong>variableName: </strong>stdev C28
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>n C28</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB708ebec7
+<p style="margin-left: 10px"><strong>variableName: </strong>n C28
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Mean Age</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB37c6f827year
+<p style="margin-left: 10px"><strong>variableName: </strong>Mean Age
+<p style="margin-left: 10px"><strong>units: </strong>AD
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Core name
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Composite Midpoint Depth
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### Mean Age
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### Min Age
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### Max Age
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### d2H C24
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### stdev C24
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### n C24
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### d2H C26
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### stdev C26
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### n C26
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### d2H C28
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### stdev C28
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### n C28
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Mean Age
+```{r}
+plotCol(thisTS,ind = 15)
+```

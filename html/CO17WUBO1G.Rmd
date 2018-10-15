@@ -1,0 +1,175 @@
+---
+title: "CO17WUBO1G"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 66
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO17WUBO1G
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO17WUBO1G.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Scientific Reports
+<p style="margin-left: 10px"><strong>volume: </strong>7
+<p style="margin-left: 10px"><strong>pages: </strong>15825
+<p style="margin-left: 10px"><strong>title: </strong>Changes to Yucatán Peninsula precipitation associated with salinity and temperature extremes of the Caribbean Sea during the Maya civilization collapse
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1038/s41598-017-15942-0
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>12.222
+<p style="margin-left: 0px"><strong>longitude: </strong>-68.3998
+<p style="margin-left: 0px"><strong>elevation: </strong>NA
+<p style="margin-left: 0px"><strong>siteName: </strong>Northwestern shore
+<p style="margin-left: 0px"><strong>country: </strong>Netherlands Antilles
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>Int Chron</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa97612cc
+<p style="margin-left: 10px"><strong>variableName: </strong>Int Chron
+<p style="margin-left: 10px"><strong>units: </strong>years
+<p style="margin-left: 10px"><strong>description: </strong>Floating chronology for U-Th fossil corals
+</details>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB44d2f1ea
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>Sr/Ca</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBbac6c4f7
+<p style="margin-left: 10px"><strong>variableName: </strong>Sr/Ca
+<p style="margin-left: 10px"><strong>units: </strong>mmol/mol
+<p style="margin-left: 10px"><strong>description: </strong>
+
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Int Chron
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### Sr/Ca
+```{r}
+plotCol(thisTS,ind = 3)
+```

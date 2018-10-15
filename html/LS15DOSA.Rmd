@@ -1,0 +1,301 @@
+---
+title: "LS15DOSA"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 339
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS15DOSA
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS15DOSA.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Douglas, Peter M. J. , Pagani, Mark , Canuto, Marcello A. , Brenner, Mark , Hodell, David A. , Eglinton, Timothy I. , Curtis, Jason H.
+<p style="margin-left: 10px"><strong>journal: </strong>Proceedings of the National Academy of Sciences
+<p style="margin-left: 10px"><strong>volume: </strong>112
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>title: </strong>Drought, agricultural adaptation, and sociopolitical collapse in the Maya Lowlands
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1073/pnas.1419133112
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>20
+<p style="margin-left: 0px"><strong>longitude: </strong>-89
+<p style="margin-left: 0px"><strong>elevation: </strong>NA
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Salpeten
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS15DOSA01C
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>terrestrial biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Past variability in ?Dwax-corr reflects the combined effects of evaporative enrichment of soil and plant water D/H ratios and temporal variability in the isotopic composition of pre- cipitation, which, in this region, is primarily controlled by the amount effect (8, 27)...Therefore we interpret ?Dwax-corr values as a qualitative indicator of past water availability.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>water availability
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>In the modern Maya Lowlands, ?Dwax is well correlated with precipitation amount and varies by 60? across an annual precipitation gradient of 2,500 mm (Fig. 2).
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>P_E
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>This modern variability in ?Dwax is strongly influenced by soil water evaporation (17), and it is possible that changes in potential evapotranspiration could also impact paleo records.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>evaptranspiration
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Physiological differences between plant groups also result in differing ?Dwax values between C3 trees and shrubs and C4 grasses (16), and we use ?13Cwax records to correct for the influence of vegetation change on ?Dwax values (25) (?Dwax-corr, SI Text and Fig. S1).
+<p style="margin-left: 20px"><strong>direction: </strong>depends on plant type
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Plant type
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS15DOSA01B
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>terrestrial biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Past variability in ?Dwax-corr reflects the combined effects of evaporative enrichment of soil and plant water D/H ratios and temporal variability in the isotopic composition of pre- cipitation, which, in this region, is primarily controlled by the amount effect (8, 27)...Therefore we interpret ?Dwax-corr values as a qualitative indicator of past water availability.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>water availability
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>In the modern Maya Lowlands, ?Dwax is well correlated with precipitation amount and varies by 60? across an annual precipitation gradient of 2,500 mm (Fig. 2).
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>P_E
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>This modern variability in ?Dwax is strongly influenced by soil water evaporation (17), and it is possible that changes in potential evapotranspiration could also impact paleo records.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>evaptranspiration
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Physiological differences between plant groups also result in differing ?Dwax values between C3 trees and shrubs and C4 grasses (16), and we use ?13Cwax records to correct for the influence of vegetation change on ?Dwax values (25) (?Dwax-corr, SI Text and Fig. S1).
+<p style="margin-left: 20px"><strong>direction: </strong>depends on plant type
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Plant type
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS15DOSA01C
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>terrestrial biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Past variability in ?Dwax-corr reflects the combined effects of evaporative enrichment of soil and plant water D/H ratios and temporal variability in the isotopic composition of pre- cipitation, which, in this region, is primarily controlled by the amount effect (8, 27)...Therefore we interpret ?Dwax-corr values as a qualitative indicator of past water availability.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>water availability
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>In the modern Maya Lowlands, ?Dwax is well correlated with precipitation amount and varies by 60? across an annual precipitation gradient of 2,500 mm (Fig. 2).
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>P_E
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>This modern variability in ?Dwax is strongly influenced by soil water evaporation (17), and it is possible that changes in potential evapotranspiration could also impact paleo records.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>evaptranspiration
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Physiological differences between plant groups also result in differing ?Dwax values between C3 trees and shrubs and C4 grasses (16), and we use ?13Cwax records to correct for the influence of vegetation change on ?Dwax values (25) (?Dwax-corr, SI Text and Fig. S1).
+<p style="margin-left: 20px"><strong>direction: </strong>depends on plant type
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Plant type
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 3)
+```

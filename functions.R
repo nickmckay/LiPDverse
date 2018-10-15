@@ -135,6 +135,10 @@ thisRmd <- str_c(thisRmd,str_c("#",as.character(map.meta$dataSetName[i])),sep = 
   #write metadata sidebar
   thisRmd <- str_c(thisRmd,"Metadata {.sidebar}",sep = "\n") %>% 
     str_c("-------------------------------------",sep = "\n") %>% 
+    str_c(str_c("[Download LiPD file](",as.character(map.meta$dataSetName[i]),".lpd)"),sep = "\n") %>% 
+    str_c("\n") %>% 
+    str_c("            \n") %>%
+    str_c("[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)",sep = "\n") %>% 
     str_c("\n")
   
   
@@ -290,4 +294,45 @@ thisRmd <- str_c(thisRmd,str_c("#",as.character(map.meta$dataSetName[i])),sep = 
   
     }
 
+createProjectRmd <- function(project){
+  
+  
+  #load in the starter text
+  thisRmd <- read_file("start.Rmd")
+  
+  #replace the title
+  thisRmd <- str_replace(thisRmd,pattern = "LiPD-Dashboards",replacement = project)
+  
+  #set index number and close the first code chunk
+  thisRmd <- str_c(thisRmd,str_c("i = ",as.character(1)),sep = "\n") %>% 
+    str_c("```",sep = "\n") 
+  
+  
+  #write title. 
+  thisRmd <- str_c(thisRmd,str_c("#",project),sep = "\n")  %>% 
+    str_c("\n")
+  
+  #write metadata sidebar
+  thisRmd <- str_c(thisRmd,"Metadata {.sidebar}",sep = "\n") %>% 
+    str_c("-------------------------------------",sep = "\n") %>% 
+    str_c(str_c("[Download all LiPD files for ", project,"](",project,".zip)"),sep = "\n") %>% 
+    str_c("\n") %>% 
+    str_c("            \n") %>%
+    str_c("[Report an issue (include project name)](https://github.com/nickmckay/LiPDverse/issues)",sep = "\n") %>% 
+    str_c("\n")
+  
+  
+  #load in mapchunk
+  mapChunk <- read_file("mapChunk.Rmd")
+  
+  mapChunk <- str_replace(mapChunk,pattern = "buff <- 15",replacement = "buff <- 60")
+
+  thisRmd <- str_c(thisRmd,mapChunk,sep = "\n") %>% 
+    str_c("\n")
+  
+  
+  #write out the Rmd
+  write_file(thisRmd,path = here("html",str_replace_all(str_c(project,".Rmd"),"'","_")))
+  
+}
 

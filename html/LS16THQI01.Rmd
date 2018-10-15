@@ -1,0 +1,318 @@
+---
+title: "LS16THQI01"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 346
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS16THQI01
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS16THQI01.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>131
+<p style="margin-left: 10px"><strong>pages: </strong>157-167
+<p style="margin-left: 10px"><strong>title: </strong>Changes in dominant moisture sources and the consequences for hydroclimate on the northeastern Tibetan Plateau during the past 32 kyr
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2015.11.003
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>0602412
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding2</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>0902805
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding3</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Graduate Research Fellowship
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding4</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding5</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Intercontinental Drilling Program
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding6</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Chinese National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>China
+</details>
+<details style="margin-left: 10px">
+<summary>funding7</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>China Ministry of Science
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>China
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>37
+<p style="margin-left: 0px"><strong>longitude: </strong>100
+<p style="margin-left: 0px"><strong>elevation: </strong>3194
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Qinghai
+<p style="margin-left: 0px"><strong>country: </strong>China
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>compositeDepth</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6b94bb89
+<p style="margin-left: 10px"><strong>variableName: </strong>compositeDepth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>Composite depth of cores 1A and 1F
+</details>
+<details style="margin-left: 10px">
+<summary>Drilling project</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7f892b9e
+<p style="margin-left: 10px"><strong>variableName: </strong>Drilling project
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>site/hole</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB098dee70
+<p style="margin-left: 10px"><strong>variableName: </strong>site/hole
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>drive-type</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB11e05b83
+<p style="margin-left: 10px"><strong>variableName: </strong>drive-type
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>section</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB52961c1d
+<p style="margin-left: 10px"><strong>variableName: </strong>section
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>sample # in section</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe8bdb85c
+<p style="margin-left: 10px"><strong>variableName: </strong>sample # in section
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>top depth in section</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe23a77e6
+<p style="margin-left: 10px"><strong>variableName: </strong>top depth in section
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>bottom depth in section</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd65b7686
+<p style="margin-left: 10px"><strong>variableName: </strong>bottom depth in section
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>dry sample mass</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB32b3a4fd
+<p style="margin-left: 10px"><strong>variableName: </strong>dry sample mass
+<p style="margin-left: 10px"><strong>units: </strong>g
+</details>
+<details style="margin-left: 10px">
+<summary>dD C28</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBaddada01
+<p style="margin-left: 10px"><strong>variableName: </strong>dD C28
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+<p style="margin-left: 10px"><strong>description: </strong>methyl corrected mean dD C28 fatty acid
+</details>
+<details style="margin-left: 10px">
+<summary>StDev C28 dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8e46b7f7
+<p style="margin-left: 10px"><strong>variableName: </strong>StDev C28 dD
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+</details>
+<details style="margin-left: 10px">
+<summary>n C28</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9b609be4
+<p style="margin-left: 10px"><strong>variableName: </strong>n C28
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### compositeDepth
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Drilling project
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### site/hole
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### drive-type
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### section
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### sample # in section
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### top depth in section
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### bottom depth in section
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### dry sample mass
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### dD C28
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### StDev C28 dD
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### n C28
+```{r}
+plotCol(thisTS,ind = 12)
+```

@@ -24,7 +24,7 @@ names(map.meta.split) %>%
                  lng=~lon, lat=~lat,
                  label=~as.character(archiveType),
                  popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
-                                  str_c("Elevation: ",elev),
+                                 # str_c("Elevation: ",elev),
                                   str_c("Archive Type: ",archiveType),
                                   sep = "<br>"),
                  group = df,

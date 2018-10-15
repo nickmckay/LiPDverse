@@ -1,0 +1,267 @@
+---
+title: "CO07CAFR"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 29
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO07CAFR
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO07CAFR.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/6087
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>Henry Wu, Will Carpenter
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Calvo, Eva , Marshall, John F. , Pelejero, Carles , McCulloch, Malcolm T. , Gagan, Michael K. , Lough, Janice M.
+<p style="margin-left: 10px"><strong>citeKey: </strong>calvo2007interdecadal
+<p style="margin-left: 10px"><strong>journal: </strong>Palaeogeography, Palaeoclimatology, Palaeoecology
+<p style="margin-left: 10px"><strong>volume: </strong>248
+<p style="margin-left: 10px"><strong>pages: </strong>-11
+<p style="margin-left: 10px"><strong>pubYear: </strong>2007
+<p style="margin-left: 10px"><strong>title: </strong>Interdecadal climate variability in the Coral Sea since 1708 A.D.
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.palaeo.2006.12.003
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Calvo, E.
+<p style="margin-left: 10px"><strong>title: </strong>Ocean2kHR-PacificCoralSeaCalvo2007
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Calvo, E.
+<p style="margin-left: 10px"><strong>citeKey: </strong>calvo2007ocean2khrDataCitation
+<p style="margin-left: 10px"><strong>title: </strong>Ocean2kHR-PacificCoralSeaCalvo2007
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-17.73
+<p style="margin-left: 0px"><strong>longitude: </strong>148.43
+<p style="margin-left: 0px"><strong>elevation: </strong>-5
+<p style="margin-left: 0px"><strong>siteName: </strong>Coral Sea
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Ocean
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_193
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease/increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>temperature and salinity
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea surface
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>both temperature and seawater isotopic composition effect ?18O in the Flinders coral record
+<p style="margin-left: 20px"><strong>direction: </strong>decrease
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>5
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>Chronologies were built by counting density couplets in x-rays.
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Temperature_water
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>increase
+<p style="margin-left: 20px"><strong>fraction: </strong>0.65
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>5
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>Chronologies were built by counting density couplets in x-rays.
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Salinity_water
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Sr_Ca</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_194
+<p style="margin-left: 10px"><strong>variableName: </strong>Sr_Ca
+<p style="margin-left: 10px"><strong>units: </strong>mmol/mol
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>temperature
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea_surface
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>CO07CAFR01B
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>salinity
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea surface
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>(d18O) can be used to infer changes in salinity (a parameter mainly driven by changes in the evaporation? precipitation balance, but also by vertical/horizontal mixing of different water masses).
+<p style="margin-left: 20px"><strong>direction: </strong>increase
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>5
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>Chronologies were built by counting density couplets in x-rays.
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Salinity_water
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Sr_Ca
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 3)
+```

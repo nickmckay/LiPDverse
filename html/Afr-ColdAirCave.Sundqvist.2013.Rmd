@@ -37,9 +37,9 @@ TS <- TS[good]
 dsn <- sapply(TS,"[[","dataSetName")
 ui <- which(!duplicated(dsn))
 udsn <- dsn[ui]
-lat <- sapply(TS,"[[","geo_latitude")[ui]
-lon <- sapply(TS,"[[","geo_longitude")[ui]
-elev <- sapply(TS,"[[","geo_elevation")[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
 archiveType <- sapply(TS,"[[","archiveType")[ui]
 link <- paste0(udsn,".html") %>% 
   str_replace_all("'","_")
@@ -48,7 +48,7 @@ link <- paste0(udsn,".html") %>%
 map.meta <- data.frame(dataSetName = udsn, #datasetname
                        lat = lat,#lat
                        lon = lon,#lon
-                       elev = elev,#elevation
+                      # elev = elev,#elevation
                        archiveType = factor(archiveType),#archiveType
                        link = link)#Link
 
@@ -61,6 +61,10 @@ thisTS <- TS[which(udsn[i] == dsn)]
 
 Metadata {.sidebar}
 -------------------------------------
+[Download LiPD file](Afr-ColdAirCave.Sundqvist.2013.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
 
 <details open style="margin-left: 0px">
 <summary>root</summary>
@@ -152,7 +156,7 @@ names(map.meta.split) %>%
                  lng=~lon, lat=~lat,
                  label=~as.character(archiveType),
                  popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
-                                  str_c("Elevation: ",elev),
+                                 # str_c("Elevation: ",elev),
                                   str_c("Archive Type: ",archiveType),
                                   sep = "<br>"),
                  group = df,

@@ -1,0 +1,211 @@
+---
+title: "CO17RAPA01A"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../functions.R")
+
+#prepare LiPD data..
+# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+# TS <- extractTs(D)
+load("../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 59
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO17RAPA01A
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO17RAPA01A.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>32
+<p style="margin-left: 10px"><strong>pages: </strong>424-438
+<p style="margin-left: 10px"><strong>title: </strong>Diploastrea heliopora Sr/Ca and δ18O records from northeast Luzon, Philippines: An assessment of interspecies coral proxy calibrations and climate controls of sea surface temperature and salinity
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1002/2017PA003098
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>18.54
+<p style="margin-left: 0px"><strong>longitude: </strong>122.15
+<p style="margin-left: 0px"><strong>elevation: </strong>-5
+<p style="margin-left: 0px"><strong>siteName: </strong>Palaui Island
+<p style="margin-left: 0px"><strong>country: </strong>Philippines
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>Year (CE)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0bc2e8c4
+<p style="margin-left: 10px"><strong>variableName: </strong>Year (CE)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Year for both corals
+</details>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0e874eb3
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+<p style="margin-left: 10px"><strong>description: </strong>oxygen isotopes for Diploastrea heliopora coral monthly values
+</details>
+<details style="margin-left: 10px">
+<summary>Sr/Ca</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB34c958f0
+<p style="margin-left: 10px"><strong>variableName: </strong>Sr/Ca
+<p style="margin-left: 10px"><strong>units: </strong>mmol/mol
+<p style="margin-left: 10px"><strong>description: </strong>Diploastrea heliopora Sr/Ca monthly values
+</details>
+<details style="margin-left: 10px">
+<summary>Year (CE)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB908959f3
+<p style="margin-left: 10px"><strong>variableName: </strong>Year (CE)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Year for both corals
+</details>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9aced55a
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+<p style="margin-left: 10px"><strong>description: </strong>oxygen isotopes for Porites lobata coral monthly values
+</details>
+<details style="margin-left: 10px">
+<summary>Sr/Ca</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1b49cf10
+<p style="margin-left: 10px"><strong>variableName: </strong>Sr/Ca
+<p style="margin-left: 10px"><strong>units: </strong>mmol/mol
+<p style="margin-left: 10px"><strong>description: </strong>Sr/Ca for Diploastrea heliopora coral monthly values
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Year (CE)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### Sr/Ca
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### Year (CE)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### Sr/Ca
+```{r}
+plotCol(thisTS,ind = 6)
+```

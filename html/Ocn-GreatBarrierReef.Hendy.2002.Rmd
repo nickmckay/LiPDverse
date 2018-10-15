@@ -37,9 +37,9 @@ TS <- TS[good]
 dsn <- sapply(TS,"[[","dataSetName")
 ui <- which(!duplicated(dsn))
 udsn <- dsn[ui]
-lat <- sapply(TS,"[[","geo_latitude")[ui]
-lon <- sapply(TS,"[[","geo_longitude")[ui]
-elev <- sapply(TS,"[[","geo_elevation")[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
 archiveType <- sapply(TS,"[[","archiveType")[ui]
 link <- paste0(udsn,".html") %>% 
   str_replace_all("'","_")
@@ -48,7 +48,7 @@ link <- paste0(udsn,".html") %>%
 map.meta <- data.frame(dataSetName = udsn, #datasetname
                        lat = lat,#lat
                        lon = lon,#lon
-                       elev = elev,#elevation
+                      # elev = elev,#elevation
                        archiveType = factor(archiveType),#archiveType
                        link = link)#Link
 
@@ -61,6 +61,10 @@ thisTS <- TS[which(udsn[i] == dsn)]
 
 Metadata {.sidebar}
 -------------------------------------
+[Download LiPD file](Ocn-GreatBarrierReef.Hendy.2002.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
 
 <details open style="margin-left: 0px">
 <summary>root</summary>
@@ -164,36 +168,40 @@ Row
 ### Sitemap
 
 ```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
 factpal <- colorFactor("Paired",map.meta$archiveType)
 buff <- 15
-leaflet() %>% 
+l <- leaflet() %>% 
   addTiles() %>% 
-  #fitBounds(min(map.meta$lon),min(map.meta$lat),max(map.meta$lon),max(map.meta$lat)) %>% 
-  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff) %>% 
-  addCircleMarkers(map.meta$lon, 
-                   map.meta$lat, 
-                   color = factpal(map.meta$archiveType),
-                   radius = 5, 
-                   fill = T,
-                   fillOpacity = 1,
-                   opacity = 1,
-                   popup = paste(str_c('Dataset: <a href="',map.meta$link,'">',map.meta$dataSetName,'</a>'),
-                                 str_c("Elevation: ",map.meta$elev),
-                                 str_c("Archive Type: ",map.meta$archiveType),
-                                 sep = "<br>")) %>%
-  addCircleMarkers(map.meta$lon[i], 
-                   map.meta$lat[i], 
-                   color = "black",
-                   radius = 12, 
-                   fill = F,
-                   opacity = 1) %>%
-  addLabelOnlyMarkers(map.meta$lon[i], 
-                      map.meta$lat[i], 
-                      label = map.meta$dataSetName[i]) %>%
-  addLegend("bottomleft",
-            colors = unique(factpal(map.meta$archiveType)),
-            labels = unique(map.meta$archiveType),
-            opacity = 0.8)
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
 ```
 
 Row {.tabset .tabset-fade}

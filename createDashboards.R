@@ -10,12 +10,22 @@ library(dygraphs)
 library(geoChronR)
 library(here)
 source(here("functions.R"))
-
 #prepare LiPD data..
-D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
+
+project <- "PAGES2kv2"
+lipdDir <- "~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/"
+
+setwd(lipdDir)
+zip(here("html",str_c(project,".zip")),files = list.files(lipdDir,pattern= "*.lpd"))
+
+D <- readLipd(lipdDir)
 TS <- extractTs(D)
-save(list = c("D","TS"),file = "temp.Rdata")
 setwd(here())
+
+
+
+save(list = c("D","TS"),file = "temp.Rdata")
+
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
 
@@ -35,13 +45,24 @@ link <- paste0(udsn,".html") %>%
   str_replace_all("'","_")
 
 
+if(is.list(elev)){
+  ge <- which(!sapply(elev,is.null))
+  ne <- rep(NA,length(elev))
+  ne[ge] <- as.numeric(unlist(elev))
+  elev <- ge
+}
+
 #Organize metadata for map
 map.meta <- data.frame(dataSetName = udsn, #datasetname
                        lat = lat,#lat
                        lon = lon,#lon
-                       elev = elev,#elevation
+                      # elev = elev,#elevation
                        archiveType = factor(archiveType),#archiveType
                        link = link)#Link
+
+#make project Rmd
+createProjectRmd(project = project)
+rmarkdown::render(here("html",str_c(project,".Rmd")))
 failed = c()
 for(i in 1:nrow(map.meta)){
   print(i)
@@ -53,6 +74,7 @@ for(i in 1:nrow(map.meta)){
     test = try(createDashboardRmd(thisTS = thisTS,i = i))
     Sys.sleep(1)
     test = try(rmarkdown::render(here("html",str_c(fname,".Rmd"))))
+    #writeLipd(D[[thisTS[[1]]$dataSetName]],path = here("html"))
     if(grepl(class(test),"try-error")){
       failed = c(failed, udsn[i])
     }
