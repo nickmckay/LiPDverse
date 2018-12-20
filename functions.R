@@ -5,6 +5,7 @@ plotCol <- function(thisTS,ind,timeCol = NA){
   
   hasYear <- FALSE
   hasAge <- FALSE
+  hasSeq <- FALSE
   if("year" %in% names(thisTS[[ind]])){
     hasYear <- TRUE
     year <- thisTS[[ind]]$year
@@ -21,21 +22,40 @@ plotCol <- function(thisTS,ind,timeCol = NA){
     year <- geoChronR::convertBP2AD(age)
     hasYear <- TRUE
   }
-  
+  if((!hasYear & !hasAge) | all(is.na(year))){#has no years or ages
+    year <- seq_along(thisTS[[ind]]$paleoData_values)
+    hasSeq <- TRUE
+  }
   
   if(is.na(timeCol)){#then decide which to use heuristically
     
-    if(min(year,na.rm = T)<0){# if the series starts before 1AD, plot as BP
-      timeCol <- "age"
+    if(hasSeq){#then no ages, just a sequence
+      timeCol <- "index"
     }else{
-      timeCol <- "year"
+      if(min(year,na.rm = T)<0){# if the series starts before 1AD, plot as BP
+        timeCol <- "age"
+        if(all(is.na(age))){#if all NAs, use a sequence
+          year <- seq_along(thisTS[[ind]]$paleoData_values)
+          timeCol <- "index"
+        }
+      }else{
+        timeCol <- "year"
+        if(all(is.na(year))){#if all NAs, use a sequence
+          year <- seq_along(thisTS[[ind]]$paleoData_values)
+          timeCol <- "index"
+        }
+      }
     }
   }
-    #specify units
+  
+  
+  #specify units
   if(timeCol == "age"){
     timeUnits <- "Year BP (1950)"
   }else if(timeCol == "year") {
     timeUnits <- "Year AD"
+  }else if(timeCol == "index") {
+    timeUnits <- "(no age or year column, or theyre all NA!)"
   }
   
   #create year/values dataframe
@@ -44,6 +64,9 @@ plotCol <- function(thisTS,ind,timeCol = NA){
       arrange(desc(-time))
     
   }else if(timeCol == "year") {
+    df <- data.frame(time = year, values = thisTS[[ind]]$paleoData_values)%>% 
+      arrange(desc(-time))
+  }else if(timeCol == "index") {
     df <- data.frame(time = year, values = thisTS[[ind]]$paleoData_values)%>% 
       arrange(desc(-time))
   }
@@ -112,7 +135,7 @@ writeCollapsibleChunks <- function(thisRmd,name = "pub",vars = c("author","citeK
   return(thisRmd)
 }
 
-createDashboardRmd <- function(thisTS,i){
+createDashboardRmd <- function(thisTS,i,project){
 
 
 #load in the starter text
@@ -125,6 +148,7 @@ thisRmd <- str_replace(thisRmd,pattern = "LiPD-Dashboards",replacement = as.char
 thisRmd <- str_c(thisRmd,str_c("i = ",as.character(i)),sep = "\n") %>% 
   #str_c('thisTS <- filterTs(TS, str_c("dataSetName == ",udsn[i]))',sep = "\n") %>% 
   str_c('thisTS <- TS[which(udsn[i] == dsn)]',sep = "\n") %>% 
+  str_c('thisTS <- thisTS[which(!sapply(thisTS,function(x){all(is.na(x$paleoData_values))}))]',sep = "\n") %>% 
   str_c("```",sep = "\n") 
 
 
@@ -218,7 +242,7 @@ thisRmd <- str_c(thisRmd,str_c("#",as.character(map.meta$dataSetName[i])),sep = 
   ##loop through columns and plot them.
   hasInterpretation <- sapply(thisTS,function(x){!is.null(x$interpretation1_variable)})
   
-  
+
   plotOrder <-  seq(1, length(thisTS))
   plotOrder <- plotOrder[order(-hasInterpretation)]
   
@@ -290,7 +314,7 @@ thisRmd <- str_c(thisRmd,str_c("#",as.character(map.meta$dataSetName[i])),sep = 
   
   
   #write out the Rmd
-  write_file(thisRmd,path = here("html",str_replace_all(str_c(as.character(map.meta$dataSetName[i]),".Rmd"),"'","_")))
+  write_file(thisRmd,path = here("html",project,str_replace_all(str_c(as.character(map.meta$dataSetName[i]),".Rmd"),"'","_")))
   
     }
 
@@ -298,7 +322,7 @@ createProjectRmd <- function(project){
   
   
   #load in the starter text
-  thisRmd <- read_file("start.Rmd")
+  thisRmd <- read_file(here("start.Rmd"))
   
   #replace the title
   thisRmd <- str_replace(thisRmd,pattern = "LiPD-Dashboards",replacement = project)
@@ -318,6 +342,12 @@ createProjectRmd <- function(project){
     str_c(str_c("[Download all LiPD files for ", project,"](",project,".zip)"),sep = "\n") %>% 
     str_c("\n") %>% 
     str_c("            \n") %>%
+    str_c(str_c("[Download R serialization of all LiPD files for ", project,"](",project,".RData)"),sep = "\n") %>% 
+    str_c("\n") %>% 
+    str_c("            \n") %>%
+    str_c(str_c("[Download matlab serialization of all LiPD files for ", project,"](",project,".mat)"),sep = "\n") %>% 
+    str_c("\n") %>% 
+    str_c("            \n") %>%
     str_c("[Report an issue (include project name)](https://github.com/nickmckay/LiPDverse/issues)",sep = "\n") %>% 
     str_c("\n")
   
@@ -332,7 +362,7 @@ createProjectRmd <- function(project){
   
   
   #write out the Rmd
-  write_file(thisRmd,path = here("html",str_replace_all(str_c(project,".Rmd"),"'","_")))
+  write_file(thisRmd,path = here("html",project,str_replace_all(str_c(project,".Rmd"),"'","_")))
   
 }
 

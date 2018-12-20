@@ -1,0 +1,437 @@
+---
+title: "MS11CLSB"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 390
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MS11CLSB
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MS11CLSB.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>marine sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Li
+<p style="margin-left: 10px"><strong>pubYear: </strong>2011
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.orggeochem.2010.09.011
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>34.2167
+<p style="margin-left: 0px"><strong>longitude: </strong>-120.0333
+<p style="margin-left: 0px"><strong>elevation: </strong>-583
+<p style="margin-left: 0px"><strong>siteName: </strong>Santa Barbara
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001H
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>However, the dD values of n-C22 and n-C24 fatty acids, commonly attributed to terrestrial aquatic sources, are partially correlated with Southern California winter Palmer Drought Severity Index, a tree ring-based climatic proxy (R2 0.25; p < 0.01) on multi-centennial scales with an inferred ca. 215 year time lag.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>winter aridity
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>However, the dD values of n-C22 and n-C24 fatty acids, commonly attributed to terrestrial aquatic sources, are partially correlated with Southern California winter Palmer Drought Severity Index, a tree ring-based climatic proxy (R2 0.25; p < 0.01) on multi-centennial scales with an inferred ca. 215 year time lag.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>inferred ~215 years lag
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001I
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>However, the dD values of n-C22 and n-C24 fatty acids, commonly attributed to terrestrial aquatic sources, are partially correlated with Southern California winter Palmer Drought Severity Index, a tree ring-based climatic proxy (R2 0.25; p < 0.01) on multi-centennial scales with an inferred ca. 215 year time lag.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>winter aridity
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>However, the dD values of n-C22 and n-C24 fatty acids, commonly attributed to terrestrial aquatic sources, are partially correlated with Southern California winter Palmer Drought Severity Index, a tree ring-based climatic proxy (R2 0.25; p < 0.01) on multi-centennial scales with an inferred ca. 215 year time lag.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>inferred ~215 years lag
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001L
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Long chain n-alkanoic acids exhibit nearly constant downcore D/H ratio values. This constancy in the face of known climatic shifts presumably reflects a substantial residence time for leaf wax compounds in terrestrial soil and/or on the basin flanks. Alternatively, the isotopic composition of meteoric waters in Southern California may not covary with climate, particularly aridity.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001B
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The D/H ratios of long chain n-alkanes vary substantially with depth, but are poorly correlated with other terrestrial climate proxies. Interference from fossil hydrocarbons may be at least partly responsible.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001C
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The D/H ratios of long chain n-alkanes vary substantially with depth, but are poorly correlated with other terrestrial climate proxies. Interference from fossil hydrocarbons may be at least partly responsible.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001D
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The D/H ratios of long chain n-alkanes vary substantially with depth, but are poorly correlated with other terrestrial climate proxies. Interference from fossil hydrocarbons may be at least partly responsible.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001E
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The D/H ratios of long chain n-alkanes vary substantially with depth, but are poorly correlated with other terrestrial climate proxies. Interference from fossil hydrocarbons may be at least partly responsible.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001F
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The D/H ratios of long chain n-alkanes vary substantially with depth, but are poorly correlated with other terrestrial climate proxies. Interference from fossil hydrocarbons may be at least partly responsible.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001G
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Long chain n-alkanoic acids exhibit nearly constant downcore D/H ratio values. This constancy in the face of known climatic shifts presumably reflects a substantial residence time for leaf wax compounds in terrestrial soil and/or on the basin flanks. Alternatively, the isotopic composition of meteoric waters in Southern California may not covary with climate, particularly aridity.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001J
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Long chain n-alkanoic acids exhibit nearly constant downcore D/H ratio values. This constancy in the face of known climatic shifts presumably reflects a substantial residence time for leaf wax compounds in terrestrial soil and/or on the basin flanks. Alternatively, the isotopic composition of meteoric waters in Southern California may not covary with climate, particularly aridity.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11CLSB001K
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the sources of lipids in marginal marine basins need to be carefully evaluated prior to attempting paleoclimate reconstruction based on the leaf wax D/H proxy
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Long chain n-alkanoic acids exhibit nearly constant downcore D/H ratio values. This constancy in the face of known climatic shifts presumably reflects a substantial residence time for leaf wax compounds in terrestrial soil and/or on the basin flanks. Alternatively, the isotopic composition of meteoric waters in Southern California may not covary with climate, particularly aridity.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>Complex response to different parameters
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 11)
+```

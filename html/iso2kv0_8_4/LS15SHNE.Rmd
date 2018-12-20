@@ -1,0 +1,168 @@
+---
+title: "LS15SHNE"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 344
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS15SHNE
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS15SHNE.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Sharifi
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2015.07.006
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>37.9603
+<p style="margin-left: 0px"><strong>longitude: </strong>48.5553
+<p style="margin-left: 0px"><strong>siteName: </strong>Neor
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS15SHNE01A
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d2H of leaf waxes
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The average monthly dD of precipitation in the interior of West Asia is correlated with average monthly precipitation at two meteoro- logical stations located 1365 km to the west and 390 km to the east of the Neor peat mire at the same latitude (Fig. 6).
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>precipitation
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>rainfall amount
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Transition from the most positive dD values during the Younger Dryas to the most negative dD values during the early Holocene, followed by a return to more positive values during the middle to late Holocene indicate that moisture availability, moisture source, or most likely a combination of both varied between these time periods, with the wettest interval during the early Holocene.
+<p style="margin-left: 20px"><strong>direction: </strong>depends
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>precipitation
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>NH summer
+<p style="margin-left: 20px"><strong>variable: </strong>moisture source
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 1)
+```

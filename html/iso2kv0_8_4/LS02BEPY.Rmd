@@ -1,0 +1,171 @@
+---
+title: "LS02BEPY"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 258
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS02BEPY
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS02BEPY.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Benson, Larry , Kashgarian, Michaele , Rye, Robert , Lund, Steve , Paillet, Fred , Smoot, Joseph , Kester, Cynthia , Mensing, Scott , Meko, Dave , Lindstr�m, Susan
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>21
+<p style="margin-left: 10px"><strong>pages: </strong>-23
+<p style="margin-left: 10px"><strong>pubYear: </strong>2002
+<p style="margin-left: 10px"><strong>title: </strong>Holocene multidecadal and multicentennial droughts affecting Northern California and Nevada
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/S0277-3791(01)00048-8
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>40.1
+<p style="margin-left: 0px"><strong>longitude: </strong>-119.6
+<p style="margin-left: 0px"><strong>elevation: </strong>1156
+<p style="margin-left: 0px"><strong>siteName: </strong>Pyramid
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS02BEPY
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Continuous, high-resolution d18O records from cored sediments of Pyramid Lake, Nevada, indicate that oscillations in the hydrologic balance occurred. When drought occurs in the Sierra Nevada, the flow of the Truckee River is reduced and Pyramid Lake falls or the amount of overflow to Winnemucca Lake basin decreases. This results in increasing d18O values of lake water. For the purposes of this paper, we define ??hydrologic droughts?? as periods during which Dd18O=Dt tends to be positive; that is, times when lake volume (or spill rate) decreases.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>lake overflow
+<p style="margin-left: 20px"><strong>variableDetail: </strong>lake water
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>There are two principal sources of d18Oin to Pyramid Lake: Sierran snowmelt and Lake Tahoe overflow.Evaporation from Lake Tahoe has resulted in a d18O value (5.6m) much larger than that of snowmelt (14.6m). Thus, during droughts when Lake Fig. 19. Plot of TOC, d13C and d18O data from PLB98-2 (solid lines) and the top of PLC97-1 (dashed lines) indicating overlap of cores. 670 L. Benson et al. / Quaternary Science Reviews 21 (2002) 659?682 Tahoe ceases spilling, the d18O value of Truckee River discharge decreases from B11m to B14.6m. Th e input of 14.6m water to Pyramid lake causes its d18O value to first increase as its volume decreases; however, its steady-state value (1.6m) is much smaller than when the lake receives spill from Lake Tahoe.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>P_E
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```

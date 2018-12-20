@@ -12,11 +12,16 @@ library(here)
 source(here("functions.R"))
 #prepare LiPD data..
 
-project <- "PAGES2kv2"
-lipdDir <- "~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/"
+project <- "iso2kv0_9_0"
+lipdDir <- "~/Dropbox/LiPD/iso2k/Library0_8_5_1/"
+
+#if there's no html directory, create one
+if(!dir.exists(here("html",project))){
+  dir.create(here("html",project))
+}
 
 setwd(lipdDir)
-zip(here("html",str_c(project,".zip")),files = list.files(lipdDir,pattern= "*.lpd"))
+zip(here("html",project,str_c(project,".zip")),files = list.files(lipdDir,pattern= "*.lpd"))
 
 D <- readLipd(lipdDir)
 TS <- extractTs(D)
@@ -24,7 +29,8 @@ setwd(here())
 
 
 
-save(list = c("D","TS"),file = "temp.Rdata")
+save(list = c("D","TS"),file = here("html",project,str_c(project,".RData")))
+save(list = c("D","TS"),file = here("temp.RData"))
 
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
@@ -62,21 +68,25 @@ map.meta <- data.frame(dataSetName = udsn, #datasetname
 
 #make project Rmd
 createProjectRmd(project = project)
-rmarkdown::render(here("html",str_c(project,".Rmd")))
+rmarkdown::render(here("html",project,str_c(project,".Rmd")))
 failed = c()
 for(i in 1:nrow(map.meta)){
   print(i)
   fname <- str_replace_all(udsn[i],"'","_")
-  if(!file.exists(here("html",str_c(fname,".html")))){
+  if(!file.exists(here("html",project,str_c(fname,".html")))){
     
     #thisTS <- filterTs(TS, str_c("dataSetName == ",udsn[i]))
     thisTS <- TS[which(udsn[i] == dsn)]
-    test = try(createDashboardRmd(thisTS = thisTS,i = i))
+    test = try(createDashboardRmd(thisTS = thisTS,i = i,project = project))
     Sys.sleep(1)
-    test = try(rmarkdown::render(here("html",str_c(fname,".Rmd"))))
+    test = try(rmarkdown::render(here("html",project,str_c(fname,".Rmd"))))
     #writeLipd(D[[thisTS[[1]]$dataSetName]],path = here("html"))
     if(grepl(class(test),"try-error")){
       failed = c(failed, udsn[i])
     }
+  }
+  #copy the lipd file if it's not already there
+  if(!file.exists(here("html",project,str_c(fname,".lpd")))){
+    file.copy(from = str_c(lipdDir,fname,".lpd"),to = here("html",project))
   }
 }

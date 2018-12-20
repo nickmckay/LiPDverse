@@ -76,6 +76,7 @@ Metadata {.sidebar}
 <details style="margin-left: 10px">
 <summary>pub1</summary>
 <p style="margin-left: 10px"><strong>journal: </strong>Climate Dynamics
+<p style="margin-left: 10px"><strong>pubYear: </strong>2018
 <p style="margin-left: 10px"><strong>title: </strong>Modern drought conditions in western Sahel unprecedented in the past 1600 years
 <p style="margin-left: 10px"><strong>DOI: </strong>10.1007/s00382-018-4311-3
 </details>
@@ -99,11 +100,11 @@ Metadata {.sidebar}
 <details open>
 <summary>PaleoData columns</summary>
 <details style="margin-left: 10px">
-<summary>Shell d18O median</summary>
+<summary>d18O</summary>
 <p style="margin-left: 10px"><strong>TSid: </strong>WEB477e36ed
-<p style="margin-left: 10px"><strong>variableName: </strong>Shell d18O median
-<p style="margin-left: 10px"><strong>units: </strong>permil vs VPDB
-<p style="margin-left: 10px"><strong>description: </strong>Composite and smoothed record built from discontinuous mollusk shell isotopic values. 
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Shell d18O median. Composite and smoothed record built from discontinuous mollusk shell isotopic values.
 <details>
 <summary>interpretation</summary>
 <details style="margin-left: 20px">
@@ -115,18 +116,18 @@ Metadata {.sidebar}
 </details>
 </details>
 <details style="margin-left: 10px">
-<summary>Shell d18O (q2.5)</summary>
+<summary>d18O</summary>
 <p style="margin-left: 10px"><strong>TSid: </strong>WEB9bab95ac
-<p style="margin-left: 10px"><strong>variableName: </strong>Shell d18O (q2.5)
-<p style="margin-left: 10px"><strong>units: </strong>permil vs VPDB
-<p style="margin-left: 10px"><strong>description: </strong>lower limit of confidence interval
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Shell d18O (q2.5): lower limit of confidence interval
 </details>
 <details style="margin-left: 10px">
-<summary>Shell d18O (q97.5)</summary>
+<summary>d18O</summary>
 <p style="margin-left: 10px"><strong>TSid: </strong>WEBf820da9c
-<p style="margin-left: 10px"><strong>variableName: </strong>Shell d18O (q97.5)
-<p style="margin-left: 10px"><strong>units: </strong>permil vs VPDB
-<p style="margin-left: 10px"><strong>description: </strong>upper limit of confidence interval
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Shell d18O (q97.5): upper limit of confidence interval
 </details>
 
 Row
@@ -174,17 +175,17 @@ l %>%
 Row {.tabset .tabset-fade}
 -----------------------------------------------------------------------
 
-### Shell d18O median
+### d18O
 ```{r}
 plotCol(thisTS,ind = 1)
 ```
 
-### Shell d18O (q2.5)
+### d18O
 ```{r}
 plotCol(thisTS,ind = 2)
 ```
 
-### Shell d18O (q97.5)
+### d18O
 ```{r}
 plotCol(thisTS,ind = 3)
 ```

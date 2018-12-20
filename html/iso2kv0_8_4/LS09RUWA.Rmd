@@ -1,0 +1,203 @@
+---
+title: "LS09RUWA"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 287
+thisTS <- TS[which(udsn[i] == dsn)]
+thisTS <- thisTS[which(!sapply(thisTS,function(x){all(is.na(x$paleoData_values))}))]
+```
+#LS09RUWA
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS09RUWA.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Russell, James M. , McCoy, S.J. , Verschuren, D. , Bessems, I. , Huang, Y.
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Research
+<p style="margin-left: 10px"><strong>volume: </strong>72
+<p style="margin-left: 10px"><strong>pubYear: </strong>2009
+<p style="margin-left: 10px"><strong>title: </strong>Human impacts, climate change, and aquatic ecosystem response during the past 2000�yr at Lake Wandakara, Uganda
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.yqres.2009.06.008
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>0.4167
+<p style="margin-left: 0px"><strong>longitude: </strong>30.271
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Wandakara
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS09RUWA01B
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>aquatic biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The ?D of closed-basin tropical lakes such as Wandakara reflects the hydrologic balance of the lake, with drier conditions causing isotopically enriched lake water due to both the amount effect on precipitation and kinetic fractionation during evaporation from the lake surface, which favors the retention of deuterium relative to hydrogen in the lake water (Craig, 1961).
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>mean annual
+<p style="margin-left: 20px"><strong>variable: </strong>P/E
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Short-chain (C16?C18) fatty acids in lake sediments are derived primarily from aquatic sources (Eglinton and Hamilton, 1967; Huang et al., 2002), and the principal control on their ?D is the ?D of lake water (Huang et al., 2002, 2004). ... "The ?D of closed-basin tropical lakes such as Wandakara reflects the hydrologic balance of the lake, with drier conditions causing isotopically enriched lake water due to both the amount effect on precipitation and kinetic fractionation during evaporation from the lake surface, which favors the retention of deuterium relative to hydrogen in the lake water (Craig, 1961). "
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>I_E
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS09RUWA01B2
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>aquatic biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The ?D of closed-basin tropical lakes such as Wandakara reflects the hydrologic balance of the lake, with drier conditions causing isotopically enriched lake water due to both the amount effect on precipitation and kinetic fractionation during evaporation from the lake surface, which favors the retention of deuterium relative to hydrogen in the lake water (Craig, 1961).
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>mean annual
+<p style="margin-left: 20px"><strong>variable: </strong>P/E
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Short-chain (C16?C18) fatty acids in lake sediments are derived primarily from aquatic sources (Eglinton and Hamilton, 1967; Huang et al., 2002), and the principal control on their ?D is the ?D of lake water (Huang et al., 2002, 2004). ... "The ?D of closed-basin tropical lakes such as Wandakara reflects the hydrologic balance of the lake, with drier conditions causing isotopically enriched lake water due to both the amount effect on precipitation and kinetic fractionation during evaporation from the lake surface, which favors the retention of deuterium relative to hydrogen in the lake water (Craig, 1961). "
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>I_E
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 2)
+```

@@ -1,0 +1,161 @@
+---
+title: "CO14WUCL"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 50
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO14WUCL
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO14WUCL.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Wu, H., M. Moreau, B. K. Linsley, D. P. Schrag, T. Correge
+<p style="margin-left: 10px"><strong>pubYear: </strong>2014
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.palaeo.2014.07.039
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>10.3
+<p style="margin-left: 0px"><strong>longitude: </strong>-109.22
+<p style="margin-left: 0px"><strong>siteName: </strong>Clipperton Atoll
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>CO14WUCL01A
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>decrease
+<p style="margin-left: 20px"><strong>fraction: </strong>42%
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>1
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>The age of colony CF1B was determined by 230Th/U-dating following established methodology (Edwards et al., 1987; Shen et al., 2002).Three dates were performed at the top, middle, and bottom of the CF1B core. All ages were corrected for the effect of detrital Th contamination assuming a bulk earth 232Th/238U weight ratio of 3.8 for the detritus and 230Th, 234U, and 238U in secular equilibri- um. The reliability of the determined 230Th/U-ages was verified using established criteria such as initial 234U/238U in agreement with 234U/ 238U of modern seawater (i.e., 146 � 3?) (Shen et al., 2008).,5 years,U/Th error,month,,,,,,,,,,,,,,,,,,,,,,,,,Fossil coral - this record was used to determine the variability of d18Osw by deconvoluing the d18O signal using Sr/Ca data,,https://docs.google.com/spreadsheets/d/1MjIjGINZkkCuTq4taZWDJS0Ddmx_knTJApUoI8PiNao Ocean2kHR_026,CO14ZIHO,Ocn_154,CO14ZIHO01A,coral,zinke2014corals,Zinke, J. , Rountrey, A. , Feng, M. , Xie, S.-P. , Dissard, D. , Rankenburg, K. , Lough, J.M. , McCulloch, M.T.,2014,10.1038/ncomms4607,Zinke, J., A. Rountrey, M. Feng, S.P. Xie, D. Dissard, K. Rankenburg, J. Lough, and M.T. McCulloch. 2014. Corals record long-term Leeuwin Current variability including Ningaloo Ni�o/Ni�a since 1795. Nature Communications, 5, 3607. doi: 10.1038/ncomms4607,,,,,,Zinke, J.,zinke2014ocean2khrDataCitation,World Data Center for Paleoclimatology, ,Ocean2kHR-IndianAbrolhosZinke2014HAB10A,dataCitation,https://www.ncdc.noaa.gov/paleo/study/16316,-28.4589,113.749,-8,Houtman Abrolhos,1848,2010,x_18O,?,?18O of the coral skeleton,; climateInterpretation_seasonality changed - was originally 1 2 3 4 5 6 7 8 9 10 11 12,coral carbonate,T,sea_surface,1 2 3 4 5 6 7 8 9 10 11 12,negative,,,seawater,1,We used the published bimonthly coral d18O record of Kuhnert et al.12 as our reference coral because the presence of seasonal cycles provided the best age control for all cores.The age model of the new corals was determined by assigning 1 year of growth to a couplet of high- and low-density banding in X-ray-positive prints cross-checked with luminescence banding. The high-density bands were equivalent to summer and low density to winter. The coral d18O record of Kuhnert et al. was averaged annually (January?December), and then each individual annually resolved coral proxy record was normalized to its variance relative to the 1900?1993 reference period. We used the COFECHA tool to aid in cross-dating the annual time series. We aligned the new annually resolved Sr/Ca and d18O records (normalized relative to the 1900?1993 reference period) with the Kuhnert et al. annual time series, and averaged all records to form a composite chronology that extends from 1795 to 2010."
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>year
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Temperature_water
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```

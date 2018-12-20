@@ -1,0 +1,177 @@
+---
+title: "LS11MOES"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 306
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS11MOES
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS11MOES.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Morell�n, Mario , Valero-Garc�s, Blas , Gonz�lez-Samp�riz, Pen�lope , Vegas-Vilarr�bia, Teresa , Rubio, Esther , Rieradevall, Maria , Delgado-Huertas, Antonio , Mata, Pilar , Romero, �scar , Engstrom, Daniel R. , L�pez-Vicente, Manuel , Navas, Ana , Soto, Jes�s
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>46
+<p style="margin-left: 10px"><strong>pages: </strong>-29
+<p style="margin-left: 10px"><strong>pubYear: </strong>2009
+<p style="margin-left: 10px"><strong>title: </strong>Climate changes and human activities recorded in the sediments of Lake Estanya (NE Spain) during the Medieval Warm Period and Little Ice Age
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1007/s10933-009-9346-3
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>42.03
+<p style="margin-left: 0px"><strong>longitude: </strong>0.53
+<p style="margin-left: 0px"><strong>elevation: </strong>670
+<p style="margin-left: 0px"><strong>siteName: </strong>Estanya
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS11MOES
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The isotopic composition of the Triassic limestone bedrock is characterized by relatively low oxygen isotope values (between -4.0 and -6.0%; average d18Ocalcite = -5.3%)...samples from units 6, 5 and 3 show d18Ocalcite values (-7.1% to -3.2%) similar to the isotopic signal of the bedrock (-4.6% to -5.2%), indicating a dominant clastic origin of the carbonate.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>The isotopic composition of this calcite [endogenic calcite in macrophyte coatings] is approximately in equilibrium with lake waters,
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>P_E
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>In the absence of contamination sources [units 1,2 4a and 4b], the two primary factors controlling d18Ocalcite values are moisture balance (precipitation minus evaporation) and the isotopic composition of lake waters (Griffiths et al. 2002)
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>The isotopic composition of this calcite [endogenic calcite in macrophyte coatings] is approximately in equilibrium with lake waters,
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water, allochthonous calcite
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>P:E
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```

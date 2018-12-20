@@ -1,0 +1,230 @@
+---
+title: "CO10HEIG"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 37
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO10HEIG
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO10HEIG.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/12894
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>KHK, CS
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Hetzinger, S. , M. Pfeiffer , W.-C. Dullo , D. Garbe-Sch�nberg , J. Halfar
+<p style="margin-left: 10px"><strong>citeKey: </strong>hetzinger2010tropical
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>30
+<p style="margin-left: 10px"><strong>pages: </strong>-26
+<p style="margin-left: 10px"><strong>pubYear: </strong>2010
+<p style="margin-left: 10px"><strong>title: </strong>Tropical sea surface temperatures for the past four centuries reconstructed from coral archives
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1029/2006GC001348
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Tierney, Jessica E. , Abram, Nerilie J. , Anchukaitis, Kevin J. , Evans, Michael N. , Giry, Cyril , Kilbourne, K. Halimeda , Saenger, Casey P. , Wu, Henry C. , Zinke, Jens
+<p style="margin-left: 10px"><strong>citeKey: </strong>tierney2015tropical
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>30
+<p style="margin-left: 10px"><strong>pages: </strong>-26
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>title: </strong>Tropical sea surface temperatures for the past four centuries reconstructed from coral archives
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1002/2014PA002717
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Steinhilber, F.
+<p style="margin-left: 10px"><strong>citeKey: </strong>steinhilber2012ocean2khrDataCitation
+<p style="margin-left: 10px"><strong>title: </strong>Ocean2kHR-AtlanticGuadeloupeHetzinger2010
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>16.2
+<p style="margin-left: 0px"><strong>longitude: </strong>-61.49
+<p style="margin-left: 0px"><strong>elevation: </strong>-1.7
+<p style="margin-left: 0px"><strong>siteName: </strong>Guadeloupe
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Ocean
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_097
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Both geochemical proxies show a significant correlation with instrumental SST over a 41-year time period on both monthly and mean annual scales. We obtained proxy-SST calibrations that are consistent with previously published studies using other coral species from different regions. Hetzinger 2006 10.1029/2006GC001347
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>not applicable (subannually resolved)
+<p style="margin-left: 20px"><strong>variable: </strong>temperature
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea surface
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Correlation and regression assesed with SODA SST, ERSST V2.0, and local air temperature for 1958-1999 for monthly values, extreme values only (max-min mehtod), and annual mean. ERSST extreme values had the correlation, this could be due to subannual dating uncertaincies and linear interpolation to monthly values. Calibration detailed in Hetzinger 2006, 10.1029/2006GC001347
+<p style="margin-left: 20px"><strong>coefficient: </strong>-0.209
+<p style="margin-left: 20px"><strong>direction: </strong>decrease
+<p style="margin-left: 20px"><strong>fraction: </strong>0.82
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>1
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>age model was established on the basis of the pronounced seasonal cycle in the Sr/Ca record. The maximum (minimum) Sr/Ca was tied to March (September), which is on average the coolest (warmest) month in the study area. The coral d18O and Sr/Ca time series were linearly interpolated between these anchor points using the Analyseries software [Paillard et al., 1996] to obtain monthly proxy time series.
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>~1?2 months in any given year, no errors given for annual chronology
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>month
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Temperature_water
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Sr_Ca</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_098
+<p style="margin-left: 10px"><strong>variableName: </strong>Sr_Ca
+<p style="margin-left: 10px"><strong>units: </strong>mmol/mol
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>not applicable (subannually resolved)
+<p style="margin-left: 20px"><strong>variable: </strong>temperature
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea_surface
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Sr_Ca
+```{r}
+plotCol(thisTS,ind = 2)
+```

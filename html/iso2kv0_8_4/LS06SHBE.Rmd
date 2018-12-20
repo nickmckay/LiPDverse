@@ -1,0 +1,182 @@
+---
+title: "LS06SHBE"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 272
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS06SHBE
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS06SHBE.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>EKT
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Shuman, Bryan , Huang, Yongsong , Newby, Paige , Wang, Yi
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>25
+<p style="margin-left: 10px"><strong>pubYear: </strong>2006
+<p style="margin-left: 10px"><strong>title: </strong>Compound-specific isotopic analyses track changes in seasonal precipitation regimes in the Northeastern United States at ca 8200calyrBP
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2006.02.021
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>42.505
+<p style="margin-left: 0px"><strong>longitude: </strong>-73.319
+<p style="margin-left: 0px"><strong>siteName: </strong>Berry Pond
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>dD</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS06SHBE01B
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>terrestrial biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Given the lack of correlation between dDlw and pollen- inferred mean July temperatures (Fig. 6), the downcore dDlw changes likely represent either a change in the ratio of soil water and precipitation utilized by the vegetation and/ or a change in source and pathway of regional precipita- tion. The dDlw data may indicate a heavy reliance of terrestrial plants on cool-season derived soil moisture from 11,000?8000 cal yr BP when conditions were dry. Growing- season precipitation may have been too low to provide sufficient water to the plants. An alternative and not mutually exclusive interpretation is that growing-season precipitation was not enriched in deuterium from 11,000?8000 cal yr BP because the presence of high pressure over the Laurentide ice sheet prevented the northward advection of humid, sub-tropical airmasses that are important for summer precipitation today. Both interpre- tations are consistent with Shuman and Donnelly?s (2006) interpretation that low lake levels prior to ca 8200 cal yr BP resulted from low summer precipitation rates and a high ratio of winter to summer precipitation.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>depends
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>depends
+<p style="margin-left: 20px"><strong>variable: </strong>circulation changes caused by ice sheet topography. Precipitation seasonality.
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Given the lack of correlation between dDlw and pollen- inferred mean July temperatures (Fig. 6), the downcore dDlw changes likely represent either a change in the ratio of soil water and precipitation utilized by the vegetation and/ or a change in source and pathway of regional precipita- tion. The dDlw data may indicate a heavy reliance of terrestrial plants on cool-season derived soil moisture from 11,000?8000 cal yr BP when conditions were dry. Growing- season precipitation may have been too low to provide sufficient water to the plants. An alternative and not mutually exclusive interpretation is that growing-season precipitation was not enriched in deuterium from 11,000?8000 cal yr BP because the presence of high pressure over the Laurentide ice sheet prevented the northward advection of humid, sub-tropical airmasses that are important for summer precipitation today. Both interpre- tations are consistent with Shuman and Donnelly?s (2006) interpretation that low lake levels prior to ca 8200 cal yr BP resulted from low summer precipitation rates and a high ratio of winter to summer precipitation.
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>soil water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>depends on the source area and transport path to the study site
+<p style="margin-left: 20px"><strong>rank: </strong>rank depends on time period: sometimes precipitation seasonality has a greater effect, but sometimes precipitation source has a greater effect (ie, low summer precipitation would cause plants to get most of their moisture from winter snowmelt, so seasonality would be most important. Periods with high summer precipitation can be dominated by storm tracks from different regions, so source area/transport path would be most important)
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>P_isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Given the lack of correlation between dDlw and pollen- inferred mean July temperatures (Fig. 6), the downcore dDlw changes likely represent either a change in the ratio of soil water and precipitation utilized by the vegetation and/ or a change in source and pathway of regional precipita- tion. The dDlw data may indicate a heavy reliance of terrestrial plants on cool-season derived soil moisture from 11,000?8000 cal yr BP when conditions were dry. Growing- season precipitation may have been too low to provide sufficient water to the plants. An alternative and not mutually exclusive interpretation is that growing-season precipitation was not enriched in deuterium from 11,000?8000 cal yr BP because the presence of high pressure over the Laurentide ice sheet prevented the northward advection of humid, sub-tropical airmasses that are important for summer precipitation today. Both interpre- tations are consistent with Shuman and Donnelly?s (2006) interpretation that low lake levels prior to ca 8200 cal yr BP resulted from low summer precipitation rates and a high ratio of winter to summer precipitation.
+<p style="margin-left: 20px"><strong>direction: </strong>depends on which season provides source moisture for plants
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>depends on which season provides source moisture for plants
+<p style="margin-left: 20px"><strong>rank: </strong>rank depends on time period: sometimes precipitation seasonality has a greater effect, but sometimes precipitation source has a greater effect (ie, low summer precipitation would cause plants to get most of their moisture from winter snowmelt, so seasonality would be most important. Periods with high summer precipitation can be dominated by storm tracks from different regions, so source area/transport path would be most important)
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>changes depending on which season provides source moisture for plants
+<p style="margin-left: 20px"><strong>variable: </strong>precipitation seasonality
+</details>
+</details>
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 1)
+```

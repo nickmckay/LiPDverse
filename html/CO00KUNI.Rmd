@@ -90,7 +90,6 @@ Metadata {.sidebar}
 <summary>geo</summary>
 <p style="margin-left: 0px"><strong>latitude: </strong>-21.905
 <p style="margin-left: 0px"><strong>longitude: </strong>113.965
-<p style="margin-left: 0px"><strong>elevation: </strong>NA
 <p style="margin-left: 0px"><strong>siteName: </strong>Ningaloo Reef, West Australia
 </details>
 <details open>

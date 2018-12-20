@@ -159,14 +159,6 @@ Metadata {.sidebar}
 </details>
 </details>
 </details>
-<details style="margin-left: 10px">
-<summary>d18O</summary>
-<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_177
-<p style="margin-left: 10px"><strong>variableName: </strong>d18O
-<p style="margin-left: 10px"><strong>units: </strong>permil
-<p style="margin-left: 10px"><strong>description: </strong>carbonate
-<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
-</details>
 
 Row
 -----------------------------------------------------------------------
@@ -216,9 +208,4 @@ Row {.tabset .tabset-fade}
 ### d18O
 ```{r}
 plotCol(thisTS,ind = 1)
-```
-
-### d18O
-```{r}
-plotCol(thisTS,ind = 2)
 ```

@@ -1,0 +1,192 @@
+---
+title: "SP10WINZ"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+good <- which(!(varNames %in% c("year","depth","age")))
+TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+#set index number
+
+i = 439
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#SP10WINZ
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](SP10WINZ.lpd)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>speleothem
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Williams, PW
+<p style="margin-left: 10px"><strong>pubYear: </strong>2010
+<p style="margin-left: 10px"><strong>DOI: </strong>10.5038/1827-806X.39.2.5
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Williams, P.W. , King, D.N.T., Zhao, J.-X., Collerson, K.D.
+<p style="margin-left: 10px"><strong>pubYear: </strong>2005
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.epsl.2004.10.024
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-42
+<p style="margin-left: 0px"><strong>longitude: </strong>172
+<p style="margin-left: 0px"><strong>siteName: </strong>South Island Composite Record, New Zealand
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>d18O</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SP10WINZ01A_d18O_corr
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>There is a presend-day positive relationship between ?18O of precipitation and temperature of +0.35? / �C.,Calculations with dripwater d18O values and calcite d18O values,,1 to 10,lamina counting, high resolution sampling to 100 microns,temperature,,year,,,,,,rainfall amount and source,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1WNzh05-BveXAV0WvY6duO7iRR_drkRSgmosDu0BBmyU SP11BASC01A,SP11BASC,,SP11BASC01A,speleothem,,,2011,10.1016/j.gloplacha.2010.12.007,,,,,,,,,, ,,,,58.15,-4.98,,Uamg an Tartair, Scotland,,,d18OAndD13C,parts per mil,stable isotope of calcite d18O and d13C,; archiveType changed - was originally Speleothem (SP),calcite powder,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1IBH4whEog5ghSWNfzzKacdRWoinoUy_zP5EbnA3qwso SP11BEMX01A,SP11BEMX,,SP11BEMX01A,speleothem,,Bernal, JP,2011,10.1016/j.yqres.2010.09.002,,,,,,,,,, ,,,,18.18,-99.92,1030,Cueva del Diablo, Mexico,,,d18O,parts per mil,stable isotopes (d18O),; archiveType changed - was originally Speleothem (SP),carbonate powder,,changes in the rainfall amount are related to changes in the position of the ITCZ and ENSO,higher values are related to less rainfall - this can be realted to less moisture influex from the Caribbean due to a southward shift of the ITCZ in phases when high amounts of meltwater enter the cooling north Atlantic Ocean; after ~4.3 ka the connection to the north Atalatic is lost and ENSO becomes more important with warm ENSO events (El Nino) causing higher d18O,annual,negative,observed cyclicity in the record and comparability with other pelaoclimate records which vary in phase with north Atlantic changes and ENSO,poor correlation of d18O and d13C along the growth axis,groundwater d18O,50,age model,,,years,It is expected that the summer rainwater δ18O composition in southwestern Mexico is inversely proportional to the rainfall amount (Dansgaard, 1964). This is because southwestern Mexico is influenced by the same wind and climate patterns and moisture sources as Guatemala and Belize (Amador et al., 2006), where the amount effect has been observed to dominate the δ18O composition of rainfall and groundwater.,,,,,rainfall amoint,,,,,,,,,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1QIr8AX6UsjS8utPceWRGC6GVPXgAT44DFSQaTI4IsoU SP11BEMX01A_d13C,SP11BEMX,,,speleothem,,Bernal, JP,2011,10.1016/j.yqres.2010.09.002,,,,,,,,,, ,,,,18.18,-99.92,1030,Cueva del Diablo, Mexico,,,d13C,parts per mil,stable isotopes (d13C),; archiveType changed - was originally Speleothem (SP),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1QIr8AX6UsjS8utPceWRGC6GVPXgAT44DFSQaTI4IsoU SP11BOAT01A,SP11BOAT,,SP11BOAT01A,speleothem,,Boch, R,2011,10.1002/jqs.1490,,,,,,,,,, ,,,,46.95,10.55,,Klapferloch Cave, Austria,,,d18O,parts per mil,stable isotope of flowstone carbonate d18O and d13C,; archiveType changed - was originally Speleothem (SP),Four cores, 25mm in diameter and up to 50 cm long (PFU6, 7, 8, 9) from different parts of the flowstone as well as modern calcilte precipitates,,Past precipitation in the catchment,variations in paleoprecipitation amount on a multi-annual timescale (On longer timescales, however, the flowstone?s growth dynamics have to be considered),multi-annual,decrease,Annual and homogenized precipitation data of the nearby station Nauders, however, reveal good correspondence with observed C and O isotope changes on a decadal timescale, considering the age uncertainties and different temporal resolution,There is kinetic osotope fractionation: Strongly positive correlation between d13C and d18O values in the younger segments with Dd13C/Dd18O slopes of 1?1.5. The older parts of the cores are characterized by a significantly lower degree of correlation and typically lower slopes. Linear fits of d13C vs. d18O in cores PFU8 and PFU9 show comparable slopes (1?1.5) but typically lower coefficients (in particular PFU8). Modern calcite precipitates also exhibit a strongly positive correlation of C and O isotope values (R2=0.87). A comparison of the drill core d18O values with calculated modern O isotopic equilibrium values based on monitoring data reveals O isotopic compositions close to isotopic equilibrium only for the calcite d18O minima.,groundwater d18O,multi-annual (not specified),Lack of seasonal signal in stable isotopic composition + the drip-water trace element concentrations strongly suggesta that most of the water discharging into this cave has a mean residence time well in excess of one year.,,uncertainty is higher on long timescales due to flowstone?s growth dynamics,years,,,increase,,,amount of drip-water discharge,2,annual,,,,,,,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1Zdm3nqyt8MEK--qcwGGBveU2PhuJZwnwlM4KZ71LLr8 SP11LUCH01A,SP11LUCH,,SP11LUCH01A,speleothem,,Luetscher, M.,2011,10.1016/j.epsl.2010.11.042,,,,,,,,,, ,,,,46.62,8.083,,Grindelwald Glacier, Switzerland,,,d18OAndD13C,parts per mil,stable isotope of calcite d18O and d13C,; archiveType changed - was originally Speleothem (SP),calcite,,Upper Grindelwald Glacier advances/retreats,Cave air temperature through changes in cave ventilation (elevated ?18O values suggest a lower but more stable cave air temperature which is in agreement with the presence of glacier ice sealing the entrances),annual,high d18O values (+petrography info) linked to Glacier advances (see Table 1),changes in infiltration of meltwater during the summer ablation season, which entrains siliciclastic sediment widely present in alpine cave catchments (info on glacier mass balance fluctuations). Cave ventilation  patterns are likely to be modified due to opening (during retreats) or closing (following advances) of the cave entrances by the ice; locally, clastic sediments may also temporarily clog cave passages. The  associated changes in subsurface ventilation regimes will have an impact on the temperature gradients within the whole cave system (Luetscher et al., 2008).,no evidence of kinetic fractionation along the growth layers was seen in ?Hendy tests?. However, strong fractionation is associated with the oncoid-like nodules and the bacterially mediated calcite layers,groundwater d18O,the response time of the Upper Grindewald glacier to climatic forcing is ca.12 years,,,,year,,,,,,degree of cave ventilation,,,,,,,,,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1E3M7uCDWPxFRrbG6MlismKe3nTmxn7qmYWkSemsZ38s SP11SIIN01A,SP11SIIN,,SP11SIIN01A,speleothem,,Sinha, A,2011,10.1029/2011GL047713,,,,,,,,,, ,,,,18.87,81.87,,Jhumar Cave, India,,,d18O,parts per mil,stable isotope d18O,; archiveType changed - was originally Speleothem (SP),calcite powder,,Indian summer monsoon strength,more negative values of d18O are interpreted as indicative of increased monsoon precipitation,summer,negative,The JHU?1 d18O profile shows a significant inverse relationship with a regional (18�?27�N and 69�?88�E) JJAS precipitation time series (AD 1903?2005, n = 70, r = ?0.46 [?0.59; ?0.32]; Figure S4 of the auxiliary material), which reinforces the observation made in earlier studies that the d18O variations in speleothems and precipitation from this region primarily reflect changes in monsoon precipitation amount over CI,Hendy test,groundwater d18O,1.45,,,,years,,,,,,Monsoon Precipitation Strength,2,year,,,,,,,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1Za6vtOBCPGNfh2KcLOtWM1O8LXeASPz0lc_rgyMX9PQ SP11SIIN02A,SP11SIIN,,SP11SIIN02A,speleothem,,Sinha, A,2011,10.1029/2011GL047713,,,,,,,,,, ,,,,18.87,81.87,,Jhumar Cave, India,,,d18O1,parts per mil,stable isotope d18O,; archiveType changed - was originally Speleothem (SP),calcite powder,,Indian summer monsoon strength,more negative values of d18O are interpreted as indicative of increased monsoon precipitation,summer,negative,The observed amount effect for NEI as recorded in WS?B stalagmite is not observable in d18O values in pre- cipitation at the Global Network of Isotopes in Precipitation (GNIP) station in Shillong (years 1969 and 1976) or in an event?based study; Notwithstanding, the intense convective nature of monsoon precipitation in NEI, and a presence of the statistically significant inverse correlation between the WS?B stalagmite d18O and instrumental pre- cipitation data, lead us to call upon changes in monsoon precipitation amount as the primary source of d18O varia- tions"
+<p style="margin-left: 20px"><strong>coefficient: </strong>Hendy test
+<p style="margin-left: 20px"><strong>direction: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>Samples pass the Hendy test
+<p style="margin-left: 20px"><strong>fraction: </strong>0.97
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>integrationTime: </strong>average 41
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>not said, but ages were determined by TIMS or alpha-counting (info from Williams et al., 2005)
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>years
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>Samples pass the Hendy test
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>integrationTime: </strong>average 41
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>not said, but ages were determined by TIMS or alpha-counting (info from Williams et al., 2005)
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>year
+<p style="margin-left: 20px"><strong>variable: </strong>Monsoon Precipitation Strength
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d13C</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SP10WINZ01A_d13C
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+</details>
+
+Row
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d13C
+```{r}
+plotCol(thisTS,ind = 2)
+```

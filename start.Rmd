@@ -19,12 +19,10 @@ library(dygraphs)
 library(geoChronR)
 
 #read functions
-source("../functions.R")
+source("../../functions.R")
 
-#prepare LiPD data..
-# D <- readLipd("~/Dropbox/LiPD/PAGES2k/Temp_v2_1_0/")
-# TS <- extractTs(D)
-load("../temp.Rdata")
+
+load("../../temp.Rdata")
 
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
