@@ -9,7 +9,10 @@ library(lipdR)
 library(dygraphs)
 library(geoChronR)
 library(here)
+# Must have reticulate package to run python script that inserts javascript into html files.
+library(reticulate)
 source(here("functions.R"))
+
 #prepare LiPD data..
 
 project <- "iso2kv0_9_0"
@@ -90,3 +93,10 @@ for(i in 1:nrow(map.meta)){
     file.copy(from = str_c(lipdDir,fname,".lpd"),to = here("html",project))
   }
 }
+
+# To run the python script, you need python 3.5+ with the BeautifulSoup4 module
+# pip install beautifulsoup4
+# You may use a conda environment with the package, or link the path to your system python
+# use_python("/somepath/to/system/python")
+use_virtualenv("your_conda_env_name_here")
+py_run_file("add_page_stats.py")
