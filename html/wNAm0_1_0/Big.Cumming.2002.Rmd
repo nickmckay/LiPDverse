@@ -1,0 +1,268 @@
+---
+title: "Big.Cumming.2002"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 11
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Big.Cumming.2002
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Big.Cumming.2002.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Big.Cumming.2002.lpd)
+            
+
+[Download data only (csv)](Big.Cumming.2002.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/23089
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>citeKey: </strong>cumming2002persistentmillennialscale
+<p style="margin-left: 10px"><strong>journal: </strong>Proceedings of the National Academy of Sciences
+<p style="margin-left: 10px"><strong>volume: </strong>99
+<p style="margin-left: 10px"><strong>pages: </strong>16117-16121
+<p style="margin-left: 10px"><strong>pubYear: </strong>2002
+<p style="margin-left: 10px"><strong>title: </strong>Persistent millennial-scale shifts in moisture regimes in western Canada during the past six millennia
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>51.668
+<p style="margin-left: 0px"><strong>longitude: </strong>-121.45
+<p style="margin-left: 0px"><strong>elevation: </strong>1030
+<p style="margin-left: 0px"><strong>siteName: </strong>Big Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb1c847f0
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB58494e6d
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7a14145c
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>core depth
+</details>
+<details style="margin-left: 10px">
+<summary>lake_depth (m)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro030
+<p style="margin-left: 10px"><strong>variableName: </strong>lake_depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>reconstructed lake depth
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>transfer functions using diatom assemblages
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>effective
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Salinity (g/L)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4d713fb1
+<p style="margin-left: 10px"><strong>variableName: </strong>Salinity
+<p style="margin-left: 10px"><strong>units: </strong>g/L
+<p style="margin-left: 10px"><strong>description: </strong>Deviation from mean
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>P-E
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Mean_boot_salinity (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6287c949
+<p style="margin-left: 10px"><strong>variableName: </strong>Mean_boot_salinity
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>P-E
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>sambleID (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB095427ca
+<p style="margin-left: 10px"><strong>variableName: </strong>sambleID
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>numInZone (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB95135e68
+<p style="margin-left: 10px"><strong>variableName: </strong>numInZone
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### lake_depth (m)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Salinity (g/L)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### Mean_boot_salinity (unitless)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### sambleID (NA)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### numInZone (NA)
+```{r}
+plotCol(thisTS,ind = 8)
+```

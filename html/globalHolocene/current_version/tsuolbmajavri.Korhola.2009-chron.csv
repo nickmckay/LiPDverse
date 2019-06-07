@@ -1,0 +1,10 @@
+age (bp),depth (cm),depth_bot (mm),depth_top (mm),age14C (bp),age_error (1s),cal_age_range_old (bp),cal_age_range_young (bp),thickness (mm),age_type (unitless),material_dated (unitless),note (unitless),rejected_dates (unitless)
+-45,0,0,0,NA,NA,NA,NA,0,1,NA,2,NA
+NA,22,190,250,1025,75,1010,757,60,NA,1,NA,NA
+NA,49.5,410,580,2725,85,2875,2665,170,NA,1,NA,NA
+NA,73.5,590,880,3405,75,3710,3397,290,NA,1,NA,NA
+NA,96.5,860,1070,4535,90,5250,4872,210,NA,1,NA,NA
+NA,111.5,1090,1140,5680,95,6550,5779,50,NA,2,1,1
+NA,132.5,1210,1440,6110,80,6990,6642,230,NA,1,NA,NA
+NA,160.5,1430,1780,7505,105,8420,8079,350,NA,1,NA,NA
+NA,179,1590,1990,9470,200,10610,9695,400,NA,1,NA,NA

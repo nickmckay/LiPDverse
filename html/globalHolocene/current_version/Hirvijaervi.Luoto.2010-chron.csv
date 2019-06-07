@@ -1,0 +1,7 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+0,1,Core top,NA,NA,NA,Y,NA
+29,30,C14 Uncalibrated,1465,30,30,Y,Bulk
+83,84,C14 Uncalibrated,3240,130,130,Y,Conifer seed
+202,203,C14 Uncalibrated,6690,40,40,Y,Bulk
+302,303,C14 Uncalibrated,8230,50,50,Y,Bulk
+405,410,Deglaciation,11500,NA,NA,NA,NA

@@ -1,0 +1,16 @@
+depth (m),age (year bp),error (yr),reservoirage (yr),type (unitless),material (unitless)
+0.04,1910,30,700,AMS14C,Neogloboquadrina dutertrei
+0.34,2890,35,700,AMS14C,Neogloboquadrina dutertrei
+0.66,4800,35,700,AMS14C,Neogloboquadrina dutertrei
+0.96,6860,45,700,AMS14C,Neogloboquadrina dutertrei
+1.21,8420,45,700,AMS14C,Neogloboquadrina dutertrei
+1.45,9030,65,700,AMS14C,Neogloboquadrina dutertrei
+1.75,10500,60,700,AMS14C,Neogloboquadrina dutertrei
+2.05,10800,65,700,AMS14C,Neogloboquadrina dutertrei
+2.24,10850,45,700,AMS14C,Neogloboquadrina dutertrei
+2.59,11450,70,700,AMS14C,Neogloboquadrina dutertrei
+2.88,12200,50,700,AMS14C,Neogloboquadrina dutertrei
+3.22,12850,60,700,AMS14C,Neogloboquadrina dutertrei
+3.48,13300,55,700,AMS14C,Neogloboquadrina dutertrei
+3.72,13650,75,700,AMS14C,Neogloboquadrina dutertrei
+4.44,15200,90,700,AMS14C,Neogloboquadrina dutertrei

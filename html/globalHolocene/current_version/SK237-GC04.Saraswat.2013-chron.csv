@@ -1,0 +1,10 @@
+depth (cm),age (yr BP),age14C (yr14C BP),age14Cuncertainty (yr14C BP),fractionModern (unitless),fractionModernUncertainty (unitless),delta13C (permil),delta13Cuncertainty (permil),thickness (cm),labID (unitless),materialDated (unitless),activity (Bq g-1),activityUncertainty (Bq g-1),supportedActivity (unitless),x210PbModel (unitless),ageUncertainty (yr BP),reservoirAge14C (yr14C BP),reservoirAge14CUncertainty (yr14C BP),useInAgeModel (unitless),notes (unitless)
+0.5,115,620,25,NA,NA,NA,NA,1,UGAMS5378,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+25.5,2260,2730,30,NA,NA,NA,NA,1,UGAMS5739,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+49.5,6670,6360,30,NA,NA,NA,NA,1,UGAMS5740,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+85.5,10670,9930,30,NA,NA,NA,NA,1,UGAMS5935,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+99.5,10620,9890,30,NA,NA,NA,NA,1,UGAMS5741,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+144.5,14440,12930,30,NA,NA,NA,NA,1,UGAMS5936,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+156.5,16390,13860,40,NA,NA,NA,NA,1,UGAMS5937,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+188.5,18573,15820,40,NA,NA,NA,NA,1,UGAMS7195,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0
+286.5,31600,28090,80,NA,NA,NA,NA,1,UGAMS5938,Planktonic foram (138+-68 yr reservoir age),NA,NA,NA,NA,NA,138,68,NA,NB thickness is not reported it is assumed it is 1 cm sections Calib6.0

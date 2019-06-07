@@ -1,0 +1,762 @@
+---
+title: "PP10-07.Mary.2016"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 699
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#PP10-07.Mary.2016
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](PP10-07.Mary.2016.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/PP10-07.Mary.2016.lpd)
+            
+
+[Download paleoData only (csv)](PP10-07.Mary.2016.csv)
+            
+
+[Download chronData only (csv)](PP10-07.Mary.2016-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://doi.org/10.1594/PANGAEA.872166
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Mary, Yannick"), list(name = "Eynaud, Frederique"), list(name = "Colin, Christophe"), list(name = "Rossignol, Linda"), list(name = "Brocheray, Sandra"), list(name = "Mojtahid, Meryem"), list(name = "Garcia, Jennifer"), list(name = "Peral, Marion"), list(name = "Howa, Helene"), list(name = "Zaragosi, Sebastien"), list(name = "Cremer, Michel"))
+<p style="margin-left: 10px"><strong>citeKey: </strong>needs0needsatitle
+<p style="margin-left: 10px"><strong>journal: </strong>Climate of the Past Discussions
+<p style="margin-left: 10px"><strong>title: </strong>Changes in Holocene meridional circulation and poleward Atlantic flow: the Bay of Biscay as a nodal point
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>43.677
+<p style="margin-left: 0px"><strong>longitude: </strong>-2.228
+<p style="margin-left: 0px"><strong>elevation: </strong>-1472
+<p style="margin-left: 0px"><strong>siteName: </strong>PP10-07
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (m)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf6147b58
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>epth, top/min [m] (Depth top) * PI: Eynaud, Fr<c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><a2><e2><82><ac> <c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><a2><e2><80><9e><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac> <c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><82><ac><c5><a1><c3><82><c2><ac><c3><83><c2><a2><c3><a2><e2><82><ac><c5><be><c3><82><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><82><ac><c5><a1><c3><82><c2><ac> <c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><9a><c3><82><c2><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><a1><c3><83><e2><80><9a><c3><82><c2><ac><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><be><c3><83><e2><80><9a><c3><82><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><a2><e2><82><ac> <c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><a2><e2><80><9e><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><9a><c3><82><c2><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><a1><c3><83><e2><80><9a><c3><82><c2><ac><c3><83><c6><92><c3><a2><e2><82><ac><c2><a6><c3><83><e2><80><9a><c3><82><c2><a1><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><82><ac><c5><a1><c3><82><c2><ac><c3><83><e2><80><a6><c3><82><c2><a1><c3><83><c6><92><c3><86><e2><80><99><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><a1><c3><83><c6><92><c3><a2><e2><82><ac><c5><a1><c3><83><e2><80><9a><c3><82><c2><a9>d<c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><a2><e2><82><ac> <c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><a2><e2><80><9e><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac> <c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><82><ac><c5><a1><c3><82><c2><ac><c3><83><c2><a2><c3><a2><e2><82><ac><c5><be><c3><82><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><82><ac><c5><a1><c3><82><c2><ac> <c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><9a><c3><82><c2><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><a1><c3><83><e2><80><9a><c3><82><c2><ac><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><be><c3><83><e2><80><9a><c3><82><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><a2><e2><82><ac> <c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><a2><e2><80><9e><c2><a2><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><9a><c3><82><c2><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><a1><c3><83><e2><80><9a><c3><82><c2><ac><c3><83><c6><92><c3><a2><e2><82><ac><c2><a6><c3><83><e2><80><9a><c3><82><c2><a1><c3><83><c6><92><c3><86><e2><80><99><c3><83><e2><80><a0><c3><a2><e2><82><ac><e2><84><a2><c3><83><c6><92><c3><82><c2><a2><c3><83><c2><a2><c3><a2><e2><82><ac><c5><a1><c3><82><c2><ac><c3><83><e2><80><a6><c3><82><c2><a1><c3><83><c6><92><c3><86><e2><80><99><c3><83><c2><a2><c3><a2><e2><80><9a><c2><ac><c3><85><c2><a1><c3><83><c6><92><c3><a2><e2><82><ac><c5><a1><c3><83><e2><80><9a><c3><82><c2><a9>rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RqRzRK4ws5V
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RS86tMjluJq
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>ReT2fHmIr6U
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD24407fc4
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, annual mean [   C] (SST (1-12)) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa0c55c63
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, annual mean, minimum [   C] (SST (1-12) min) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Lower SST values found in the set of analogs ANNUAL_i
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Min
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD73260700
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, annual mean, maximum [   C] (SST (1-12) max) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Higher SST values found in the set of analogs ANNUAL_s
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Max
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3393775f
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, January-March [   C] (SST (1-3)) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>JFM
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2dc804fb
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, January-March, minimum [   C] (SST (1-3) min) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Lower SST values found in the set of analogs JFM_i
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>JFM
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Min
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3927c717
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, January-March, maximum [   C] (SST (1-3) max) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Higher SST values found in the set of analogs JFM_s
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>JFM
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Max
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>SST_amj (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD92d845a8
+<p style="margin-left: 10px"><strong>variableName: </strong>SST_amj
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, April-June [   C] (SST (4-6)) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>AMJ
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD75707e85
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, April-June, minimum [   C] (SST (4-6) min) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Lower SST values found in the set of analogs AMJ_i
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>AMJ
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Min
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc2177ba7
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, April-June, maximum [   C] (SST (4-6) max) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Higher SST values found in the set of analogs AMJ_s
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>AMJ
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Max
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>SST_jas (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3267fe5d
+<p style="margin-left: 10px"><strong>variableName: </strong>SST_jas
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, July-September [   C] (SST (7-9)) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7 8 9
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>7 8 2009
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD77dc7067
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, July-September, minimum [   C] (SST (7-9) min) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Lower SST values found in the set of analogs JAS_i
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7 8 9
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>7 8 2009
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Min
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD92760267
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, July-September, maximum [   C] (SST (7-9) max) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Higher SST values found in the set of analogs JAS_s
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7 8 9
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>7 8 2009
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Max
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5d932ca5
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, October-December [   C] (SST (10-12)) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>OND
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD0777df63
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, October-December, minimum [   C] (SST (10-12) min) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Lower SST values found in the set of analogs OND_i
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>OND
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Min
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfae9a609
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Sea surface temperature, October-December, maximum [   C] (SST (10-12) max) * PI: Eynaud, Fr    d    rique (https://orcid.org/0000-0003-1283-7425, f.eynaud@epoc.u-bordeaux1.fr) * METHOD: Modern analog technique (MAT) * COMMENT: Higher SST values found in the set of analogs OND_s
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>OND
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST Max
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDba12b864
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+</details>
+<details style="margin-left: 10px">
+<summary>dummy2 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3f627076
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy2
+</details>
+<details style="margin-left: 10px">
+<summary>dummy3 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb27918c2
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy3
+</details>
+<details style="margin-left: 10px">
+<summary>dummy4 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDad806f2c
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy4
+</details>
+<details style="margin-left: 10px">
+<summary>dummy5 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6476e614
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy5
+</details>
+<details style="margin-left: 10px">
+<summary>dummy6 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2c9aa741
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy6
+</details>
+<details style="margin-left: 10px">
+<summary>dummy7 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd597a44a
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy7
+</details>
+<details style="margin-left: 10px">
+<summary>dummy8 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf4dedb4f
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy8
+</details>
+<details style="margin-left: 10px">
+<summary>dummy9 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDddc8de0b
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy9
+</details>
+<details style="margin-left: 10px">
+<summary>dummy10 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD79fdf545
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy10
+</details>
+<details style="margin-left: 10px">
+<summary>dummy11 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD574eac32
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy11
+</details>
+<details style="margin-left: 10px">
+<summary>dummy12 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD0996028c
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy12
+</details>
+<details style="margin-left: 10px">
+<summary>dummy13 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbec75273
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy13
+</details>
+<details style="margin-left: 10px">
+<summary>dummy14 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2c7b177d
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy14
+</details>
+<details style="margin-left: 10px">
+<summary>dummy15 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe561a3d6
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy15
+</details>
+<details style="margin-left: 10px">
+<summary>dummy16 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD731cc7d9
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy16
+</details>
+<details style="margin-left: 10px">
+<summary>dummy17 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3025bc2c
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy17
+</details>
+<details style="margin-left: 10px">
+<summary>dummy18 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2b16c7f5
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy18
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### SST_amj (degC)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### SST_jas (degC)
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### dummy2 ()
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### dummy3 ()
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### dummy4 ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### dummy5 ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### dummy6 ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### dummy7 ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### dummy8 ()
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### dummy9 ()
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### dummy10 ()
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### dummy11 ()
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### dummy12 ()
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### dummy13 ()
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### dummy14 ()
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### dummy15 ()
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### dummy16 ()
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### dummy17 ()
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### dummy18 ()
+```{r}
+plotCol(chronTS,ind = 18)
+```

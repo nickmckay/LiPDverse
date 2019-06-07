@@ -1,0 +1,18 @@
+depth (cm) [1-1],depth-range (cm) [1-1],210Pb (dpm/g) [1-1],error (dpm/g) [1-1],depth (cm) [1-2],material (NA) [1-2],dry-weight (g) [1-2],conventional-age (yr BP) [1-2],measured-age (yr BP) [1-2],error (yr) [1-2],13C/12C_ratio (ratio) [1-2],deltaYr (yr) [1-2],correction (yr) [1-2],calander (yr BP) [1-2]
+0.5,0-1 cm,7.559,0.577,66,Yoldia myalis valve,0.029,1530,1140,40,-1,400,800,700
+1.5,1-2 cm,7.322,0.558,290,Buccinum sp. shell,0.713,3000,2590,40,0,400,800,2250
+2.5,2-3 cm,6.334,0.483,360,shell fragments,0.038,3540,3130,40,0.2,400,800,2930
+3.5,3-4 cm,3.829,0.292,550,shell fragments,0.043,4560,4220,40,-4,400,800,4240
+4.5,4-5 cm,3.602,0.275,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5.5,5-6 cm,3.348,0.255,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+6.5,6-7 cm,3.962,0.302,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+7.5,7-8 cm,3.955,0.302,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+8.5,8-9 cm,3.646,0.278,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+9.5,9-10 cm,3.797,0.29,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10.5,10-11 cm,3.249,0.248,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+11.5,11-12 cm,2.741,0.209,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+12.5,12-13 cm,2.416,0.184,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+13.5,13-14 cm,2.814,0.215,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+14.5,14-15 cm,2.294,0.175,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+17.5,17-18 cm,2.306,0.176,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20.5,20-21 cm,2.354,0.18,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA

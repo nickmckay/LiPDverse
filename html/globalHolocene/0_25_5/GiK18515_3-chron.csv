@@ -1,0 +1,23 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),measurementN (),labID (),age14C (kyr),age14CUncertainty (kyr),notes ()
+97.5,14C,planktonic foraminifera calcite,mixed,1000,KIA 47048 3a,3.065,0.03,wood used to determine reservoir age
+187.5,14C,wood,NA,NA,KIA 48078,4.945,0.055,wood used to determine reservoir age
+305.5,14C,wood,NA,NA,KIA 48079,7.33,0.04,wood used to determine reservoir age
+395.5,14C,wood,NA,NA,KIA 48080,8.67,0.17,wood used to determine reservoir age
+395.5,14C,planktonic foraminifera calcite,G. ruber,1000,KIA 48403,8.775,0.06,wood used to determine reservoir age
+461.5,14C,planktonic foraminifera calcite,G. ruber and G. sacculifer,1000,KIA 50367,9.98,0.055,wood used to determine reservoir age
+505.5,14C,wood,NA,NA,KIA 48081,10.3,0.045,wood used to determine reservoir age
+505.5,14C,planktonic foraminifera calcite,G. ruber,1000,KIA 50361,10.905,0.05,wood used to determine reservoir age
+523.5,14C,planktonic foraminifera calcite,G. ruber and G. sacculifer,1000,KIA 50362,11.605,0.06,wood used to determine reservoir age
+537.5,14C,planktonic foraminifera calcite,G. ruber,1000,KIA 50363,12.725,0.06,wood used to determine reservoir age
+557.5,14C,planktonic foraminifera calcite,G. ruber,1000,KIA 50364,13.57,0.07,wood used to determine reservoir age
+595.5,14C,wood,NA,NA,KIA 48082,13.85,0.08,wood used to determine reservoir age
+595.5,14C,planktonic foraminifera calcite,G. ruber,1000,KIA 50365,14.5,0.07,wood used to determine reservoir age
+639.5,14C,planktonic foraminifera calcite,G. ruber and G. sacculifer,1000,KIA 50366,15.65,0.08,wood used to determine reservoir age
+695.5,14C,wood,NA,NA,KIA 48083,14.69,0.25,wood used to determine reservoir age
+695.5,14C,planktonic foraminifera calcite,G. ruber and G. sacculifer,1000,KIA 50397,15.86,0.09,wood used to determine reservoir age
+753.5,14C,planktonic foraminifera calcite,mixed,NA,KIA 50398,16.87,0.1,wood used to determine reservoir age
+855.5,14C,planktonic foraminifera calcite,G. ruber and G. sacculifer,1000,KIA 50383,18.24,0.11,wood used to determine reservoir age
+975.5,14C,wood,NA,NA,KIA 49141,19.36,0.17,wood used to determine reservoir age
+975.5,14C,planktonic foraminifera calcite,mixed,1000,KIA 50399,20.11,0.14,wood used to determine reservoir age
+1055.5,14C,planktonic foraminifera calcite,G. ruber and G. sacculifer,1000,KIA 50385,21.19,0.15,wood used to determine reservoir age
+1175.5,14C,planktonic foraminifera calcite,mixed,1000,KIA 50384,22.52,0.18,wood used to determine reservoir age

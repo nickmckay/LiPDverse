@@ -1,0 +1,22 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),reservoirAgeUncertainty (kyr)
+0.5,14C,planktic foraminifera,mixed,ANUA 29624,2.6,0.19,1.06,0.07
+25,14C,planktic foraminifera,G. bulloides,ANUA 29003,4.01,0.18,1.06,0.07
+40,14C,planktic foraminifera,mixed,ANUA 29625,4.045,0.185,1.06,0.07
+50,14C,planktic foraminifera,mixed,ANUA 29004,5.155,0.18,1.06,0.07
+75,14C,planktic foraminifera,mixed,ANUA 29626,7.155,0.195,1.06,0.07
+85,14C,planktic foraminifera,mixed,ANUA 29627,7.6,0.195,1.06,0.07
+95,14C,planktic foraminifera,mixed,ANUA 29630,9.72,0.22,1.06,0.07
+100,14C,planktic foraminifera,mixed,ANUA 29631,10.19,0.215,1.06,0.07
+140,14C,planktic foraminifera,mixed,ANUA 31203,12.73,0.205,0.461,0.029
+150,14C,planktic foraminifera,mixed,ANUA 29005,13.62,0.22,0.461,0.029
+165,14C,planktic foraminifera,mixed,ANUA 29628,15.04,0.235,0.461,0.029
+175,14C,planktic foraminifera,mixed,ANUA 29006,16.81,0.24,0.461,0.029
+175,14C,planktic foraminifera,mixed,ANUA 30504,18.24,0.23,0.461,0.029
+175,14C,benthic foraminifera,mixed,ANUA 30503,17.8,0.21,0.461,0.029
+200,14C,planktic foraminifera,mixed,ANUA 29007,15.84,0.225,0.461,0.029
+240,14C,planktic foraminifera,mixed,ANUA 29008,17.51,0.24,0.461,0.029
+260,14C,planktic foraminifera,mixed,ANUA 29629,18.01,0.245,0.461,0.029
+280,14C,planktic foraminifera,mixed,ANUA 29009,18.63,0.26,0.461,0.029
+300,14C,planktic foraminifera,mixed,ANUA 31204,19.12,0.215,0.461,0.029
+360,14C,planktic foraminifera,mixed,ANUA 31205,21.42,0.38,0.461,0.029
+430,14C,planktic foraminifera,mixed,ANUA 29010,30.85,0.5,0.461,0.029

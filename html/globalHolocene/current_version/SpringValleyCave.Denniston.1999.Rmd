@@ -1,0 +1,350 @@
+---
+title: "SpringValleyCave.Denniston.1999"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 775
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#SpringValleyCave.Denniston.1999
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](SpringValleyCave.Denniston.1999.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/SpringValleyCave.Denniston.1999.lpd)
+            
+
+[Download paleoData only (csv)](SpringValleyCave.Denniston.1999.csv)
+            
+
+[Download chronData only (csv)](SpringValleyCave.Denniston.1999-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Speleothem
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Denniston, Rhawn F."), list(name = "Gonzalez, Luis A."), list(name = "Baker, Richard G."), list(name = "Asmerom, Yemane"), list(name = "Reagan, Mark K."), list(name = "Edwards, R. Lawrence"), list(name = "Alexander, E. Calvin"))
+<p style="margin-left: 10px"><strong>citeKey: </strong>denniston1999speleothemevidenceforholo
+<p style="margin-left: 10px"><strong>journal: </strong>The Holocene
+<p style="margin-left: 10px"><strong>volume: </strong>9
+<p style="margin-left: 10px"><strong>title: </strong>Speleothem evidence for Holocene fluctuations of the prairie-forest                 ecotone, north-central USA
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>43.74
+<p style="margin-left: 0px"><strong>longitude: </strong>-92.41
+<p style="margin-left: 0px"><strong>elevation: </strong>394
+<p style="margin-left: 0px"><strong>siteName: </strong>SpringValleyCave
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RLXH3NsZhxo
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RR1hztnLyCJ
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (PDB)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD257214a7
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>PDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (m)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHd7b87380
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD8c445d13
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>CoreID ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD007e999e
+<p style="margin-left: 10px"><strong>variableName: </strong>CoreID
+</details>
+<details style="margin-left: 10px">
+<summary>DistanceFromBottom_cm_ ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3e0c0793
+<p style="margin-left: 10px"><strong>variableName: </strong>DistanceFromBottom_cm_
+</details>
+<details style="margin-left: 10px">
+<summary>x238U_ng_g_ ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc329ea3e
+<p style="margin-left: 10px"><strong>variableName: </strong>x238U_ng_g_
+</details>
+<details style="margin-left: 10px">
+<summary>x232Th_pg_g_ ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD603ed770
+<p style="margin-left: 10px"><strong>variableName: </strong>x232Th_pg_g_
+</details>
+<details style="margin-left: 10px">
+<summary>d234U_measured_ ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD23d65457
+<p style="margin-left: 10px"><strong>variableName: </strong>d234U_measured_
+</details>
+<details style="margin-left: 10px">
+<summary>d234UError_measured_ ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD37aa6f4b
+<p style="margin-left: 10px"><strong>variableName: </strong>d234UError_measured_
+</details>
+<details style="margin-left: 10px">
+<summary>x230Th_238UActivity ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6d6b5db7
+<p style="margin-left: 10px"><strong>variableName: </strong>x230Th_238UActivity
+</details>
+<details style="margin-left: 10px">
+<summary>x230Th_238UErrorActivity ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD66761795
+<p style="margin-left: 10px"><strong>variableName: </strong>x230Th_238UErrorActivity
+</details>
+<details style="margin-left: 10px">
+<summary>x230th_232ThAtomic ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD61840e3a
+<p style="margin-left: 10px"><strong>variableName: </strong>x230th_232ThAtomic
+</details>
+<details style="margin-left: 10px">
+<summary>x230th_232ThErrorAtomic ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2f8eb895
+<p style="margin-left: 10px"><strong>variableName: </strong>x230th_232ThErrorAtomic
+</details>
+<details style="margin-left: 10px">
+<summary>error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD55be0103
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>Comments ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD074eb817
+<p style="margin-left: 10px"><strong>variableName: </strong>Comments
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d13C (PDB)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d18O (m)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age (yr BP)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### CoreID ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### DistanceFromBottom_cm_ ()
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### x238U_ng_g_ ()
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### x232Th_pg_g_ ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### d234U_measured_ ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### d234UError_measured_ ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### x230Th_238UActivity ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### x230Th_238UErrorActivity ()
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### x230th_232ThAtomic ()
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### x230th_232ThErrorAtomic ()
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### error (yr)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### Comments ()
+```{r}
+plotCol(chronTS,ind = 13)
+```

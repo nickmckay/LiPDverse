@@ -1,0 +1,16 @@
+depth (m),age (yr bp),error (yr),type (unitless),material (unitless)
+0.215,1820,95,AMS14C,G. bulloides
+0.315,2950,79,AMS14C,G. bulloides
+0.475,5070,68,AMS14C,G. bulloides
+0.595,6130,79,AMS14C,G. bulloides
+0.775,8195,71,AMS14C,G. bulloides
+0.945,8935,71,AMS14C,G. bulloides
+1.045,9715,68,AMS14C,G. bulloides
+1.285,10040,79,AMS14C,G. bulloides
+1.485,11040,103,AMS14C,G. bulloides
+1.725,10990,112,AMS14C,G. bulloides
+2.025,13105,71,AMS14C,G. bulloides
+2.205,13240,158,AMS14C,G. bulloides
+2.525,14550,236,AMS14C,G. bulloides
+2.765,15920,314,AMS14C,G. bulloides
+3.405,18430,314,AMS14C,G. bulloides

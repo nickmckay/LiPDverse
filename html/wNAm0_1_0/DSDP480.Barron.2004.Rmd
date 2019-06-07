@@ -1,0 +1,729 @@
+---
+title: "DSDP480.Barron.2004"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 23
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#DSDP480.Barron.2004
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](DSDP480.Barron.2004.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/DSDP480.Barron.2004.lpd)
+            
+
+[Download data only (csv)](DSDP480.Barron.2004.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>marine sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/5855
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Marine Micropaleontology
+<p style="margin-left: 10px"><strong>volume: </strong>50
+<p style="margin-left: 10px"><strong>pages: </strong>185-207
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>High resolution paleoceanography of the Guaymas Basin, Gulf of California, during the past 15 000 years
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>27.9
+<p style="margin-left: 0px"><strong>longitude: </strong>-111.65
+<p style="margin-left: 0px"><strong>elevation: </strong>-655
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB801f8b00
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb8905979
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf85198b8
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>Actinocyclus_curvatulus (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2475c83d
+<p style="margin-left: 10px"><strong>variableName: </strong>Actinocyclus_curvatulus
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>cold water
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>upwelling
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Roperia_tesselata (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD09a8f867
+<p style="margin-left: 10px"><strong>variableName: </strong>Roperia_tesselata
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+<p style="margin-left: 20px"><strong>variable: </strong>upwelling
+<p style="margin-left: 20px"><strong>variableDetail: </strong>upwelling
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc50b4e08
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Actinocyclus_octonarius (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD079db6d8
+<p style="margin-left: 10px"><strong>variableName: </strong>Actinocyclus_octonarius
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Actinoptychus_spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2714616c
+<p style="margin-left: 10px"><strong>variableName: </strong>Actinoptychus_spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Azpeitia_nodulifer (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDee5ae93d
+<p style="margin-left: 10px"><strong>variableName: </strong>Azpeitia_nodulifer
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Coscinodiscus_spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf547b905
+<p style="margin-left: 10px"><strong>variableName: </strong>Coscinodiscus_spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Cyclotella_spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD22b774d2
+<p style="margin-left: 10px"><strong>variableName: </strong>Cyclotella_spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Stephanopyxis_spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1d428358
+<p style="margin-left: 10px"><strong>variableName: </strong>Stephanopyxis_spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Number_counted (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDdd024e46
+<p style="margin-left: 10px"><strong>variableName: </strong>Number_counted
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfe97db44
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB02bdf54d
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB05e8377e
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd4b2585a
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Dictyocha_acueata (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDdedcba9a
+<p style="margin-left: 10px"><strong>variableName: </strong>Dictyocha_acueata
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>D_aff_D_aculeata (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD57eac7f0
+<p style="margin-left: 10px"><strong>variableName: </strong>D_aff_D_aculeata
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>D_aspinosa (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD84323569
+<p style="margin-left: 10px"><strong>variableName: </strong>D_aspinosa
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>D_calida (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD67b4a07c
+<p style="margin-left: 10px"><strong>variableName: </strong>D_calida
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>D_calida_ampliata (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD79bab6ef
+<p style="margin-left: 10px"><strong>variableName: </strong>D_calida_ampliata
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>D_perlaevis (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD07be0e72
+<p style="margin-left: 10px"><strong>variableName: </strong>D_perlaevis
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>oligotrophic, warm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>D_stapedia (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD54035ff8
+<p style="margin-left: 10px"><strong>variableName: </strong>D_stapedia
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>subtropical
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Ds_speculum (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9bff0e41
+<p style="margin-left: 10px"><strong>variableName: </strong>Ds_speculum
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>cold water, california current
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Octactis_pulchra_(lrg) (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDee4b6a0d
+<p style="margin-left: 10px"><strong>variableName: </strong>Octactis_pulchra_(lrg)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>O_pulchra_(med) (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc4d52a33
+<p style="margin-left: 10px"><strong>variableName: </strong>O_pulchra_(med)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>O_pulchra_(small) (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6b75a5f1
+<p style="margin-left: 10px"><strong>variableName: </strong>O_pulchra_(small)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>O_pulchra_(thick) (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDee007ba7
+<p style="margin-left: 10px"><strong>variableName: </strong>O_pulchra_(thick)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Numbe_counted (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD57ee54a5
+<p style="margin-left: 10px"><strong>variableName: </strong>Numbe_counted
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf1668c08
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB01528b9d
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB77650183
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>BSI (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3a4d6b46
+<p style="margin-left: 10px"><strong>variableName: </strong>BSI
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>description: </strong>production
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+<p style="margin-left: 20px"><strong>variable: </strong>upwelling
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDdb35ffcd
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%Al (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD028a26ef
+<p style="margin-left: 10px"><strong>variableName: </strong>%Al
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%Si (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb1734732
+<p style="margin-left: 10px"><strong>variableName: </strong>%Si
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%Fe (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD73f66f5e
+<p style="margin-left: 10px"><strong>variableName: </strong>%Fe
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%Ti (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD60b72d70
+<p style="margin-left: 10px"><strong>variableName: </strong>%Ti
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%Mg (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe6dd0dd1
+<p style="margin-left: 10px"><strong>variableName: </strong>%Mg
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%K (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf7e74c93
+<p style="margin-left: 10px"><strong>variableName: </strong>%K
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%P (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD61f8f3a7
+<p style="margin-left: 10px"><strong>variableName: </strong>%P
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Ba (ppm) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD4d416388
+<p style="margin-left: 10px"><strong>variableName: </strong>Ba (ppm)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Sr (ppm) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDeff87f79
+<p style="margin-left: 10px"><strong>variableName: </strong>Sr (ppm)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% Total C (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD25b7279a
+<p style="margin-left: 10px"><strong>variableName: </strong>% Total C
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%TIC (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa42f7341
+<p style="margin-left: 10px"><strong>variableName: </strong>%TIC
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%TOC (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDaf2ace86
+<p style="margin-left: 10px"><strong>variableName: </strong>%TOC
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>%CaCO3 (%) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb7754b0a
+<p style="margin-left: 10px"><strong>variableName: </strong>%CaCO3
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>description: </strong>tropical, oligotrophic
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Actinocyclus_curvatulus (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### Roperia_tesselata (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### CAL (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Actinocyclus_octonarius (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### Actinoptychus_spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### Azpeitia_nodulifer (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### Coscinodiscus_spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### Cyclotella_spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### Stephanopyxis_spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### Number_counted (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### CAL (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Dictyocha_acueata (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### D_aff_D_aculeata (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### D_aspinosa (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### D_calida (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### D_calida_ampliata (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### D_perlaevis (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### D_stapedia (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### Ds_speculum (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+### Octactis_pulchra_(lrg) (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 26)
+```
+
+### O_pulchra_(med) (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 27)
+```
+
+### O_pulchra_(small) (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 28)
+```
+
+### O_pulchra_(thick) (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 29)
+```
+
+### Numbe_counted (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 30)
+```
+
+### BSI (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 48)
+```
+
+### CAL (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 31)
+```
+
+### %Al (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 35)
+```
+
+### %Si (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 36)
+```
+
+### %Fe (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 37)
+```
+
+### %Ti (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 38)
+```
+
+### %Mg (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 39)
+```
+
+### %K (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 40)
+```
+
+### %P (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 41)
+```
+
+### Ba (ppm) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 42)
+```
+
+### Sr (ppm) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 43)
+```
+
+### % Total C (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 44)
+```
+
+### %TIC (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 45)
+```
+
+### %TOC (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 46)
+```
+
+### %CaCO3 (%) [3-1]
+```{r}
+plotCol(thisTS,ind = 47)
+```

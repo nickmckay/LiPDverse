@@ -1,0 +1,8 @@
+depth (cm),age14C (bp),age_error (1_s),deltaR (years),deltaR_error (years),age_type (),core_name (),lab_id (),material_dated (),original_reference (),rejected_dates (),note ()
+13,1575,65.8,44,48,1,2,2,4,1,NA,NA
+125.5,6210,73,44,48,1,2,1,1,1,NA,NA
+161,8250,76.8,44,48,1,2,3,3,1,NA,NA
+324,9800,76.8,44,48,1,2,6,2,1,NA,NA
+22.14,2185,69.3,44,48,1,1,4,2,1,NA,1
+102.5,4990,76.8,44,48,1,1,5,2,1,NA,1
+176,9735,129.2,44,48,1,1,7,5,1,1,1

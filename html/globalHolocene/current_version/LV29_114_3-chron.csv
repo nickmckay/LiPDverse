@@ -1,0 +1,16 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr)
+7.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,OS-104797,1.73,0.035,0.9
+102.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,OS-104961,5.74,0.05,0.9
+162.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,OS-88042,8.32,0.04,0.9
+197.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,KIA30864,9.63,0.05,0.9
+197.5,14C,benthic foraminifera calcite,Uvigerina peregrina,OS-104963,10.45,0.07,NA
+232.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,KIA30863,10.465,0.05,0.9
+232.5,14C,benthic foraminifera calcite,Uvigerina peregrina,OS-104964,11.2,0.075,NA
+272.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,KIA30867,12.29,0.055,0.9
+272.5,14C,benthic foraminifera calcite,Uvigerina peregrina,OS-104796,12.9,0.085,NA
+292.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,KIA30865,13.18,0.06,0.9
+292.5,14C,benthic foraminifera calcite,Uvigerina peregrina,OS-104965,14,0.095,NA
+317.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,KIA30868,14.4,0.08,0.9
+317.5,14C,benthic foraminifera calcite,Uvigerina peregrina,OS-105415,14.75,0.13,NA
+352.5,14C,planktic foraminifera,Neogloboquadrina pachyderma sinistral,KIA30866,15.13,0.08,0.9
+352.5,14C,benthic foraminifera calcite,Uvigerina peregrina,OS-104966,16.6,0.12,NA

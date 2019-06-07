@@ -1,0 +1,9 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,NA,Core top,-63,NA,NA,Y,NA
+70,71,C14 Uncalibrated,1040,1070,1010,Y,NA
+156,157,C14 Uncalibrated,2710,2750,2670,Y,NA
+231,232,C14 Uncalibrated,4880,4920,4840,Y,NA
+NA,NA,Tephra,7630,7680,7580,Y,Mazama tephra
+420,421,C14 Uncalibrated,8820,8860,8780,Y,NA
+542,542,C14 Uncalibrated,10520,10570,10470,Y,NA
+601.5,602,C14 Uncalibrated,12100,12160,12040,Y,NA

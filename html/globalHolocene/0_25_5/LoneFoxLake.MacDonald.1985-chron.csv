@@ -1,0 +1,7 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+52.5,Carbon-14,110439,60,1960,gyttja,Age for GSC-3669 (3960<U+00C2><U+00B1>90) is given incorrectly as 3460<U+00C2><U+00B1>90 in MacDonald and Cwynar (1985).
+102.5,Carbon-14,110440,90,3960,gyttja,NA
+202.5,Carbon-14,110441,90,6890,gyttja,NA
+302.5,Carbon-14,110442,110,8810,gyttja,NA
+345,Carbon-14,110443,100,9990,gyttja,NA
+362.5,Carbon-14,110444,140,10700,inorganic clay,NA

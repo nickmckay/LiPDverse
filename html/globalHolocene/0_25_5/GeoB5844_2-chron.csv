@@ -1,0 +1,21 @@
+depth (cm),age (kyr),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),notes ()
+0,NA,14C,planktic foraminifera calcite,G. sacculifer,KIA11088,1.015,0.035,NA
+10,NA,14C,planktic foraminifera calcite,O. universa,KIA11090,2.49,0.08,NA
+20,NA,14C,planktic foraminifera calcite,G. sacculifer,KIA11091,3.92,0.045,NA
+30,NA,14C,planktic foraminifera calcite,G. sacculifer,KIA11092,5.325,0.05,NA
+40,NA,14C,planktic foraminifera calcite,G. sacculifer,KIA11094,6.32,0.1,NA
+55,NA,14C,planktic foraminifera calcite,G. sacculifer,KIA11275,8.525,0.055,NA
+70,NA,14C,planktic foraminifera calcite,G. sacculifer,KIA11276,9.99,0.05,NA
+85,NA,14C,pteropod aragonite,Creseis spp. and Limacina spp.,KIA11277,12.03,0.055,NA
+100,NA,14C,pteropod aragonite,Creseis acicula,KIA11279,13.12,0.06,NA
+125,NA,14C,pteropod aragonite,Creseis acicula,KIA11280,14.96,0.12,NA
+150,NA,14C,pteropod aragonite,Creseis acicula,KIA11281,17.03,0.09,NA
+175,NA,14C,pteropod aragonite,Creseis acicula,KIA11283,18.58,0.1,NA
+200,NA,14C,pteropod aragonite,Creseis spp. and Limacina spp.,KIA11284,20.54,0.12,NA
+225,NA,14C,pteropod aragonite,Creseis virgula,KIA11285,22.09,0.16,NA
+250,NA,14C,pteropod aragonite,Creseis spp. and Limacina spp.,KIA11287,25.11,0.21,NA
+275,NA,14C,mixed planktic foram and pteropod,G. ruber and Creseis spp.,KIA11288,26.36,0.24,NA
+300,NA,14C,mixed planktic foram and pteropod,G. ruber and Creseis spp.,KIA11289,28.89,0.29,NA
+325,NA,14C,planktic foraminifera calcite,G. ruber,KIA11291,32.06,0.4,NA
+361,41.8,paleomag,NA,NA,NA,NA,NA,Laschamp Event
+517,66.1,paleomag,NA,NA,NA,NA,NA,Norwegian Sea Event

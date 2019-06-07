@@ -1,0 +1,373 @@
+---
+title: "Windy.Chase.2008"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 865
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Windy.Chase.2008
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Windy.Chase.2008.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Windy.Chase.2008.lpd)
+            
+
+[Download paleoData only (csv)](Windy.Chase.2008.csv)
+            
+
+[Download chronData only (csv)](Windy.Chase.2008-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Chase, Marianne"), list(name = "Bleskie, Christina"), list(name = "Walker, Ian R."), list(name = "Gavin, Daniel G."), list(name = "Hu, Feng Sheng"))
+<p style="margin-left: 10px"><strong>journal: </strong>Palaeogeography, Palaeoclimatology, Palaeoecology
+<p style="margin-left: 10px"><strong>volume: </strong>257
+<p style="margin-left: 10px"><strong>pages: </strong>244-259
+<p style="margin-left: 10px"><strong>title: </strong>Midge-inferred Holocene summer temperatures in Southeastern British Columbia, Canada
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>49.8133
+<p style="margin-left: 0px"><strong>longitude: </strong>-117.8772
+<p style="margin-left: 0px"><strong>elevation: </strong>1814
+<p style="margin-left: 0px"><strong>siteName: </strong>Windy Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3522a9a4
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4b4c0e9c
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>Tukey_bigweight_mean (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf35d2722
+<p style="margin-left: 10px"><strong>variableName: </strong>Tukey_bigweight_mean
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Method used in Chase 2008
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>sampleID (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1ec219dc
+<p style="margin-left: 10px"><strong>variableName: </strong>sampleID
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Mean consensus (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0ce93809
+<p style="margin-left: 10px"><strong>variableName: </strong>Mean consensus
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>WAINV (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc3602d14
+<p style="margin-left: 10px"><strong>variableName: </strong>WAINV
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>WAINV_total (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc6b2f588
+<p style="margin-left: 10px"><strong>variableName: </strong>WAINV_total
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>WACLS (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc324e591
+<p style="margin-left: 10px"><strong>variableName: </strong>WACLS
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>WACLS_total (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBaa348d4a
+<p style="margin-left: 10px"><strong>variableName: </strong>WACLS_total
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>WAPLS-2 (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB52052644
+<p style="margin-left: 10px"><strong>variableName: </strong>WAPLS-2
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>PLS-1 (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2425c7ef
+<p style="margin-left: 10px"><strong>variableName: </strong>PLS-1
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>PLS-2 (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb39c40ea
+<p style="margin-left: 10px"><strong>variableName: </strong>PLS-2
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4c3e6db0
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yrBP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa9877c96
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yrBP
+</details>
+<details style="margin-left: 10px">
+<summary>notes (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB541b154d
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB59b7f000
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>Material (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb0f23c4f
+<p style="margin-left: 10px"><strong>variableName: </strong>Material
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>age type (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB279ed43f
+<p style="margin-left: 10px"><strong>variableName: </strong>age type
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Tukey_bigweight_mean (degC)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### sampleID (missing)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Mean consensus (degC)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### WAINV (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### WAINV_total (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### WACLS (degC)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### WACLS_total (degC)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### WAPLS-2 (degC)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### PLS-1 (degC)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### PLS-2 (degC)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### age (yrBP)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### notes (NA)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### error (yr)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### Material (NA)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### age type (NA)
+```{r}
+plotCol(chronTS,ind = 6)
+```

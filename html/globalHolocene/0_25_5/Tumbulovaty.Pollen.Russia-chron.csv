@@ -1,0 +1,7 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+0,1,Core top,-50,-50,-50,Y,Lake cored in spring of 2000
+65,75,C14 Uncalibrated,1890,2020,1760,Y,Bulk sediment
+85,90,C14 Uncalibrated,2790,2850,2730,Y,"Betula leaves, catkin scales and bark"
+140,150,C14 Uncalibrated,6190,6320,6060,Y,Bulk sediment
+233,243,C14 Uncalibrated,8530,8700,8360,Y,Bulk sediment
+278.5,279.5,C14 Uncalibrated,9700,9825,9575,Y,"Piece of wood, depth stated as exactly 279 cm"

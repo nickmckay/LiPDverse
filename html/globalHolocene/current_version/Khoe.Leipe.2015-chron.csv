@@ -1,0 +1,24 @@
+depth (m),age (kaBP),LabID (),material (),error (ka),calibrated_age (kaBP),Reference (),age2 (kaBP),age2min (kaBP),age2max (kaBP)
+1.575,6.33,IAAA 62612,Plant fragment,0.04,7.262,Igarashi and Zharov 2011,7.255,7.16,7.36
+2.525,8.251,KIA 9557,Plant fragment,0.062,9.229,Igarashi et al. 2002,9.246,9.02,9.46
+3.025,9.42,IAAA 72344,Plant fragment,0.05,10.651,Igarashi and Zharov 2011,10.653,10.52,10.8
+3.425,9.52,IAAA 72345,Bulk TOC,0.05,10.854,Igarashi and Zharov 2011,10.887,10.58,11.18
+3.575,10.02,IAAA 72346,Plant fragment,0.05,11.514,Igarashi and Zharov 2011,11.535,11.25,11.81
+3.875,12,KIA 9558,Plant fragment,0.101,13.865,Igarashi et al. 2002,13.989,13.61,14.33
+3.95,NA,[],[],NA,15.95,Alley 2000,NA,NA,NA
+4.05,NA,[],[],NA,19.25,Alley 2000,NA,NA,NA
+4.1,NA,[],[],NA,20.3,Alley 2000,NA,NA,NA
+4.3,NA,[],[],NA,23.4,Alley 2000,NA,NA,NA
+4.325,20.05,KIA 9559,Organic mud,0.23,24.009,Igarashi et al. 2002,23.974,23.4,24.6
+4.35,NA,[],[],NA,24.1,Alley 2000,NA,NA,NA
+4.45,NA,[],[],NA,25.6,Alley 2000,NA,NA,NA
+4.65,NA,[],[],NA,29,Alley 2000,NA,NA,NA
+4.7,NA,[],[],NA,29.7,Alley 2000,NA,NA,NA
+4.75,NA,[],[],NA,30.5,Alley 2000,NA,NA,NA
+4.95,NA,[],[],NA,33.6,Alley 2000,NA,NA,NA
+5.15,NA,[],[],NA,36.4,Alley 2000,NA,NA,NA
+5.35,NA,[],[],NA,38.3,Alley 2000,NA,NA,NA
+5.6,NA,[],[],NA,39.7,Alley 2000,NA,NA,NA
+5.8,NA,[],[],NA,41.13,Alley 2000,NA,NA,NA
+5.85,NA,[],[],NA,41.6,Alley 2000,NA,NA,NA
+6.075,37.27,Beta 122027,Organic debris,0.75,42.365,Igarashi et al. 2002,42.007,41.09,42.97

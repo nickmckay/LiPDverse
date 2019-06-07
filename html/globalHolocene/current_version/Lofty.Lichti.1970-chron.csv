@@ -1,0 +1,6 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+160,Carbon-14,110434,140,3460,gyttja,date corrected for isotopic fractionation
+294,Carbon-14,110435,140,5200,gyttja,date corrected for isotopic fractionation
+440,Carbon-14,110436,150,7480,gyttja,date not corrected for isotopic fractionation
+515,Carbon-14,110437,150,9180,gyttja,date not corrected for isotopic fractionation
+551.5,Carbon-14,110438,190,11400,gyttja,date not corrected for isotopic fractionation

@@ -1,0 +1,14 @@
+depth (cm),age (yr bp),error (yr),reservoirage (yr),reservoirageerror (yr),material (unitless),type (unitless)
+7.5,1230,60,190,25,Globigerinoides ruber,AMS14C
+35,3350,100,190,25,Globigerinoides ruber,AMS14C
+55,5540,90,190,25,Globigerinoides ruber,AMS14C
+70,7850,90,190,25,Globigerinoides ruber,AMS14C
+80,8700,120,190,25,Globigerinoides ruber,AMS14C
+97.5,10580,120,190,25,Globigerinoides ruber,AMS14C
+115,11780,130,190,25,Globigerinoides ruber,AMS14C
+127.5,13060,150,190,25,Globigerinoides ruber,AMS14C
+142.5,14200,170,190,25,Globigerinoides ruber,AMS14C
+160,15880,170,190,25,Globigerinoides ruber,AMS14C
+165,16260,170,190,25,Globigerinoides ruber,AMS14C
+180,17130,180,190,25,Globigerinoides ruber,AMS14C
+197.5,20580,260,190,25,Globigerinoides ruber,AMS14C

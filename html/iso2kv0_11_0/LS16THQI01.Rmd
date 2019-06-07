@@ -1,0 +1,693 @@
+---
+title: "LS16THQI01"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 349
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS16THQI01
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS16THQI01.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/iso2kv0_11_0/LS16THQI01.lpd)
+            
+
+[Download data only (csv)](LS16THQI01.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>131
+<p style="margin-left: 10px"><strong>pages: </strong>157-167
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Changes in dominant moisture sources and the consequences for hydroclimate on the northeastern Tibetan Plateau during the past 32 kyr
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2015.11.003
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>0602412
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding2</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>0902805
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding3</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Graduate Research Fellowship
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding4</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding5</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Intercontinental Drilling Program
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>USA
+</details>
+<details style="margin-left: 10px">
+<summary>funding6</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Chinese National Science Foundation
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>China
+</details>
+<details style="margin-left: 10px">
+<summary>funding7</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>China Ministry of Science
+<p style="margin-left: 10px"><strong>grant: </strong>Lake Qinghai Drilling Program
+<p style="margin-left: 10px"><strong>country: </strong>China
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>37
+<p style="margin-left: 0px"><strong>longitude: </strong>100
+<p style="margin-left: 0px"><strong>elevation: </strong>3194
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Qinghai
+<p style="margin-left: 0px"><strong>country: </strong>China
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBca7642d0
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>age (calibrated years BP)
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBca7642d02
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>year AD
+</details>
+<details style="margin-left: 10px">
+<summary>dD C28 (per mil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBaddada01
+<p style="margin-left: 10px"><strong>variableName: </strong>dD C28
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+<p style="margin-left: 10px"><strong>description: </strong>methyl corrected mean dD C28 fatty acid
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>decrease
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>Precipitation source
+<p style="margin-left: 20px"><strong>variableDetail: </strong>East Asian Monsoon rainfall
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>When interpreted in conjunction with other proxy records for moisture and aridity, and by controlling for plant type via detailed pollen stratigraphy and Îµapp data for modern plants, d2Hwax can be used to infer changes in moisture source area and transport history.
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>seasonality: </strong>growing season (April to September)
+<p style="margin-left: 20px"><strong>variable: </strong>P_isotope
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>compositeDepth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6b94bb89
+<p style="margin-left: 10px"><strong>variableName: </strong>compositeDepth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>Composite depth of cores 1A and 1F
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Drilling project (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7f892b9e
+<p style="margin-left: 10px"><strong>variableName: </strong>Drilling project
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>site/hole (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB098dee70
+<p style="margin-left: 10px"><strong>variableName: </strong>site/hole
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>drive-type (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB11e05b83
+<p style="margin-left: 10px"><strong>variableName: </strong>drive-type
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>section (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB52961c1d
+<p style="margin-left: 10px"><strong>variableName: </strong>section
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>sample # in section (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe8bdb85c
+<p style="margin-left: 10px"><strong>variableName: </strong>sample # in section
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>top depth in section (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe23a77e6
+<p style="margin-left: 10px"><strong>variableName: </strong>top depth in section
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>bottom depth in section (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd65b7686
+<p style="margin-left: 10px"><strong>variableName: </strong>bottom depth in section
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dry sample mass (g)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB32b3a4fd
+<p style="margin-left: 10px"><strong>variableName: </strong>dry sample mass
+<p style="margin-left: 10px"><strong>units: </strong>g
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>StDev C28 dD (per mil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8e46b7f7
+<p style="margin-left: 10px"><strong>variableName: </strong>StDev C28 dD
+<p style="margin-left: 10px"><strong>units: </strong>per mil
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>n C28 (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9b609be4
+<p style="margin-left: 10px"><strong>variableName: </strong>n C28
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD C28 (per mil)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### compositeDepth (cm)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Drilling project (unitless)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### site/hole (unitless)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### drive-type (unitless)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### section (unitless)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### sample # in section (unitless)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### top depth in section (cm)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### bottom depth in section (cm)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### dry sample mass (g)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### StDev C28 dD (per mil)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### n C28 (unitless)
+```{r}
+plotCol(thisTS,ind = 13)
+```

@@ -1,0 +1,9 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr),rejected ()
+0.075,14C,planktic foraminifera calcite,mixed,2.015,0.03,NA
+0.235,14C,planktic foraminifera calcite,mixed,3.66,0.035,NA
+0.398,14C,planktic foraminifera calcite,mixed,5.455,0.035,NA
+0.69,14C,planktic foraminifera calcite,mixed,8.715,0.04,TRUE
+0.87,14C,planktic foraminifera calcite,mixed,9.765,0.045,TRUE
+1.058,14C,planktic foraminifera calcite,mixed,10.075,0.05,NA
+1.36,14C,planktic foraminifera calcite,mixed,9.835,0.055,TRUE
+1.56,14C,planktic foraminifera calcite,mixed,10.29,0.055,TRUE

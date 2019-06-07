@@ -1,0 +1,9 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),reservoirAgeUncertainty (kyr)
+2,14C,planktonic foraminifera,mixed,Poz‐30414,0.875,0.03,0.15,0.06
+56,14C,planktonic foraminifera,mixed,Poz‐48031,4.565,0.035,0.15,0.06
+122,14C,planktonic foraminifera,mixed,OS‐81337,7.65,0.04,0.15,0.06
+172,14C,planktonic foraminifera,mixed,Poz‐48026,10.65,0.11,0.15,0.06
+230,14C,planktonic foraminifera,mixed,OS‐81338,14.5,0.05,0.15,0.06
+276,14C,planktonic foraminifera,mixed,Poz‐48982,20.38,0.12,0.15,0.06
+310,14C,planktonic foraminifera,mixed,Poz‐48029,26.05,0.2,0.15,0.06
+380,14C,planktonic foraminifera,mixed,Poz‐48030,41.8,1.1,0.15,0.06

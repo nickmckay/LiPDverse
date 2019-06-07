@@ -1,0 +1,20 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-58,NA,NA,Y,NA
+Poz-30169,60,60,C14 Uncalibrated,385,30,30,Y,Terrestrial plant remains
+Poz-30171,147,147,C14 Uncalibrated,1255,30,30,Y,Terrestrial plant remains
+Poz-30172,230,230,C14 Uncalibrated,2175,35,35,Y,Terrestrial plant remains
+Poz-30170,296,296,C14 Uncalibrated,2985,35,35,Y,Terrestrial plant remains
+Poz-30173,338,338,C14 Uncalibrated,3290,35,35,Y,Terrestrial plant remains
+Poz-40653,355,355,C14 Uncalibrated,3585,35,35,Y,Terrestrial plant remains
+Poz-40654,394,394,C14 Uncalibrated,4230,35,35,N,Organic sediment
+Poz-30174,439,439,C14 Uncalibrated,4510,35,35,Y,Terrestrial plant remains
+Poz-40656,500,500,C14 Uncalibrated,5090,40,40,Y,Terrestrial plant remains
+Poz-40665,542,542,C14 Uncalibrated,5870,40,40,N,Organic sediment
+Poz-30175,596,596,C14 Uncalibrated,6460,40,40,Y,Terrestrial plant remains
+Poz-40666,640,640,C14 Uncalibrated,7040,40,40,Y,Terrestrial plant remains
+Poz-40667,688,688,C14 Uncalibrated,7700,40,40,Y,Terrestrial plant remains
+Poz-40668,736,736,C14 Uncalibrated,7840,50,50,Y,Terrestrial plant remains
+Poz-30176,781,781,C14 Uncalibrated,8910,40,40,Y,Terrestrial plant remains
+Poz-30177,826,826,C14 Uncalibrated,9440,50,50,Y,Terrestrial plant remains
+Poz-40669,892,892,C14 Uncalibrated,10280,50,50,N,Organic sediment
+Poz-30179,926,926,C14 Uncalibrated,10230,50,50,Y,Terrestrial plant remains

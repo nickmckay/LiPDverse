@@ -1,0 +1,4 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+70.5,Carbon-14,109319,80,2580,NA,NA
+130,Carbon-14,109320,90,3730,residue (minus humates),NA
+130,Carbon-14,109321,90,4910,humates,NA

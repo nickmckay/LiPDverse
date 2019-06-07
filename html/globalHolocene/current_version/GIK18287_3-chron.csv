@@ -1,0 +1,7 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr)
+10,14C,planktic foraminifera,G. ruber,3.665,0.025
+140,14C,planktic foraminifera,G. ruber,7.805,0.04
+170,14C,planktic foraminifera,G. ruber,8.815,0.04
+290,14C,planktic foraminifera,G. ruber,10.6,0.05
+410,14C,planktic foraminifera,G. ruber,12.57,0.06
+510,14C,planktic foraminifera,G. ruber + G. sacculifer,13.54,0.08

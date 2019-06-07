@@ -1,0 +1,11 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+2,2350,70,AMS14C,humic acids
+498,3235,30,AMS14C,humic acids
+998,5175,60,AMS14C,humic acids
+1440,4000,50,meteoricimpact,meteoricimpact
+1498,6135,35,AMS14C,humic acids
+1998,6310,100,AMS14C,humic acids
+2498,7450,40,AMS14C,humic acids
+2998,8775,40,AMS14C,humic acids
+3498,9570,50,AMS14C,humic acids
+3998,10855,45,AMS14C,humic acids

@@ -1,0 +1,226 @@
+---
+title: "Takahula.Clegg.2010"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 120
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Takahula.Clegg.2010
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Takahula.Clegg.2010.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Takahula.Clegg.2010.lpd)
+            
+
+[Download data only (csv)](Takahula.Clegg.2010.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/8663
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>citeKey: </strong>clegg2010anoxygenisotoperecordofho
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>29
+<p style="margin-left: 10px"><strong>pages: </strong>928-939
+<p style="margin-left: 10px"><strong>pubYear: </strong>2010
+<p style="margin-left: 10px"><strong>title: </strong>An oxygen-isotope record of Holocene climate change in the south-central Brooks Range, Alaska
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>67.35
+<p style="margin-left: 0px"><strong>longitude: </strong>-153.6667
+<p style="margin-left: 0px"><strong>elevation: </strong>275
+<p style="margin-left: 0px"><strong>siteName: </strong>takahula
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd21d3ac4
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc1b678b8
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH2f86466e
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>eff
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHb49727f7
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH91320436
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH8907ca8d
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### depth_top (mm)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### depth_bot (mm)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### thickness (mm)
+```{r}
+plotCol(thisTS,ind = 6)
+```

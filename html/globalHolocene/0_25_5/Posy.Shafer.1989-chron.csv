@@ -1,0 +1,6 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+80,Carbon-14,111218,80,2420,peat,"Shafer (1989) rejects Beta-28102 due to reversal, believes date on wood to be more reliable."
+137.5,Carbon-14,111219,70,3810,wood,NA
+350,Carbon-14,111220,110,4740,wood,NA
+513,Carbon-14,111221,160,7330,wood,NA
+580,Carbon-14,111222,140,6860,peat,NA

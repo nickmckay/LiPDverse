@@ -1,0 +1,26 @@
+depth (cm),age (yr BP),core (unitless),error (yr),age_type (unitless),material (unitless),notes (unitless)
+31.5,1220,F,25,AMS14C,bulk sediment,reversal
+31.5,1130,F,60,AMS14C,charcoal,reversal
+39.5,980,F,35,AMS14C,charcoal,NA
+45.5,1110,F,35,AMS14C,charcoal,NA
+51.5,3300,F,30,AMS14C,bulk sediment,NA
+53.5,3080,F,75,AMS14C,charcoal,NA
+35.5,2320,D,20,AMS14C,charcoal (0.017 mgC),reversal
+38.5,1560,D,35,AMS14C,bulk sediment,NA
+46.5,1955,D,20,AMS14C,charcoal,reversal
+67.5,1795,D,20,AMS14C,charcoal,NA
+77.5,2150,D,30,AMS14C,bulk sediment,NA
+81.5,3135,D,20,AMS14C,charcoal,older than bulk
+119.5,3245,D,20,AMS14C,charcoal,NA
+135.5,3840,D,35,AMS14C,bulk sediment,reversal
+152.5,3810,D,30,AMS14C,bulk sediment,NA
+162.5,4915,D,50,AMS14C,charcoal (0.06mgC),NA
+177.5,4995,D,40,AMS14C,charcoal (0.081 mgC),NA
+57.5,1120,H,30,AMS14C,bulk sediment,NA
+80.5,2290,H,25,AMS14C,bulk sediment,NA
+105.5,2900,H,45,AMS14C,bulk sediment,NA
+123.5,3130,H,25,AMS14C,bulk sediment,NA
+153.5,3500,H,40,AMS14C,bulk sediment,NA
+173.5,4330,H,30,AMS14C,bulk sediment,NA
+207.5,5340,H,30,AMS14C,bulk sediment,reversal
+221.5,5180,H,30,AMS14C,bulk sediment,NA

@@ -1,0 +1,9 @@
+depth (cm),age (yr BP),depth_top (cm),depth_bot (cm),material (NA),error (yr),benthic_planktonic_corrected_age (NA),type (NA),calib_curve (NA),correction (yr),delta_R_error (yr),cal_age (yr BP),cal_age_error (yr)
+49.5,2230,49,50,Mixed benthic forams,40,1430,AMS14C,Marine13,340,116,690,104
+96.5,3275,96,97,Mixed benthic forams,40,2475,AMS14C,Marine13,340,116,1706,147
+198.5,4325,198,199,Mixed planktic forams,40,4325,AMS14C,Marine13,340,116,4009,170
+256.5,4840,256,257,Mixed planktic forams,35,4840,AMS14C,Marine13,340,116,4691,159
+280.5,4925,280,281,Mixed planktic forams,30,4925,AMS14C,Marine13,340,116,4806,181
+311.5,5100,311,312,Mixed planktic forams,35,5100,AMS14C,Marine13,340,116,5041,169
+336.5,5370,336,337,Mixed planktic forams,30,5370,AMS14C,Marine13,340,116,5328,148
+431.5,7015,431,432,Mixed planktic forams,30,7015,AMS14C,Marine13,340,116,7169,127

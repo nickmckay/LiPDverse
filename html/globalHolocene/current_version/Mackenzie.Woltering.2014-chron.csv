@@ -1,0 +1,27 @@
+age (yr bp),sampleID (unitless),depthTop (cm),depthBot (cm),type (unitless),errorPlus (yr),errorMinus (yr),includeY/N (unitless),notes (unitless),material (unitless)
+-60,NA,0,NA,Core top,NA,NA,N,NA,NA
+-55,M897,0,0.7,Pb210-Lead,5,NA,Y,NA,NA
+-45,M898,0.7,1.4,Pb210-Lead,5,NA,Y,NA,NA
+5,M899,4.1,4.8,Pb210-Lead,7,NA,Y,NA,NA
+15,M900,4.8,5.5,Pb210-Lead,8,NA,Y,NA,NA
+71,M901,7,7.8,Pb210-Lead,14,NA,Y,NA,NA
+NA,M902,9.4,9.8,Pb210-Lead,NA,NA,NA,NA,NA
+NA,M903,9.8,10.2,Pb210-Lead,NA,NA,NA,NA,NA
+NA,N369,11.7,12.2,Pb210-Lead,NA,NA,NA,NA,NA
+NA,N370,12.2,12.6,Pb210-Lead,NA,NA,NA,NA,NA
+NA,N371,13.4,13.8,Pb210-Lead,NA,NA,NA,NA,NA
+NA,N372,13.8,14.2,Pb210-Lead,NA,NA,NA,NA,NA
+NA,N373,15,15.2,Pb210-Lead,NA,NA,NA,NA,NA
+NA,N374,15.2,15.5,Pb210-Lead,NA,NA,NA,NA,NA
+2395,OZN683,11.9,NA,C14 Uncalibrated,35,35,Y,CORE LM2,pollen
+3785,OZN684,17.1,NA,C14 Uncalibrated,35,35,Y,CORE LM2,pollen
+6485,OZN685,22.1,NA,C14 Uncalibrated,50,50,Y,CORE LM2,pollen
+415,OZN411,24.8,NA,C14 Uncalibrated,40,40,N,CORE LM2,pollen
+12110,OZN686,26.6,NA,C14 Uncalibrated,70,70,Y,CORE LM2,pollen
+15100,OZN412,27.5,NA,C14 Uncalibrated,70,70,Y,CORE LM2,pollen
+18670,OZN687,31.2,NA,C14 Uncalibrated,100,100,Y,CORE LM2,pollen
+19150,OZN680,34.4,NA,C14 Uncalibrated,210,210,N,CORE LM1,pollen
+13188,OZN681,34.4,NA,C14 Uncalibrated,60,60,N,CORE LM1,wood
+23270,OZN688,36.3,NA,C14 Uncalibrated,120,120,Y,CORE LM2,pollen
+30940,OZN689,41.5,NA,C14 Uncalibrated,190,190,Y,CORE LM2,pollen
+31870,OZN690,47.2,NA,C14 Uncalibrated,180,180,Y,CORE LM2,pollen

@@ -1,0 +1,16 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-48,NA,NA,Y,NA
+KIA-10040,8,10,C14 Uncalibrated,690,720,660,Y,Non-identified macrofossils
+KIA-8915,98,100,C14 Uncalibrated,2460,2500,2420,Y,Non-identified macrofossils
+KIA-10041,200,202,C14 Uncalibrated,5135,5195,5075,Y,Non-identified macrofossils
+KIA-8916,298,300,C14 Uncalibrated,6730,6800,6660,Y,Non-identified macrofossils
+KIA-8920,398,400,C14 Uncalibrated,8550,8650,8450,Y,Non-identified macrofossils
+KIA-8917,500,502,C14 Uncalibrated,9230,9320,9140,Y,Non-identified macrofossils
+KIA-12131,596,598,C14 Uncalibrated,10780,10920,10640,N,Non-identified macrofossils
+KIA-8759,652,654,C14 Uncalibrated,11230,11380,11080,N,Non-identified macrofossils
+KIA-8760,670,672,C14 Uncalibrated,14210,14300,14120,N,Non-identified macrofossils
+KIA-8761,717,719,C14 Uncalibrated,9600,9660,9540,N,Shrub twig
+KIA-12132,734,736,C14 Uncalibrated,10940,11030,10850,N,Non-identified macrofossils
+KIA-12133,793,795,C14 Uncalibrated,11850,11930,11770,N,Non-identified macrofossils
+KIA-12134,993,995,C14 Uncalibrated,9880,9930,9830,N,Non-identified macrofossils
+KIA-12135,1034,1036,C14 Uncalibrated,9490,9550,9430,Y,Moss remains

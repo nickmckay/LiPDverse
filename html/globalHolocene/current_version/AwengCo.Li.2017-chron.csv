@@ -1,0 +1,9 @@
+age (yr bp),sampleID (unitless),depthTop (cm),depthBot (cm),type (unitless),errorPlus (yr bp),errorMinus (yr bp),includeY/N (NA)
+-60,NA,0,1,Core top,NA,NA,Y
+4635,BA130014,81,83,C14 Uncalibrated,4660,4610,Y
+5180,BA120318,129,131,C14 Uncalibrated,5200,5160,Y
+6370,BA130016,280,282,C14 Uncalibrated,6395,6345,Y
+6430,BA120320,327,329,C14 Uncalibrated,6460,6400,Y
+7880,BA130017,380,382,C14 Uncalibrated,7915,7845,Y
+9710,BA120321,426,429,C14 Uncalibrated,9740,9680,Y
+13895,BA120322,565,567,C14 Uncalibrated,13935,13855,Y

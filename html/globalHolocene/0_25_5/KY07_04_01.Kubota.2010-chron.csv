@@ -1,0 +1,19 @@
+age (yr bp),depthtop (cm),depthbottom (cm),error (yr),type (unitless),material (unitless),rejected (unitless)
+185,2.5,12.5,75,AMS14C,N. duteri,NA
+265,2.5,12.5,115,AMS14C,G. bulloides,NA
+1040,50,60,50,AMS14C,N. duteri,NA
+2955,98.5,103.5,80,AMS14C,N. duteri,X
+2955,151,156,50,AMS14C,N. duteri,NA
+3635,201,206,50,AMS14C,N. duteri,NA
+4550,251,256,80,AMS14C,N. duteri,NA
+5325,300,302.5,55,AMS14C,N. duteri,NA
+6960,492,494.5,60,AMS14C,N. duteri,NA
+7000,492,502,90,AMS14C,G. bulloides,NA
+9040,639.5,642,75,AMS14C,N. duteri,NA
+10475,781,783.5,145,AMS14C,N. duteri,NA
+11500,925.5,935.5,70,AMS14C,N. duteri,NA
+11700,925.5,935.5,80,AMS14C,G. bulloides,NA
+13250,1068.5,1071,105,AMS14C,N. duteri,NA
+14740,1240,1247,80,AMS14C,N. duteri,NA
+15745,1403.5,1408.5,105,AMS14C,N. duteri,NA
+15975,1398.5,1408.5,105,AMS14C,G. bulloides,NA

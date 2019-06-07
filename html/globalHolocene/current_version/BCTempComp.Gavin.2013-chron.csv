@@ -1,0 +1,11 @@
+depth (cm),age (yr bp),error (yr),material (unitless),type (unitless)
+25.5,1570,60,conifer needle,AMS14C
+35.5,1950,40,conifer needle,AMS14C
+60.5,2435,26,tephra,AMS14C
+89.5,3560,40,conifer needle,AMS14C
+119.5,4530,50,conifer needle,AMS14C
+147.5,6170,40,twig fragment,AMS14C
+158.5,6730,40,tephra,AMS14C
+188.5,8180,50,conifer needle,AMS14C
+221.5,9390,70,twig fragment,AMS14C
+235.5,10020,50,conifer needle,AMS14C

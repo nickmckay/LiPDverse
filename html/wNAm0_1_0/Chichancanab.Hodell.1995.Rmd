@@ -1,0 +1,454 @@
+---
+title: "Chichancanab.Hodell.1995"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 19
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Chichancanab.Hodell.1995
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Chichancanab.Hodell.1995.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Chichancanab.Hodell.1995.lpd)
+            
+
+[Download data only (csv)](Chichancanab.Hodell.1995.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/5483
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>citeKey: </strong>hodell1995possibleroleofclimateinth
+<p style="margin-left: 10px"><strong>journal: </strong>Nature
+<p style="margin-left: 10px"><strong>volume: </strong>375
+<p style="margin-left: 10px"><strong>pages: </strong>391-394
+<p style="margin-left: 10px"><strong>pubYear: </strong>1995
+<p style="margin-left: 10px"><strong>title: </strong>Possible role of climate in the collapse of Classic Maya civilization
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>19.8333
+<p style="margin-left: 0px"><strong>longitude: </strong>-88.75
+<p style="margin-left: 0px"><strong>elevation: </strong>3
+<p style="margin-left: 0px"><strong>siteName: </strong>LakeChichancanab
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB203c1b3a
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBcfae6461
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>CaCO3 (Percent) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH16551942
+<p style="margin-left: 10px"><strong>variableName: </strong>CaCO3
+<p style="margin-left: 10px"><strong>units: </strong>Percent
+<p style="margin-left: 10px"><strong>description: </strong>CaCO3
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>C14age (C14yr BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHf315675a
+<p style="margin-left: 10px"><strong>variableName: </strong>C14age
+<p style="margin-left: 10px"><strong>units: </strong>C14yr BP
+<p style="margin-left: 10px"><strong>description: </strong>C14age
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB400e6456
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe5789645
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>S (Percent) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH047d0e2d
+<p style="margin-left: 10px"><strong>variableName: </strong>S
+<p style="margin-left: 10px"><strong>units: </strong>Percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1df1df81
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe0e35bd3
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18OPyrgophorusSp_ (permil) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHce286279
+<p style="margin-left: 10px"><strong>variableName: </strong>d18OPyrgophorusSp_
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18OPhysocypriaSp_ (permil) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHc5186b8c
+<p style="margin-left: 10px"><strong>variableName: </strong>d18OPhysocypriaSp_
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d13CPyrgophorusSp_ (permil) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH38f8a604
+<p style="margin-left: 10px"><strong>variableName: </strong>d13CPyrgophorusSp_
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13CPhysocypriaSp_ (permil) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHc32c90e8
+<p style="margin-left: 10px"><strong>variableName: </strong>d13CPhysocypriaSp_
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB58d003b3
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4c632d5d
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18OCyprinotusSp_ (permil) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH79bd61b5
+<p style="margin-left: 10px"><strong>variableName: </strong>d18OCyprinotusSp_
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13CCyprinotusSp_ (permil) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHd6d32d0a
+<p style="margin-left: 10px"><strong>variableName: </strong>d13CCyprinotusSp_
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdc8fb452
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB445ba8e8
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18OAmmoniaBeccarii (permil) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHb76f6725
+<p style="margin-left: 10px"><strong>variableName: </strong>d18OAmmoniaBeccarii
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13CAmmoniaBeccarii (permil) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH5e456b2d
+<p style="margin-left: 10px"><strong>variableName: </strong>d13CAmmoniaBeccarii
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TotalAmmoniaBeccarii (unitless) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH170ba3a7
+<p style="margin-left: 10px"><strong>variableName: </strong>TotalAmmoniaBeccarii
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [6-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB837d3372
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [6-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8541d3a4
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18OTerrestrialGastropods (permil) [6-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHd7e7684e
+<p style="margin-left: 10px"><strong>variableName: </strong>d18OTerrestrialGastropods
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13CTerrestrialGastropods (permil) [6-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH747a63d7
+<p style="margin-left: 10px"><strong>variableName: </strong>d13CTerrestrialGastropods
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### CaCO3 (Percent) [1-1]
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### C14age (C14yr BP) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### S (Percent) [2-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### d18OPyrgophorusSp_ (permil) [3-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### d18OPhysocypriaSp_ (permil) [3-1]
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### d13CPyrgophorusSp_ (permil) [3-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### d13CPhysocypriaSp_ (permil) [3-1]
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### d18OCyprinotusSp_ (permil) [4-1]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### d13CCyprinotusSp_ (permil) [4-1]
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### d18OAmmoniaBeccarii (permil) [5-1]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### d13CAmmoniaBeccarii (permil) [5-1]
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### TotalAmmoniaBeccarii (unitless) [5-1]
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### d18OTerrestrialGastropods (permil) [6-1]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### d13CTerrestrialGastropods (permil) [6-1]
+```{r}
+plotCol(thisTS,ind = 26)
+```

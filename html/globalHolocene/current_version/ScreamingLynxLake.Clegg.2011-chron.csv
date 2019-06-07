@@ -1,0 +1,42 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0.5,Pb210-Lead,-57,-56,-58,Y,NA
+NA,0.5,1,Pb210-Lead,-53.777,-52.646,-54.909,Y,NA
+NA,1,1.5,Pb210-Lead,-52.753,-51.628,-53.879,Y,NA
+NA,1.5,2,Pb210-Lead,-51.679,-50.553,-52.805,Y,NA
+NA,2,2.5,Pb210-Lead,-50.522,-49.396,-51.648,Y,NA
+NA,2.5,3,Pb210-Lead,-49.61,-48.485,-50.735,Y,NA
+NA,3,3.5,Pb210-Lead,-48.733,-47.608,-49.857,Y,NA
+NA,3.5,4,Pb210-Lead,-47.906,-46.781,-49.03,Y,NA
+NA,4,4.5,Pb210-Lead,-47.437,-46.314,-48.56,Y,NA
+NA,4.5,5,Pb210-Lead,-46.004,-44.874,-47.134,Y,NA
+NA,5.5,6,Pb210-Lead,-44.002,-42.867,-45.137,Y,NA
+NA,6.5,7,Pb210-Lead,-39.78,-38.491,-41.069,Y,NA
+NA,7,7.5,Pb210-Lead,-36.081,-34.846,-37.317,Y,NA
+NA,7.5,8,Pb210-Lead,-31.406,-29.971,-32.84,Y,NA
+NA,8,8.5,Pb210-Lead,-25.544,-24.085,-27.002,Y,NA
+NA,8.5,9,Pb210-Lead,-17.191,-15.794,-18.588,Y,NA
+NA,9,9.5,Pb210-Lead,-5.524,-3.609,-7.439,Y,NA
+NA,9.5,10,Pb210-Lead,-3.578,-1.01,-6.147,Y,NA
+NA,10,10.5,Pb210-Lead,7.779,10.072,5.487,Y,NA
+NA,10.5,11,Pb210-Lead,11.55,14.101,8.999,Y,NA
+NA,11,11.5,Pb210-Lead,16.222,18.341,14.102,Y,NA
+NA,11.5,12,Pb210-Lead,19.664,21.096,18.232,Y,NA
+NA,12,12.5,Pb210-Lead,21.961,23.337,20.585,Y,NA
+NA,12.5,13,Pb210-Lead,26.925,28.721,25.13,Y,NA
+NA,13,13.5,Pb210-Lead,29.198,30.875,27.522,Y,NA
+NA,13.5,14,Pb210-Lead,32.801,34.63,30.972,Y,NA
+NA,14,14.5,Pb210-Lead,37.103,39.193,35.013,Y,NA
+139048,56.5,57,C14 Uncalibrated,635,670,600,Y,needle
+142851,73.75,74,C14 Uncalibrated,1295,1340,1250,Y,terr. Leaf
+139049,100.75,101.75,C14 Uncalibrated,1980,2040,1920,Y,"wood, charcoal"
+143942,137.25,137.5,C14 Uncalibrated,2820,2850,2790,Y,charred needles
+142852,161.5,161.75,C14 Uncalibrated,3650,3685,3615,N,bark (excluded from age model)
+143941,167.5,167.75,C14 Uncalibrated,3365,3395,3335,Y,charred needles
+143943,181.5,181.75,C14 Uncalibrated,4645,4680,4610,N,twig (excluded from age model)
+142853,198.5,199,C14 Uncalibrated,8080,8115,8045,N,twig with bark (excluded from age model)
+145646,214.75,215,C14 Uncalibrated,4565,4600,4530,Y,charred needle
+143944,242.5,242.75,C14 Uncalibrated,5895,5930,5860,Y,charred needles
+145300,256.5,256.75,C14 Uncalibrated,6655,6685,6625,Y,charcoal
+144795,281.5,281.75,C14 Uncalibrated,8120,8180,8060,Y,needles
+142654,340,340.25,C14 Uncalibrated,8925,8960,8890,Y,twig
+138454,383.25,383.5,C14 Uncalibrated,9345,9395,9295,Y,wood

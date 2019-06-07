@@ -1,0 +1,16 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-58,NA,NA,Y,NA
+Poz-29744,60,60,C14 Uncalibrated,385,30,30,Y,Terrestrial macrorest
+Poz-35854,172,172,C14 Uncalibrated,1335,30,30,Y,Terrestrial macrorest
+Poz-29745,230.5,230.5,C14 Uncalibrated,2100,30,30,Y,Terrestrial macrorest
+Poz-35853,269.5,269.5,C14 Uncalibrated,2615,30,30,Y,Terrestrial macrorest
+Poz-35852,337.5,337.5,C14 Uncalibrated,3200,30,30,Y,Terrestrial macrorest
+Poz-35804,422,422,C14 Uncalibrated,3815,35,35,Y,Terrestrial macrorest
+Poz-29743,502,502,C14 Uncalibrated,5185,35,35,Y,Terrestrial macrorest
+Poz-35803,562.5,562.5,C14 Uncalibrated,5840,40,40,Y,Terrestrial macrorest
+Poz-35802,677.5,677.5,C14 Uncalibrated,6450,40,40,Y,Terrestrial macrorest
+Poz-29746,795,795,C14 Uncalibrated,7330,50,50,Y,Charcoal
+Poz-35801,943,943,C14 Uncalibrated,7930,50,50,Y,Terrestrial macrorest
+Poz-29747,1011,1011,C14 Uncalibrated,7950,50,50,Y,Charcoal
+Poz-29779,1167.5,1167.5,C14 Uncalibrated,8780,50,50,Y,Terrestrial macrorest
+Poz-29779,1198,1198,C14 Uncalibrated,10710,60,60,Y,Bulk Sediment

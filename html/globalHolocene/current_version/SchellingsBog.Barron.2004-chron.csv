@@ -1,0 +1,5 @@
+depth (cm),age (yrBP),type (NA),error (yr),material (NA)
+0,-20,surface,NA,surface
+230,680,AMS14C,160,peat
+390,1570,AMS14C,170,peat
+1000,4000,AMS14C,340,peat

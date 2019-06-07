@@ -1,0 +1,16 @@
+depth (mm),age (bp),error (1_s),age_type (unitless),lab_id (unitless),material_dated (unitless)
+0,-60,1,core top,N/A,core top
+38,585,50,AMS14C,N/A,sphadnum stems
+89,1860,60,AMS14C,N/A,sphagnum stems with leaves
+113,2240,30,AMS14C,N/A,Tsuga twid with sterigmata
+135,2770,50,AMS14C,N/A,12 picea needles
+149,2880,50,AMS14C,N/A,1xcaliyx
+171,3255,15,AMS14C,N/A,Cyperaceae stems
+190,4140,70,AMS14C,N/A,Twigs
+224,5690,70,AMS14C,N/A,Twig fragment
+235,6170,80,AMS14C,N/A,Twig
+260.5,7930,40,AMS14C,N/A,Sphagnum stems
+280.5,8075,40,AMS14C,N/A,Sphagnum stems
+304,8260,80,AMS14C,N/A,Twig
+352,9220,100,AMS14C,N/A,Alnus bracts and cone sca;e
+368,10050,35,AMS14C,N/A,3 Nuphar seeds

@@ -1,0 +1,10 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,NA,Core top,-52,NA,NA,Y,cored in 2002
+Beta-179731,143,144,C14 Uncalibrated,2540,2580,2500,Y,twig
+Beta-179732,247,247.5,C14 Uncalibrated,4460,4500,4420,Y,pine needle
+Beta-179733,310,310.5,C14 Uncalibrated,5880,5920,5840,Y,pine needle
+n/a - tephra,347.5,351,Tephra,7015,7060,6970,Y,Tsoyowata ash; uncalibrated 14C date indicated
+Beta-179734,407,407.5,C14 Uncalibrated,8660,8700,8620,Y,twig
+Beta-167869,461,462,C14 Uncalibrated,9460,9520,9400,Y,bulk sed
+Beta-168954,473,474,C14 Uncalibrated,11170,11210,11130,Y,bulk sed
+Beta-167277,493,494,C14 Uncalibrated,12700,12740,12660,Y,bulk sed

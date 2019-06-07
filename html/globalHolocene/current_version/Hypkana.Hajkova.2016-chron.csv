@@ -1,0 +1,16 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+date of coring,0,0,Core top,2012,NA,NA,NA,NA
+UG-17161,54,56,C14 Uncalibrated,630,25,25,Y,NA
+UG-17162,104,106,C14 Uncalibrated,2450,25,25,Y,NA
+UG-17163,174,176,C14 Uncalibrated,2770,25,25,Y,NA
+UG-19965,214,216,C14 Uncalibrated,2870,20,20,Y,NA
+UG-15688,265,270,C14 Uncalibrated,3380,25,25,Y,NA
+UG-15689,320,325,C14 Uncalibrated,3510,25,25,N,"too young, macrofossils of mire plants in gyttja sediment (contamination from upper layers), its including dicreased substantialy model quality"
+UG-15690,455,460,C14 Uncalibrated,3650,30,30,N,"too young, macrofossils of mire plants in gyttja sediment (contamination from upper layers), its including dicreased substantialy model quality"
+UG-19966,540,545,C14 Uncalibrated,6970,50,50,Y,NA
+UG-15691,700,705,C14 Uncalibrated,7930,30,30,Y,NA
+UG-19968,800,805,C14 Uncalibrated,8530,35,35,Y,NA
+UG-15692,835,840,C14 Uncalibrated,8830,30,30,Y,NA
+UG-15693,930,935,C14 Uncalibrated,9980,45,45,Y,NA
+UG-15694,1035,1040,C14 Uncalibrated,9780,30,30,N,"reversal age,which decreased the quality of the model to zero"
+UG-15695,1090,1095,C14 Uncalibrated,11020,40,40,Y,NA

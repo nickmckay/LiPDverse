@@ -1,0 +1,11 @@
+depth (cm),age (yrBP),sample (NA),material (NA),error (yr),type (NA)
+74,925,Foy-171,Wood,35,AMS14C
+149,2273,Foy-398,Varve Counts,3,calibrated
+209,3670,Foy-460,Wood,40,AMS14C
+297,4270,Foy-551,Needle,35,AMS14C
+576,6260,Foy-827,Wood,55,AMS14C
+658,6845,Mazama,Tephra,50,AMS14C tephra
+731,7700,Foy-148PM,Bulk Sediment,50,AMS14C
+835,8270,Foy-354PM,Charcoal,40,AMS14C
+975,9820,Foy-635PM,Needle,95,AMS14C
+1080,11250,Glacier Peak,Tephra,60,AMS14C tephra

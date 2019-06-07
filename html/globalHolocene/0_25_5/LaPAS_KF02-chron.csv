@@ -1,0 +1,10 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr)
+2,14C,planktic foraminifera,Globorotalia menardii + Globigerinoides ruber,0.615,0.03,0.271
+45,14C,planktic foraminifera,Globigerinoides ruber,0.85,0.015,0.271
+99,14C,planktic foraminifera,Globigerinoides ruber,1.08,0.05,0.271
+149,14C,planktic foraminifera,Globigerinoides ruber,2.91,0.02,0.271
+234,14C,planktic foraminifera,Globigerinoides ruber,5.23,0.025,0.271
+318,14C,planktic foraminifera,Globigerinoides ruber,7.75,0.03,0.271
+360,14C,planktic foraminifera,Globigerinoides ruber,9.66,0.06,0.271
+420,14C,planktic foraminifera,Globigerinoides ruber,10.55,0.06,0.271
+436,14C,planktic foraminifera,Globigerinoides ruber,11.15,0.04,0.271

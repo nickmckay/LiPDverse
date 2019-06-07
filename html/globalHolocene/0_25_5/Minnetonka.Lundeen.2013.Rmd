@@ -1,0 +1,444 @@
+---
+title: "Minnetonka.Lundeen.2013"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 576
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Minnetonka.Lundeen.2013
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Minnetonka.Lundeen.2013.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Minnetonka.Lundeen.2013.lpd)
+            
+
+[Download paleoData only (csv)](Minnetonka.Lundeen.2013.csv)
+            
+
+[Download chronData only (csv)](Minnetonka.Lundeen.2013-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Speleothem
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/23097
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Lundeen, Zachary"), list(name = "Brunelle, Andrea"), list(name = "Burns, Stephen J."), list(name = "Polyak, Victor"), list(name = "Asmerom, Yemane"))
+<p style="margin-left: 10px"><strong>citeKey: </strong>lundeen2013aspeleothemrecordofholoce
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary International
+<p style="margin-left: 10px"><strong>volume: </strong>310
+<p style="margin-left: 10px"><strong>pages: </strong>83-95
+<p style="margin-left: 10px"><strong>title: </strong>A speleothem record of Holocene paleoclimate from the northern Wasatch Mountains, southeast Idaho, USA
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>NSF
+<p style="margin-left: 10px"><strong>grant: </strong>0926715
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>42.088
+<p style="margin-left: 0px"><strong>longitude: </strong>-111.5187
+<p style="margin-left: 0px"><strong>elevation: </strong>2346.96
+<p style="margin-left: 0px"><strong>siteName: </strong>MinnetonkaCave,ID,USA
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc4db2965
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB06fa3cf0
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHc8e0777d
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta c13 permil VPDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+<p style="margin-left: 20px"><strong>variable: </strong>M
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH250fcb25
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta o18 permil VPDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Wecansaywithconfidencethatregardlessoftheothercontributingmechanisms,thespeleothem180variabilityisreflectiveoftemperaturechange
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd8477d2d
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>238U (ng/g)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb66a3def
+<p style="margin-left: 10px"><strong>variableName: </strong>238U
+<p style="margin-left: 10px"><strong>units: </strong>ng/g
+</details>
+<details style="margin-left: 10px">
+<summary>238U_error (ng/g)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8ba1aa81
+<p style="margin-left: 10px"><strong>variableName: </strong>238U_error
+<p style="margin-left: 10px"><strong>units: </strong>ng/g
+</details>
+<details style="margin-left: 10px">
+<summary>232Th (pg/g)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBde5ef73f
+<p style="margin-left: 10px"><strong>variableName: </strong>232Th
+<p style="margin-left: 10px"><strong>units: </strong>pg/g
+</details>
+<details style="margin-left: 10px">
+<summary>232Th_error (pg/g)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa0dc505f
+<p style="margin-left: 10px"><strong>variableName: </strong>232Th_error
+<p style="margin-left: 10px"><strong>units: </strong>pg/g
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/232Th (ratio)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdc70f984
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/232Th
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/232Th_error (ratio)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB481acb24
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/232Th_error
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/238U (ratio)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf82d2e2a
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/238U
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/238U_error (ratio)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0f8f45b1
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/238U_error
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+</details>
+<details style="margin-left: 10px">
+<summary>Measured_delta234U (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0064ee47
+<p style="margin-left: 10px"><strong>variableName: </strong>Measured_delta234U
+<p style="margin-left: 10px"><strong>units: </strong>permil
+</details>
+<details style="margin-left: 10px">
+<summary>Measured_delta234U_error (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd2d96927
+<p style="margin-left: 10px"><strong>variableName: </strong>Measured_delta234U_error
+<p style="margin-left: 10px"><strong>units: </strong>permil
+</details>
+<details style="margin-left: 10px">
+<summary>initial_delta234U (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB082314ca
+<p style="margin-left: 10px"><strong>variableName: </strong>initial_delta234U
+<p style="margin-left: 10px"><strong>units: </strong>permil
+</details>
+<details style="margin-left: 10px">
+<summary>initial_delta234U_error (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB66262176
+<p style="margin-left: 10px"><strong>variableName: </strong>initial_delta234U_error
+<p style="margin-left: 10px"><strong>units: </strong>permil
+</details>
+<details style="margin-left: 10px">
+<summary>uncorrected_age (yrBP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB81428237
+<p style="margin-left: 10px"><strong>variableName: </strong>uncorrected_age
+<p style="margin-left: 10px"><strong>units: </strong>yrBP
+</details>
+<details style="margin-left: 10px">
+<summary>uncorrected_age_error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB70d0b53a
+<p style="margin-left: 10px"><strong>variableName: </strong>uncorrected_age_error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>corrected_age_1950 (yrBP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd6dc9c27
+<p style="margin-left: 10px"><strong>variableName: </strong>corrected_age_1950
+<p style="margin-left: 10px"><strong>units: </strong>yrBP
+</details>
+<details style="margin-left: 10px">
+<summary>corrected_age_1950_error (yrBP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1733a7cb
+<p style="margin-left: 10px"><strong>variableName: </strong>corrected_age_1950_error
+<p style="margin-left: 10px"><strong>units: </strong>yrBP
+</details>
+<details style="margin-left: 10px">
+<summary>corrected_age (yrBP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0ce152c4
+<p style="margin-left: 10px"><strong>variableName: </strong>corrected_age
+<p style="margin-left: 10px"><strong>units: </strong>yrBP
+</details>
+<details style="margin-left: 10px">
+<summary>corrected_age_error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9e233ff1
+<p style="margin-left: 10px"><strong>variableName: </strong>corrected_age_error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (mm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### 238U (ng/g)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### 238U_error (ng/g)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### 232Th (pg/g)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### 232Th_error (pg/g)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### 230Th/232Th (ratio)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### 230Th/232Th_error (ratio)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### 230Th/238U (ratio)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### 230Th/238U_error (ratio)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### Measured_delta234U (permil)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### Measured_delta234U_error (permil)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### initial_delta234U (permil)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### initial_delta234U_error (permil)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### uncorrected_age (yrBP)
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### uncorrected_age_error (yr)
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### corrected_age_1950 (yrBP)
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### corrected_age_1950_error (yrBP)
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### corrected_age (yrBP)
+```{r}
+plotCol(chronTS,ind = 18)
+```
+
+### corrected_age_error (yr)
+```{r}
+plotCol(chronTS,ind = 19)
+```

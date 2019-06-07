@@ -1,0 +1,7 @@
+depth (cm),age (bp),age14C (bp),error (),cal_age_error (2_s),cal_age_range_old (bp),cal_age_range_young (2_s),14C_bulk ()
+0,-25,NA,NA,5,NA,NA,1
+4.55,NA,2565,190,NA,2153,3141,1
+9,NA,4765,200,NA,4891,5914,1
+15.1,NA,5700,240,NA,5945,7155,1
+18.05,NA,7200,250,NA,7573,8510,1
+27.4,NA,8815,275,NA,9149,10646,1

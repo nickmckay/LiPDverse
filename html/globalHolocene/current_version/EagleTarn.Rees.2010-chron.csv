@@ -1,0 +1,10 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-57,NA,NA,Y,NA
+UCIAMS-50172,77,80,C14 Uncalibrated,2325,20,20,Y,Bark
+UCIAMS-50171,150,153,C14 Uncalibrated,4520,20,20,Y,Twigs
+UCIAMS-50170,193.8,194.8,C14 Uncalibrated,5800,20,20,Y,Twigs
+UCIAMS-50169,250,252,C14 Uncalibrated,7195,20,20,Y,Bark
+UCIAMS-50168,297.6,301.4,C14 Uncalibrated,8255,25,25,Y,Bark
+UCIAMS-50167,348.5,350.4,C14 Greater than,9530,20,20,Y,"Twigs, bark"
+UCIAMS-50166,388,390,C14 Uncalibrated,11135,25,25,Y,"Leaves, twigs"
+UCIAMS-50165,417.3,421.3,C14 Uncalibrated,12840,30,30,Y,Leaves

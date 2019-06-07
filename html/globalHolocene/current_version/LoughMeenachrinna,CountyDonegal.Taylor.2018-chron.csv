@@ -1,0 +1,9 @@
+OriginalDateID (unitless),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (unitless),DateBP (unitless),IncludeYN (unitless),AdditionalNotes (unitless),ageerror (unitless)
+Surface,0,1,Core top,-63,NA,Lab ID (QUB),0
+DL-LM-B-12.5,12,13,C14 Uncalibrated,75,Y,UBA-24069,28
+DL-LM-B-48.5,48,49,C14 Uncalibrated,1767,Y,UBA-24070,27
+DL-LM-B-59.5,59,60,C14 Uncalibrated,2452,Y,UBA-24070,28
+DL-LM-B-70,70,71,C14 Uncalibrated,2896,Y,UBA32786,30
+DL-LM-B-100.5,100,101,C14 Uncalibrated,4634,Y,UBA-24072,38
+DL-LM-B-111.5,111,112,C14 Uncalibrated,5472,Y,UBA-24424,31
+DL-LM-B-120.5,120,121,C14 Uncalibrated,6581,Y,UBA-24073,39

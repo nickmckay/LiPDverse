@@ -1,0 +1,7 @@
+age (yr bp),depthTop (cm),depthBot (cm),type (NA),error (yr),includeY/N (NA)
+-50,0,0,Core top,NA,Y
+1945,185,190,C14 Uncalibrated,70,Y
+3120,310,315,C14 Uncalibrated,95,Y
+4275,420,425,C14 Uncalibrated,115,Y
+5130,520,525,C14 Uncalibrated,160,Y
+6020,610,615,C14 Uncalibrated,130,Y

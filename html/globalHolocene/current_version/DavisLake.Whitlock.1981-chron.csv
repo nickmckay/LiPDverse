@@ -1,0 +1,17 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+9,Carbon-14,108989,60,110,fibrous peat,NA
+29,Carbon-14,108990,40,790,fibrous peat,NA
+49,Carbon-14,108991,40,780,fibrous peat,NA
+325,Carbon-14,108992,50,2580,coarse detritus gyttja,NA
+330,Carbon-14,108993,40,2610,coarse detritus gyttja,NA
+366.5,Carbon-14,108994,40,2560,coarse detritus gyttja,NA
+374,Carbon-14,108995,40,2633,coarse detritus gyttja,NA
+475,Carbon-14,108996,40,3350,coarse detritus gyttja,NA
+524,Carbon-14,108997,50,4000,coarse detritus gyttja,NA
+715,Carbon-14,108998,110,6420,fine detritus gyttja,NA
+733.5,Carbon-14,108999,120,7460,fine detritus gyttja,NA
+1117.5,Carbon-14,109000,210,13800,fine detritus gyttja,NA
+1171.5,Carbon-14,109001,260,15700,clay,NA
+1527.5,Carbon-14,109002,500,21400,clay,NA
+1736.5,Carbon-14,109003,400,20500,clay,NA
+2011.5,Carbon-14,109004,1200,26100,clay,NA

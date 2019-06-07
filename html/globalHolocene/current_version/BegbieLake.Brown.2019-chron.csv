@@ -1,0 +1,20 @@
+depth (cm),age (yrBP),laboratory number (NA),depth range (NA),error (yr),type (NA)
+0,NA,N/A,0,NA,core top
+0.75,15.1,Beg 0.0,-1.5,NA,pb210 needs model
+2.625,18.5,Beg 2.5,-2.25,NA,pb210 needs model
+4.625,17.5,Beg 4.5,-1.75,NA,pb210 needs model
+6.375,14.5,Beg 6.0,-1.75,NA,pb210 needs model
+8.125,9.3,Beg 8.0,-1.75,NA,pb210 needs model
+9.75,7.1,Beg 9.5,-1.5,NA,pb210 needs model
+11.375,4.4,Beg 11.0,-1.75,NA,pb210 needs model
+29,280,Beg-35,29,20,AMS14C
+76,1435,Beg-82,76,20,AMS14C
+104,1875,Beg-110,104,25,AMS14C
+168.5,3075,Beg-174.5,168.5,20,AMS14C
+239,3935,Beg-245,239,20,AMS14C
+345,5785,Beg-351,345,20,AMS14C
+406,NA,Mazama ash,406,NA,tephra
+471,8205,Beg-477,471,25,AMS14C
+513.5,8885,Beg-519.5,513.5,25,AMS14C
+575,10240,Beg-581,575,30,AMS14C
+621.5,11960,Beg-627.5,621.5,30,AMS14C

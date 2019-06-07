@@ -1,0 +1,207 @@
+---
+title: "EnosLake.Brown.2006"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 29
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#EnosLake.Brown.2006
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](EnosLake.Brown.2006.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/EnosLake.Brown.2006.lpd)
+            
+
+[Download data only (csv)](EnosLake.Brown.2006.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>25
+<p style="margin-left: 10px"><strong>pages: </strong>2762-2779
+<p style="margin-left: 10px"><strong>pubYear: </strong>2006
+<p style="margin-left: 10px"><strong>title: </strong>Holocene precipitation in the coastal temperate rainforest complex of southern British Columbia, Canada
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>49.28
+<p style="margin-left: 0px"><strong>longitude: </strong>-124.15
+<p style="margin-left: 0px"><strong>elevation: </strong>46
+<p style="margin-left: 0px"><strong>siteName: </strong>Enos Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8d706e6f
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB96b193ee
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>MAP_update (mm/yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB10ea8a20
+<p style="margin-left: 10px"><strong>variableName: </strong>MAP_update
+<p style="margin-left: 10px"><strong>units: </strong>mm/yr
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>DWHI (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdaa16cf6
+<p style="margin-left: 10px"><strong>variableName: </strong>DWHI
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>MAP (mm/yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB634c3a91
+<p style="margin-left: 10px"><strong>variableName: </strong>MAP
+<p style="margin-left: 10px"><strong>units: </strong>mm/yr
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### MAP_update (mm/yr)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### DWHI (unitless)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### MAP (mm/yr)
+```{r}
+plotCol(thisTS,ind = 4)
+```

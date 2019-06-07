@@ -1,0 +1,13 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-58,NA,NA,Y,NA
+Poz-31985,140,140,C14 Uncalibrated,1000,1030,970,Y,Leaves
+Poz-31985,140,140,C14 Uncalibrated,1000,1030,970,Y,Leaves
+Poz-31986,260,260,C14 Uncalibrated,1840,1870,1810,Y,Needles
+Poz-29367,480.5,482.5,C14 Uncalibrated,3020,3055,2985,Y,Leaves
+Poz-29369,599.5,601.5,C14 Uncalibrated,4175,4210,4140,Y,"Leaves, terr. seeds"
+Poz-29370,879,881.5,C14 Uncalibrated,7420,7460,7380,Y,Needles
+Poz-32837,970,972,C14 Uncalibrated,8710,8760,8660,Y,"Bark, wood, needles"
+Poz-29366,1033,1035,C14 Uncalibrated,9310,9360,9260,Y,"Indet. branch,"
+Poz-34034,1052,1056,C14 Uncalibrated,9920,9980,9860,Y,"Indet. leaves, wood, bark, indet. CM"
+Poz-34033,1076,1079,C14 Uncalibrated,10060,10170,9950,Y,"Indet. leaves, wood, indet. CM"
+Poz-34032,1081,1089,C14 Uncalibrated,11470,11550,11390,Y,"Arctostaphylus uva-ursi leaves, terr. seed"

@@ -1,0 +1,5 @@
+depth (cm),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr)
+12.5,14C,12,13,1,planktic foraminifera,mixed,2.235,0.055
+31.5,14C,31,32,1,planktic foraminifera,mixed,6.59,0.07
+42.5,14C,42,43,1,planktic foraminifera,mixed,9.25,0.08
+77.5,14C,77,78,1,planktic foraminifera,mixed,14.91,0.11

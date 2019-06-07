@@ -1,0 +1,262 @@
+---
+title: "Steel.Shuman.2016"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 786
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Steel.Shuman.2016
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Steel.Shuman.2016.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Steel.Shuman.2016.lpd)
+            
+
+[Download paleoData only (csv)](Steel.Shuman.2016.csv)
+            
+
+[Download chronData only (csv)](Steel.Shuman.2016-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Shuman, Bryan N."), list(name = "Marsicek, Jeremiah"))
+<p style="margin-left: 10px"><strong>citeKey: </strong>shuman2016thestructureofholocenecli
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>141
+<p style="margin-left: 10px"><strong>title: </strong>The structure of Holocene climate change in mid-latitude North America
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "NEEDS AUTHORS!"))
+<p style="margin-left: 10px"><strong>citeKey: </strong>needs0needsatitle
+<p style="margin-left: 10px"><strong>title: </strong>NEEDS A TITLE!
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>46.97
+<p style="margin-left: 0px"><strong>longitude: </strong>-94.68
+<p style="margin-left: 0px"><strong>elevation: </strong>415
+<p style="margin-left: 0px"><strong>siteName: </strong>Steel
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rko6qI7oBTv
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>ROutZbRTiXj
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>MTWM (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH64430e77
+<p style="margin-left: 10px"><strong>variableName: </strong>MTWM
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3fe6238e
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+</details>
+<details style="margin-left: 10px">
+<summary>dummy2 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD31e9490f
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy2
+</details>
+<details style="margin-left: 10px">
+<summary>dummy3 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD8e4ce229
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy3
+</details>
+<details style="margin-left: 10px">
+<summary>dummy4 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3198f48e
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy4
+</details>
+<details style="margin-left: 10px">
+<summary>dummy5 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD46771a07
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy5
+</details>
+<details style="margin-left: 10px">
+<summary>dummy6 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7c3f3beb
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy6
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### MTWM (degC)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### dummy2 ()
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### dummy3 ()
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### dummy4 ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### dummy5 ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### dummy6 ()
+```{r}
+plotCol(chronTS,ind = 6)
+```

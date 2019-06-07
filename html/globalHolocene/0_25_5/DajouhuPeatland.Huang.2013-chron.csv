@@ -1,0 +1,16 @@
+age (yr bp),depthTop (cm),depthBot (cm),type (NA),error_plus (yr),error_minus (yr),includeY/N (NA)
+-55,0,1,Core top,NA,NA,NA
+2455,34,35,C14 Uncalibrated,2410,2500,Y
+2830,38,39,C14 Uncalibrated,2790,2879,Y
+3540,60,61,C14 Uncalibrated,3500,3580,Y
+4225,77,78,C14 Uncalibrated,4185,4265,Y
+4460,88,89,C14 Uncalibrated,4420,4500,Y
+5980,100,101,C14 Uncalibrated,5940,6020,Y
+8365,113,114,C14 Uncalibrated,8405,8325,Y
+8565,122,123,C14 Uncalibrated,8525,8605,Y
+8780,140,141,C14 Uncalibrated,8740,8820,Y
+9135,159,160,C14 Uncalibrated,9095,9175,Y
+9295,180,181,C14 Uncalibrated,9255,9335,Y
+9890,220,221,C14 Uncalibrated,9830,9950,Y
+10495,254,255,C14 Uncalibrated,10435,10555,Y
+11300,260,261,C14 Uncalibrated,11260,11340,Y

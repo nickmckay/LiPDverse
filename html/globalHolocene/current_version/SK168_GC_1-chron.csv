@@ -1,0 +1,6 @@
+depth (cm),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr)
+1,14C,0,2,2,planktonic foraminifera,Mixed G. ruber and G. sacculifer,OS-64674,1.44,0.03
+76,14C,75,77,2,planktonic foraminifera,Mixed G. ruber and G. sacculifer,OS-64675,9.65,0.03
+96,14C,95,97,2,planktonic foraminifera,Mixed G. ruber and G. sacculifer,OS-64676,10.85,0.05
+217.5,14C,215,220,5,planktonic foraminifera,Mixed G. ruber and G. sacculifer,OS-64677,27.9,0.022
+332.5,14C,330,335,5,planktonic foraminifera,Mixed G. ruber and G. sacculifer,OS-64678,41.3,0.53

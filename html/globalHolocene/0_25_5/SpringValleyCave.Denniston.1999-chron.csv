@@ -1,0 +1,11 @@
+age (yr BP),CoreID (),DistanceFromBottom_cm_ (),x238U_ng_g_ (),x232Th_pg_g_ (),d234U_measured_ (),d234UError_measured_ (),x230Th_238UActivity (),x230Th_238UErrorActivity (),x230th_232ThAtomic (),x230th_232ThErrorAtomic (),error (yr),Comments ()
+8295,SV-1,2.3,1260,2400,660,-3,0.123,-1,0.001,-1,-90,Original Age was listed in years before measurement date given as the range 1994-1996 AD. Rodysill corrected to years before 1950 AD by assuming original age was years before 1995 AD
+7835,SV-1,7.6,1340,1340,650,-3,0.116,-90,0.002,-2,-60,NA
+4465,SV-1,20,1590,780,690,-4,0.069,-3,0.002,-2,-30,NA
+4255,SV-1,27.7,2410,690,630,-2,0.063,-4,0.004,-60,-30,NA
+3355,SV-1,37.5,1570,480,670,-10,0.051,-3,0.003,-3,-30,NA
+1655,SV-1,53.5,1920,4080,660,-3,0.026,-9,0,-8,-60,NA
+605,SV-1,60.2,1730,2190,710,-5,0.011,-1,0,-2,-10,NA
+6255,SV-2,18.8,1800,1330,700,-4,0.096,-21,0.002,-6,-140,NA
+2885,SV-2,46.6,1710,1760,670,-4,0.045,-36,0.001,-74,-240,NA
+1975,SV-2,54,1280,2790,704,-3,0.032,-1,0,-2,-20,NA

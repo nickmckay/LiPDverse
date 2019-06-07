@@ -1,0 +1,498 @@
+---
+title: "LagunaDeJuanacatlan.Jones.2015"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 421
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LagunaDeJuanacatlan.Jones.2015
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LagunaDeJuanacatlan.Jones.2015.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/LagunaDeJuanacatlan.Jones.2015.lpd)
+            
+
+[Download paleoData only (csv)](LagunaDeJuanacatlan.Jones.2015.csv)
+            
+
+[Download chronData only (csv)](LagunaDeJuanacatlan.Jones.2015-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.sciencedirect.com/science/article/pii/S0277379115300433
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Jones, Matthew D."), list(name = "Metcalfe, Sarah E."), list(name = "Davies, Sarah J."), list(name = "Noren, Anders"))
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>124
+<p style="margin-left: 10px"><strong>pages: </strong>290-295
+<p style="margin-left: 10px"><strong>title: </strong>Late Holocene climate reorganisation and the North American Monsoon
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Metcalfe, S.E."), list(name = "Jones, M.D."), list(name = "Davies, S.J."), list(name = "Noren, A."), list(name = "MacKenzie, A."))
+<p style="margin-left: 10px"><strong>journal: </strong>The Holocene
+<p style="margin-left: 10px"><strong>volume: </strong>20
+<p style="margin-left: 10px"><strong>pages: </strong>290-295
+<p style="margin-left: 10px"><strong>title: </strong>Climate variability over the last two millennia in the North American Monsoon region, recorded in laminated lake sediments from Laguna de Juanacatlán, Mexico
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>20.6293
+<p style="margin-left: 0px"><strong>longitude: </strong>-104.7364
+<p style="margin-left: 0px"><strong>elevation: </strong>2000
+<p style="margin-left: 0px"><strong>siteName: </strong>Laguna de Juanacatlan
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB988cf23d
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBce52080e
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>Ti_peakArea (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe11c862a
+<p style="margin-left: 10px"><strong>variableName: </strong>Ti_peakArea
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>indicator or terriginous runnoff
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD01441887
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBddfe7278
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa25ed912
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>Ti_norm (missing) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD91196716
+<p style="margin-left: 10px"><strong>variableName: </strong>Ti_norm
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>indicator or terriginous runnoff
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (missing) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe9872299
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5b7ccf1d
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD77079478
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>14 C age
+</details>
+<details style="margin-left: 10px">
+<summary>ref (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD70dfd68a
+<p style="margin-left: 10px"><strong>variableName: </strong>ref
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>core (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDacd3cbf1
+<p style="margin-left: 10px"><strong>variableName: </strong>core
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>type (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDba366732
+<p style="margin-left: 10px"><strong>variableName: </strong>type
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Core_depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe61386e4
+<p style="margin-left: 10px"><strong>variableName: </strong>Core_depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>Depth of top of sample (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD307ab71a
+<p style="margin-left: 10px"><strong>variableName: </strong>Depth of top of sample
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>Depth of bottom of sample (cm) (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD923a546d
+<p style="margin-left: 10px"><strong>variableName: </strong>Depth of bottom of sample (cm)
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>14C enrichment (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd5383e51
+<p style="margin-left: 10px"><strong>variableName: </strong>14C enrichment
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>youngest_error (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9de8429d
+<p style="margin-left: 10px"><strong>variableName: </strong>youngest_error
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>oldest_error (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe29dccd6
+<p style="margin-left: 10px"><strong>variableName: </strong>oldest_error
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>calibrated age (yrs before 1950 AD) (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd936b049
+<p style="margin-left: 10px"><strong>variableName: </strong>calibrated age (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>youngest calibrated age (yrs before 1950 AD) (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1685ea2f
+<p style="margin-left: 10px"><strong>variableName: </strong>youngest calibrated age (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>oldest calibrated age (yrs before 1950 AD) (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfc9f1dca
+<p style="margin-left: 10px"><strong>variableName: </strong>oldest calibrated age (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>1 sigma or 2 sigma? (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb9275a55
+<p style="margin-left: 10px"><strong>variableName: </strong>1 sigma or 2 sigma?
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Reservoir Correction/R (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD36774e07
+<p style="margin-left: 10px"><strong>variableName: </strong>Reservoir Correction/R
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Calibration used (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDee277fcf
+<p style="margin-left: 10px"><strong>variableName: </strong>Calibration used
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Comments (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD413cf3ef
+<p style="margin-left: 10px"><strong>variableName: </strong>Comments
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>probability (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD39d52b77
+<p style="margin-left: 10px"><strong>variableName: </strong>probability
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD720e2d85
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Ti_peakArea (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### CAL (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Ti_norm (missing) [2-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### CAL (missing) [2-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### age (yr BP)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### ref (unitless)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### core (unitless)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### type (unitless)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### Core_depth (cm)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### Depth of top of sample (cm)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### Depth of bottom of sample (cm) (cm)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### 14C enrichment (unitless)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### youngest_error (yr BP)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### oldest_error (yr BP)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### calibrated age (yrs before 1950 AD) (yr BP)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### youngest calibrated age (yrs before 1950 AD) (yr BP)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### oldest calibrated age (yrs before 1950 AD) (yr BP)
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### 1 sigma or 2 sigma? (unitless)
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### Reservoir Correction/R (unitless)
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### Calibration used (unitless)
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### Comments (unitless)
+```{r}
+plotCol(chronTS,ind = 18)
+```
+
+### probability (unitless)
+```{r}
+plotCol(chronTS,ind = 19)
+```
+
+### d13C (unitless)
+```{r}
+plotCol(chronTS,ind = 20)
+```

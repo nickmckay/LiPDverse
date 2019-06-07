@@ -1,0 +1,22 @@
+depth (cm),age (yrBP),old_depth (cm),error (yr),material (NA),type (NA)
+1,-51.6,1,NA,bulk sed,pb210
+3,-46.04,3,NA,bulk sed,pb210
+5,-39.05,5,NA,bulk sed,pb210
+7,-29.43,7,NA,bulk sed,pb210
+9,-10.74,9,NA,bulk sed,pb210
+11,19.38,11,NA,bulk sed,pb210
+13,55.36,13,NA,bulk sed,pb210
+14,81.11,14,NA,bulk sed,pb210
+73,785,73,70,Engelmann spruce needle,AMS14C
+117,1590,117,70,Betula cone scale,AMS14C
+156.5,2400,157.5,NA,Bridge River tephra (1 cm thickness),tephra
+201,3640,203,NA,S. Hellens Yn tephra (1 cm thickness),tephra
+222,3945,224,70,Engelmann spruce needle,AMS14C
+254,4750,256,70,Engelmann spruce needle,AMS14C
+298,6385,300,70,Leaf petiole,AMS14C
+345,7627,355,NA,Mazama,tephra
+391,7760,401,90,Leaf (Betula or alnus?),AMS14C
+457,8360,467,70,Leaf (Betula or alnus?),AMS14C
+526,8530,536,180,Plant material (petiole?),AMS14C
+588,9020,598,70,Leaf (Betula or alnus?),AMS14C
+662,9520,672,90,Lodgepole pine needle,AMS14C

@@ -1,0 +1,285 @@
+---
+title: "MorrisPond.Morris.2013"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 588
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MorrisPond.Morris.2013
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MorrisPond.Morris.2013.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/MorrisPond.Morris.2013.lpd)
+            
+
+[Download paleoData only (csv)](MorrisPond.Morris.2013.csv)
+            
+
+[Download chronData only (csv)](MorrisPond.Morris.2013-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Morris, Jesse L."), list(name = "Brunelle, Andrea"), list(name = "DeRose, R. Justin"), list(name = "Seppae, Heikki"), list(name = "Power, Mitchell J."), list(name = "Carter, Vachel"), list(name = "Bares, Ryan"))
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Research
+<p style="margin-left: 10px"><strong>volume: </strong>79
+<p style="margin-left: 10px"><strong>pages: </strong>24-36
+<p style="margin-left: 10px"><strong>title: </strong>Using fire regimes to delineate zones in a high-resolution lake sediment record from the western United States
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>37.6744
+<p style="margin-left: 0px"><strong>longitude: </strong>-112.7747
+<p style="margin-left: 0px"><strong>elevation: </strong>3126
+<p style="margin-left: 0px"><strong>siteName: </strong>Morris pond
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB672f66e5
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7513fcd6
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>ArtAmb (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB90956c0c
+<p style="margin-left: 10px"><strong>variableName: </strong>ArtAmb
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>ArtChenoSar (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa30eb517
+<p style="margin-left: 10px"><strong>variableName: </strong>ArtChenoSar
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>description: </strong>"Pollen ratios were calculated using the equation (a  b)/(a + b)." "The Artemisia/ Chenopodiaceae (AC) ratio is commonly used as a qualitative proxy for past annual growing season moisture availability in arid and semi-arid regions because Artemisia requires more growing season moisture than Chenopodiaceae"
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>eff
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdde3a1a4
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe5c11798
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe1c8bca0
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>maerial (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb395163b
+<p style="margin-left: 10px"><strong>variableName: </strong>maerial
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>type (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB847c5a9b
+<p style="margin-left: 10px"><strong>variableName: </strong>type
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>calibrated_YN (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf0660e25
+<p style="margin-left: 10px"><strong>variableName: </strong>calibrated_YN
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### ArtAmb (missing)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### ArtChenoSar (missing)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### age (yr BP)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### error (unitless)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### maerial (NA)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### type (NA)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### calibrated_YN (NA)
+```{r}
+plotCol(chronTS,ind = 6)
+```

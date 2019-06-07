@@ -1,0 +1,388 @@
+---
+title: "Elsinore.Kirby.2010"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 27
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Elsinore.Kirby.2010
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Elsinore.Kirby.2010.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Elsinore.Kirby.2010.lpd)
+            
+
+[Download data only (csv)](Elsinore.Kirby.2010.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/12200
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>citeKey: </strong>kirby2010aholocenerecordofpacificd
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>44
+<p style="margin-left: 10px"><strong>pages: </strong>819-839
+<p style="margin-left: 10px"><strong>pubYear: </strong>2010
+<p style="margin-left: 10px"><strong>title: </strong>A Holocene record of Pacific Decadal Oscillation (PDO)-related hydrologic variability in Southern California (Lake Elsinore, CA)
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>33.6733
+<p style="margin-left: 0px"><strong>longitude: </strong>-117.3542
+<p style="margin-left: 0px"><strong>elevation: </strong>379
+<p style="margin-left: 0px"><strong>siteName: </strong>Elsinore
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB61e0247e
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb6fe494a
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3b82999e
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>Sand (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHe74bbbb1
+<p style="margin-left: 10px"><strong>variableName: </strong>Sand
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d0x2800x2E10x29 (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD757c20b9dp
+<p style="margin-left: 10px"><strong>variableName: </strong>d0x2800x2E10x29
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d0x2800x2E50x29 (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1fa4d0bedp
+<p style="margin-left: 10px"><strong>variableName: </strong>d0x2800x2E50x29
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d0x2800x2E90x29 (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9b7b0312dp
+<p style="margin-left: 10px"><strong>variableName: </strong>d0x2800x2E90x29
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x00x2E020xB5m0x2D30x2E890xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfd2a0239dp
+<p style="margin-left: 10px"><strong>variableName: </strong>x00x2E020xB5m0x2D30x2E890xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x30x2E900xB5m0x2D70x2E790xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDdd8c4ff1dp
+<p style="margin-left: 10px"><strong>variableName: </strong>x30x2E900xB5m0x2D70x2E790xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x70x2E800xB5m0x2D150x2E590xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD543c622edp
+<p style="margin-left: 10px"><strong>variableName: </strong>x70x2E800xB5m0x2D150x2E590xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x150x2E600xB5m0x2D300x2E990xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf8072f4edp
+<p style="margin-left: 10px"><strong>variableName: </strong>x150x2E600xB5m0x2D300x2E990xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x310x2E000xB5m0x2D620x2E490xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDece0f148dp
+<p style="margin-left: 10px"><strong>variableName: </strong>x310x2E000xB5m0x2D620x2E490xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x620x2E500xB5m0x2D1240x2E990xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro224
+<p style="margin-left: 10px"><strong>variableName: </strong>x620x2E500xB5m0x2D1240x2E990xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x1250x2E000xB5m0x2D2490x2E990xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro225
+<p style="margin-left: 10px"><strong>variableName: </strong>x1250x2E000xB5m0x2D2490x2E990xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x2500x2E000xB5m0x2D4990x2E990xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro226
+<p style="margin-left: 10px"><strong>variableName: </strong>x2500x2E000xB5m0x2D4990x2E990xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x5000x2E000xB5m0x2D10000x2E000xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH15ca2210
+<p style="margin-left: 10px"><strong>variableName: </strong>x5000x2E000xB5m0x2D10000x2E000xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>x10000x2E010xB5m0x2D20000x2E000xB5m (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH7ab71922
+<p style="margin-left: 10px"><strong>variableName: </strong>x10000x2E010xB5m0x2D20000x2E000xB5m
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Mode (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH2bd5a57d
+<p style="margin-left: 10px"><strong>variableName: </strong>Mode
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Clay (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH9557767b
+<p style="margin-left: 10px"><strong>variableName: </strong>Clay
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Silt (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH772045af
+<p style="margin-left: 10px"><strong>variableName: </strong>Silt
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sand (percent)
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### d0x2800x2E10x29 (unitless)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d0x2800x2E50x29 (unitless)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### d0x2800x2E90x29 (unitless)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### x00x2E020xB5m0x2D30x2E890xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### x30x2E900xB5m0x2D70x2E790xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### x70x2E800xB5m0x2D150x2E590xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### x150x2E600xB5m0x2D300x2E990xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### x310x2E000xB5m0x2D620x2E490xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### x620x2E500xB5m0x2D1240x2E990xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### x1250x2E000xB5m0x2D2490x2E990xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### x2500x2E000xB5m0x2D4990x2E990xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### x5000x2E000xB5m0x2D10000x2E000xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### x10000x2E010xB5m0x2D20000x2E000xB5m (unitless)
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### Mode (unitless)
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### Clay (unitless)
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### Silt (unitless)
+```{r}
+plotCol(thisTS,ind = 19)
+```

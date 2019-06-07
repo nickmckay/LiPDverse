@@ -1,0 +1,18 @@
+depth (cm),age (kyr),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),ageUncertainty (kyr),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),notes ()
+13,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",89142,0.545,0.035,turbidite around 220-230 cm
+18,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",89143,0.64,0.035,turbidite around 220-230 cm
+23,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,G. sacculifer,98502,1.15,0.025,turbidite around 220-230 cm
+28,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,G. ruber,98506,1.57,0.035,turbidite around 220-230 cm
+33,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,G. sacculifer,98508,2.07,0.025,turbidite around 220-230 cm
+38,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,G. sacculifer,98510,2.24,0.015,turbidite around 220-230 cm
+43,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,G. sacculifer,98518,2.525,0.03,turbidite around 220-230 cm
+48,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,G. sacculifer,98520,2.76,0.03,turbidite around 220-230 cm
+150,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",103701,6.52,0.02,turbidite around 220-230 cm
+200,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",103702,8.33,0.07,turbidite around 220-230 cm
+223,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",103703,9.14,0.09,turbidite around 220-230 cm
+273,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",127998,13.265,0.035,turbidite around 220-230 cm
+300,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",103705,15.235,0.05,turbidite around 220-230 cm
+328,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",127999,19.28,0.045,turbidite around 220-230 cm
+367,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",103706,29.74,0.49,turbidite around 220-230 cm
+385,NA,14C,NA,NA,NA,NA,planktic foraminifera calcite,"G. ruber, G. sacculifer",103707,31.14,0.24,turbidite around 220-230 cm
+15.5,0.067,tephra,13,18,5,0,tephra,NA,NA,NA,NA,"GeoB 10043–3: 13–18 cm; GeoB 10042–1: 6–8 cm core depth) that has been linked to the Krakatau eruption in 1883 [Southon et al., 2013]"

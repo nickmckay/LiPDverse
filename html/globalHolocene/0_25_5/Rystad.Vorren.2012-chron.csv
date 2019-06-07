@@ -1,0 +1,2 @@
+depth (mm) [1-1],age (bp) [1-1],Carbon (mg) [1-1],age14C (bp) [1-1],age_error (1s) [1-1],cal_age_error (2s) [1-1],depth (mm) [2-1],age (bp) [2-1],Carbon (mg) [2-1],age14C (bp) [2-1],age_error (1s) [2-1],cal_age_error (2s) [2-1],age_type () [2-1],core_name () [2-1],lab_id () [2-1],material_dated () [2-1]
+180,304,12.4,260,50,80,1,9,2,0,1,.,2,1,3,5

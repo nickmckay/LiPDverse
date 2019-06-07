@@ -1,0 +1,88 @@
+depth (cm),age (kyr),dateType (),thickness (cm),measurementMaterial (),sensorSpecies (),measurementN (),labID (),age14C (kyr),age14CUncertainty (kyr),age14CHi (kyr),age14CLow (kyr),reservoirAge (kyr),reservoirAgeUncertainty (kyr),calibrationCurve (),ageUncertainty2sigLo (kyr),ageUncertainty2sigHi (kyr),notes ()
+0.5,0.977,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19597,1.515,0.03,NA,NA,0.464,0.024,MARINE98,1.068,0.919,NA
+14.5,1.624,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19598,2.13,0.04,NA,NA,0.464,0.024,MARINE98,1.747,1.52,NA
+34.5,2.358,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19599,2.78,0.04,NA,NA,0.464,0.024,MARINE98,2.567,2.309,NA
+52.5,3.267,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19600,3.465,0.035,NA,NA,0.464,0.024,MARINE98,3.361,3.161,NA
+72.5,4.343,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19601,4.295,0.03,NA,NA,0.464,0.024,MARINE98,4.416,4.219,NA
+104.5,5.694,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19602,5.405,0.035,NA,NA,0.464,0.024,MARINE98,5.83,5.596,NA
+120.5,6.55,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19603,6.19,0.035,NA,NA,0.464,0.024,MARINE98,6.654,6.44,NA
+149.5,7.866,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19604,7.485,0.045,NA,NA,0.464,0.024,MARINE98,7.971,7.758,NA
+167.5,8.966,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19605,8.575,0.04,NA,NA,0.464,0.024,MARINE98,9.3,8.864,NA
+201.5,10.298,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19606,9.66,0.045,NA,NA,0.464,0.024,MARINE98,11.102,9.896,NA
+227.5,11.166,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19607,10.37,0.05,NA,NA,0.464,0.024,MARINE98,11.902,10.997,NA
+251.5,12.907,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19608,11.415,0.05,NA,NA,0.464,0.024,MARINE98,13.742,12.645,NA
+275.5,14.113,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19609,12.705,0.055,NA,NA,0.464,0.024,MARINE98,15.236,13.689,NA
+291.5,14.972,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19610,13.02,0.055,NA,NA,0.464,0.024,MARINE98,15.496,13.718,NA
+316.5,16.44,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19611,14.26,0.07,NA,NA,0.464,0.024,MARINE98,16.941,15.974,NA
+338.5,17.763,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19612,15.41,0.07,NA,NA,0.464,0.024,MARINE98,18.338,17.247,NA
+364.5,18.833,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19613,16.34,0.08,NA,NA,0.464,0.024,MARINE98,19.471,18.257,NA
+390.5,20.099,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19614,17.44,0.09,NA,NA,0.464,0.024,MARINE98,20.775,19.455,NA
+424.5,21.883,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19615,18.99,0.1,NA,NA,0.464,0.024,MARINE98,22.63,21.19,NA
+440.5,22.999,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19616,19.96,0.11,NA,NA,0.464,0.024,MARINE98,23.922,22.264,NA
+591.5,32.42,14C,NA,planktonic foraminifera,G. ruber,1500-3000,KIA 19617,29.92,0.32,NA,NA,0.464,0.024,MARINE98,33.42,31.42,NA
+500,27.51,14C,1,planktonic foraminifera,G. ruber,1500.0,KIA 31094,23.21,0.17,NA,NA,0.3,NA,NA,NA,NA,"not clear why these were not used by Sarnthein et al., 2011"
+534,29.53,14C,1,planktonic foraminifera,G. ruber,1500.0,KIA 31095,24.97,0.21,NA,NA,0.3,NA,NA,NA,NA,"not clear why these were not used by Sarnthein et al., 2011"
+591.5,35.04,14C,1,planktonic foraminifera,G. ruber,1500.0,KIA 19617,29.92,NA,0.33,0.31,0.3,NA,NA,NA,NA,"not clear why these were not used by Sarnthein et al., 2011"
+642,39.63,14C,1,planktonic foraminifera,G. ruber,1500.0,KIA 31096,34.56,NA,0.65,0.6,0.3,NA,NA,NA,NA,"not clear why these were not used by Sarnthein et al., 2011"
+683,40.67,14C,1,planktonic foraminifera,G. ruber,1500.0,KIA 31785,35.66,NA,0.75,0.69,0.3,NA,NA,NA,NA,"not clear why these were not used by Sarnthein et al., 2011"
+245.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39647,9.69,0.045,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+248.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39648,10.905,0.055,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+254.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39649,10.995,0.055,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+257.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39650,11.375,0.05,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+261.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34608,11.67,0.05,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+263.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA40210,12.26,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+266.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA40211,12.26,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+268.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32928,12.15,0.055,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+272.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39651,12.08,0.055,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+279.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34609,12.43,0.06,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+284.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32929,12.66,0.058,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+287.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34610,12.61,0.055,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+295.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34611,12.58,0.06,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+297.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA40212,13.27,0.06,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+300.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34612,13.47,0.06,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+304.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32930,13.58,0.065,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+306.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34625,13.64,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+310.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32931,13.725,0.065,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+314.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34613,13.94,0.06,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+320.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34614,14.5,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+330.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32932,14.93,0.085,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+334.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34615,15.16,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+338.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32933,15.23,0.075,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+344.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34616,15.31,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+350.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32934,15.39,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+355.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38754,15.625,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+358.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32935,15.48,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+361.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA36181,16.21,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+363.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38755,16.31,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+366.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38756,16.53,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+368.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34617,16.5,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+372.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34618,16.79,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+378.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32936,16.95,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+382.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34619,17.47,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+386.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34620,17.37,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+388.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32937,17.41,0.095,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+394.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34621,17.74,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+397.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA36182,17.83,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+400.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34624,16.88,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+402.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA36183,17.89,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+404.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA32938,17.725,0.1,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+405.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38207,18.34,0.14,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+406.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38208,18.41,0.11,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+408.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34622,18.44,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+412.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA34623,18.49,0.1,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+414.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38209,17.82,0.1,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+417.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA36184,18.67,0.11,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+420.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38228,18.89,0.12,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+429.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA36185,19.05,0.1,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+432.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39652,18.79,0.11,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+434.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA38229,18.22,0.11,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+436.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39653,19.26,0.11,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+438.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39654,19.06,0.1,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+445.5,NA,14C,NA,planktonic foraminifera,G. ruber,NA,KIA39655,20.28,0.12,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+278.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA37022,13.6,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+293.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA37023,14.17,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+325.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA36547,15.77,0.07,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+361.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA36548,17.21,0.08,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+382.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA34601,18.25,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+397.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA36549,18.73,0.09,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching
+417.5,NA,14C,NA,mixed bentic foraminifera,NA,NA,KIA36550,19.81,0.11,NA,NA,NA,NA,NA,NA,NA,used for 14C plateau matching

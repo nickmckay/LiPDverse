@@ -1,0 +1,305 @@
+---
+title: "kjennsvatn.Bakke.2010"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 387
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#kjennsvatn.Bakke.2010
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](kjennsvatn.Bakke.2010.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/kjennsvatn.Bakke.2010.lpd)
+            
+
+[Download paleoData only (csv)](kjennsvatn.Bakke.2010.csv)
+            
+
+[Download chronData only (csv)](kjennsvatn.Bakke.2010-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/15444
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Bakke, Jostein"), list(name = "Dahl, Svein Olaf"), list(name = "Paasche, OEyvind"), list(name = "Riis Simonsen, Joachim"), list(name = "Kvisvik, Bjoern"), list(name = "Bakke, Kristina"), list(name = "Nesje, Atle"))
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>29
+<p style="margin-left: 10px"><strong>title: </strong>A complete record of Holocene glacier variability at Austre Okstindbreen, northern Norway: an integrated approach
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>66
+<p style="margin-left: 0px"><strong>longitude: </strong>14.26
+<p style="margin-left: 0px"><strong>elevation: </strong>527
+<p style="margin-left: 0px"><strong>siteName: </strong>kjennsvatn
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT77ALCMII
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTTXUAHBU4
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>ELA (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTBCO0IORS
+<p style="margin-left: 10px"><strong>variableName: </strong>ELA
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>ANN
+<p style="margin-left: 20px"><strong>variable: </strong>ELA
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>bulk density (g cm-1)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTZWIGM5E7
+<p style="margin-left: 10px"><strong>variableName: </strong>bulk density
+<p style="margin-left: 10px"><strong>units: </strong>g cm-1
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ELA_alt (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTTKY1AMSA
+<p style="margin-left: 10px"><strong>variableName: </strong>ELA_alt
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>error (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTTFA8BXM8
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTB600ACSQ
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTZ48RK3L2
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (1 sigma)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTY6FD8I7Q
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>1 sigma
+</details>
+<details style="margin-left: 10px">
+<summary>age_type ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTUUFXEF05
+<p style="margin-left: 10px"><strong>variableName: </strong>age_type
+</details>
+<details style="margin-left: 10px">
+<summary>core_name ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTXXCH2030
+<p style="margin-left: 10px"><strong>variableName: </strong>core_name
+</details>
+<details style="margin-left: 10px">
+<summary>lab_id ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT7QC24J4N
+<p style="margin-left: 10px"><strong>variableName: </strong>lab_id
+</details>
+<details style="margin-left: 10px">
+<summary>material_dated ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT90T0BBMY
+<p style="margin-left: 10px"><strong>variableName: </strong>material_dated
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### ELA (mm)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### bulk density (g cm-1)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### ELA_alt (mm)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### error (missing)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### age14C (bp)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age_error (1 sigma)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### age_type ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### core_name ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### lab_id ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### material_dated ()
+```{r}
+plotCol(chronTS,ind = 7)
+```

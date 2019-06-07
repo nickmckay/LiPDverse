@@ -1,0 +1,18 @@
+depth (cm),age (kyr),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),ageUncertainty (kyr),measurementMaterial (),sensorSpecies (),measurementN (),labID (),age14C (kyr),age14CUncertainty (kyr),age14CHi (kyr),age14CLow (kyr),rejected (),notes ()
+22.5,NA,14C,22,23,1,NA,planktic foraminifera calcite,G. bulloides,800,KIA 18807,2.585,0.03,NA,NA,NA,variable reservoir age
+36.5,NA,14C,36,37,1,NA,planktic foraminifera calcite,G. bulloides,900,KIA 18808,3.895,0.06,NA,NA,NA,variable reservoir age
+98.5,NA,14C,98,99,1,NA,planktic foraminifera calcite,G. bulloides,940,KIA 18809,7.56,0.04,NA,NA,NA,variable reservoir age
+168.5,NA,14C,168,169,1,NA,planktic foraminifera calcite,G. bulloides,850,KIA 18810,10.55,0.05,NA,NA,NA,variable reservoir age
+192.5,NA,14C,192,193,1,NA,planktic foraminifera calcite,G. bulloides,920,KIA 18811,10.65,0.055,NA,NA,NA,variable reservoir age
+202.5,NA,14C,202,203,1,NA,planktic foraminifera calcite,G. bulloides,1100,KIA 18812,11.24,0.05,NA,NA,NA,variable reservoir age
+230.5,NA,14C,230,231,1,NA,planktic foraminifera calcite,G. bulloides,910,KIA 18813,12.665,0.06,NA,NA,NA,variable reservoir age
+252.5,NA,14C,252,253,1,NA,planktic foraminifera calcite,G. bulloides,1450,KIA 18814,13.155,0.06,NA,NA,NA,variable reservoir age
+266.5,NA,14C,266,267,1,NA,planktic foraminifera calcite,G. bulloides,850,KIA 18815,14.73,0.07,NA,NA,NA,variable reservoir age
+301.5,NA,14C,300,303,3,NA,planktic foraminifera calcite,G. bulloides and N. pachyderma,749,KIA 18816/17,14.04,0.08,NA,NA,NA,variable reservoir age
+391,NA,14C,390,392,2,NA,planktic foraminifera calcite,G. bulloides and N. pachyderma,854,KIA 18821,16.38,0.19,NA,NA,TRUE,variable reservoir age
+446.5,NA,14C,446,447,1,NA,planktic foraminifera calcite,G. bulloides and N. pachyderma,631,KIA 18823,16.67,0.1,NA,NA,TRUE,variable reservoir age
+525,NA,14C,524.5,525.5,1,NA,planktic foraminifera calcite,G. bulloides and N. pachyderma,942,KIA 18824,26.61,0.22,NA,NA,NA,variable reservoir age
+573,NA,14C,572.5,573.5,1,NA,planktic foraminifera calcite,G. bulloides and N. pachyderma,803,KIA 18825,29.65,NA,0.32,0.31,NA,variable reservoir age
+633,NA,14C,632.5,633.5,1,NA,planktic foraminifera calcite,G. bulloides and N. pachyderma,823,KIA 18826,32.3,NA,0.43,0.41,NA,variable reservoir age
+471,26.17,tephra,NA,NA,NA,0.23,tephra,NA,NA,NA,NA,NA,NA,NA,NA,"Kawakawa tephra, age as used in Pahnke et al. Uncertainty from 
+https://doi.org/10.1017/S0016756800010232"

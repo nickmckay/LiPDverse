@@ -1,0 +1,9 @@
+depth (cm),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr)
+11.5,14C,10,13,3,planktic foraminfera,N. pachyderma sinistral,KIA 38738,0.675,0.069,0.4
+51.5,14C,50,53,3,planktic foraminfera,N. pachyderma sinistral,KIA 38700,2.125,0.092,0.4
+102.5,14C,102,103,1,planktic foraminfera,N. pachyderma sinistral,KIA 43851,3.82,0.1,0.4
+131.5,14C,130,133,3,planktic foraminfera,N. pachyderma sinistral,KIA 38739,4.95,0.118,0.4
+181,14C,180,182,2,planktic foraminfera,N. pachyderma sinistral,KIA 43852,6.12,0.107,0.4
+231.5,14C,230,233,3,planktic foraminfera,N. pachyderma sinistral,KIA 38740,7.29,0.097,0.4
+302,14C,301.5,302.5,1,planktic foraminfera,N. pachyderma sinistral,KIA 43853,8.585,0.14,0.4
+371.5,14C,370,373,3,planktic foraminfera,N. pachyderma sinistral,KIA 38701,9.49,0.134,0.4

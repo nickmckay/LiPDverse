@@ -2,6 +2,7 @@
 title: "LiPD-Dashboards"
 output: 
   flexdashboard::flex_dashboard:
+    vertical_layout: scroll
     theme: bootstrap
     source_code: embed
     orientation: rows
@@ -27,8 +28,8 @@ load("../../temp.Rdata")
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
 
-good <- which(!(varNames %in% c("year","depth","age")))
-TS <- TS[good]
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
 
 
 #All datasets
@@ -49,5 +50,6 @@ map.meta <- data.frame(dataSetName = udsn, #datasetname
                       # elev = elev,#elevation
                        archiveType = factor(archiveType),#archiveType
                        link = link)#Link
+
 
 #set index number

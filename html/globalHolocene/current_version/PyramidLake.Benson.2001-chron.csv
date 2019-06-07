@@ -1,0 +1,48 @@
+depth (cm),age (yr BP),Reference (unitless),Site Name (unitless),State (unitless),Core ID (unitless),Lab ID (unitless),Type of material dated (unitless),Depth of top of sample (cm) (unitless),Depth of bottom of sample (cm) (unitless),error youngest (yr BP),error oldest (yr BP),error (yr),calibrated age (yrs before 1950 AD) (yr BP),youngest calibrated age (yrs before 1950 AD) (yr BP),oldest calibrated age (yrs before 1950 AD) (yr BP),1 sigma or 2 sigma? (unitless),Reservoir Correction/R (unitless),Calibration used (unitless),Comments (unitless)
+10,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,230,210,250,NA,NA,NA,original 2002 age model 14C had possible reservoir effect pmag values used in updated 2014 age model
+60,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,600,575,625,NA,NA,NA,first order polynomial was fit through age control points
+65,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,625,600,650,NA,NA,NA,NA
+80,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,750,725,775,NA,NA,NA,NA
+95,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,875,850,900,NA,NA,NA,NA
+120,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,900,875,925,NA,NA,NA,NA
+160,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,1075,1050,1100,NA,NA,NA,NA
+190,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,1150,1125,1175,NA,NA,NA,NA
+210,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,1275,1225,1325,NA,NA,NA,NA
+270,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,1550,1500,1600,NA,NA,NA,NA
+275,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,1600,1525,1675,NA,NA,NA,NA
+325,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,1850,1800,1900,NA,NA,NA,NA
+380,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,2142,2042,2242,NA,NA,NA,NA
+395,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,2158,2058,2258,NA,NA,NA,NA
+480,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,2426,2301,2551,NA,NA,NA,NA
+475,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,2426,2301,2551,NA,NA,NA,NA
+510,NA,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC97-1,NA,inclination/declination pmag,NA,NA,NA,NA,NA,2741,2616,2866,NA,NA,NA,NA
+63,3980,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-55079,14C (TOC),62.5,63.5,3930,4030,50,3600,NA,NA,NA,600,NA,reservoir correction applied before calibration
+77,4180,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54967,14C (TOC),76.5,77.5,4140,4220,40,NA,NA,NA,NA,600,NA,2nd order polynomial was fit through age control points
+101.5,4330,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54968,14C (TOC),101,102,4280,4380,50,NA,NA,NA,NA,600,NA,NA
+107,4390,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-53001,14C (TOC),106.5,107.5,4350,4430,40,NA,NA,NA,NA,600,NA,NA
+129,4500,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-53002,14C (TOC),128.5,129.5,4460,4540,40,NA,NA,NA,NA,600,NA,NA
+154,4850,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-53003,14C (TOC),153.5,154.5,4810,4890,40,NA,NA,NA,NA,600,NA,NA
+179,4850,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-53004,14C (TOC),178.5,179.5,4810,4890,40,NA,NA,NA,NA,600,NA,NA
+194,4900,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51321,14C (TOC),193.5,194.5,4860,4940,40,NA,NA,NA,NA,600,NA,NA
+196,4960,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-53005,14C (TOC),195.5,196.5,4920,5000,40,NA,NA,NA,NA,600,NA,NA
+217,5040,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51322,14C (TOC),216.5,217.5,5000,5080,40,4890,NA,NA,NA,600,NA,NA
+243,5790,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51323,14C (TOC),242.5,243.5,5750,5830,40,NA,NA,NA,NA,600,NA,NA
+247,5870,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51324,14C (TOC),246.5,247.5,5820,5920,50,NA,NA,NA,NA,600,NA,NA
+268,5290,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51324,14C (TOC),267.5,268.5,5250,5330,40,NA,NA,NA,NA,600,NA,NA
+294,5660,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54963,14C (TOC),293,295,5610,5710,50,NA,NA,NA,NA,600,NA,NA
+319,5770,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54964,14C (TOC),318,320,5710,5830,60,NA,NA,NA,NA,600,NA,NA
+342,5880,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54965,14C (TOC),341,343,5830,5930,50,NA,NA,NA,NA,600,NA,NA
+365,6620,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54966,14C (TOC),364,366,6570,6670,50,NA,NA,NA,NA,600,NA,NA
+396,6270,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54967,14C (TOC),395.5,396.5,6220,6320,50,NA,NA,NA,NA,600,NA,NA
+421,6540,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54968,14C (TOC),420.5,421.5,6490,6590,50,NA,NA,NA,NA,600,NA,NA
+453,6290,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54969,14C (TOC),452.5,453.5,6250,6330,40,6480,NA,NA,NA,600,NA,NA
+469.5,6600,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54970,14C (TOC),469,470,6560,6640,40,NA,NA,NA,NA,600,NA,NA
+502.5,7230,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-54971,14C (TOC),502,503,7180,7280,50,NA,NA,NA,NA,600,NA,NA
+524.5,7190,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51319,14C (TOC),524,525,7150,7230,40,NA,NA,NA,NA,600,NA,NA
+527.5,7450,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51320,14C (TOC),527,528,7410,7490,40,NA,NA,NA,NA,600,NA,NA
+547.5,7780,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51321,14C (TOC),547,548,7740,7820,40,NA,NA,NA,NA,600,NA,NA
+549.5,8190,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51320,14C (TOC),549,550,8150,8230,40,NA,NA,NA,NA,600,NA,NA
+571.5,7270,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51321,14C (TOC),571,572,7220,7320,50,NA,NA,NA,NA,600,NA,NA
+575.5,7270,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51360,14C (TOC),575,576,7230,7310,40,NA,NA,NA,NA,600,NA,NA
+600.5,7130,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51318,14C (TOC),600,601,7090,7170,40,7460,NA,NA,NA,600,NA,NA
+626,7680,Benson et al. 2002; updated 2014,Pyramid Lake,NV,PLC98-4,CAMS-51319,14C (TOC),625.5,626.5,7630,7730,50,NA,NA,NA,NA,600,NA,NA

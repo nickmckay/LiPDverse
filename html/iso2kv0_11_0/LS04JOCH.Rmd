@@ -1,0 +1,220 @@
+---
+title: "LS04JOCH"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 264
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS04JOCH
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS04JOCH.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/iso2kv0_11_0/LS04JOCH.lpd)
+            
+
+[Download data only (csv)](LS04JOCH.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Jones, Vivienne J. , Leng, Melanie J. , Solovieva, Nadia , Sloane, Hilary J. , Tarasov, Pavel
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>23
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Holocene climate of the Kola Peninsula; evidence from the oxygen isotope record of diatom silica
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2003.06.014
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>67.95
+<p style="margin-left: 0px"><strong>longitude: </strong>32.48
+<p style="margin-left: 0px"><strong>elevation: </strong>475
+<p style="margin-left: 0px"><strong>siteName: </strong>Chuna
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd737d3bd
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD87f9c656
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS04JOCH
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>silica
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>summer precipitation would impose a shift in the  isotopic composition of the lake water and ultimately  in the d18Odiatom record. More positive d18Odiatom values would suggest a greater contribution of summer rainfall from the Atlantic, bringing warmer temperatures. While more negative d18Odiatom suggests a greater contribution from the colder Arctic air mass.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>Precipitation
+<p style="margin-left: 20px"><strong>variableDetail: </strong>Moisture source
+<p style="margin-left: 20px"><strong>direction: </strong>increase
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The diatom blooms that provide the biogenic silica to the sediment occur in the summer months, June?  September, when the lake is ice-free, when temperatures  are highest and when rainfall is heaviest enabling  nutrients to be washed in from the catchment. The  d18Odiatom signal therefore reflects the climatic regime  during the summer months although there will be a  component of winter precipitation released from ice and snow in the catchment during the early summer thaw.; evaporative effects on the isotopic composition of the lake water are minimal.;comparison with  the pollen based temperature reconstruction indicates that the magnitude and direction of the isotope inferred temperature change is unrealistic.;
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>P_isotope
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```

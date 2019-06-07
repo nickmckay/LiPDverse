@@ -1,0 +1,33 @@
+depth (cm),labCode (),depth_2 (cm),MaterialDated (),age14C (),age14Cuncertainty (),datemeth (),resevoirCorr (),delta_R (),delta_Rsig (),calib_14Cage (),calib_14Cage_1sig (),calib_method (),rejected (),notes ()
+5,LL-152757,6,G. ruber (white),475,30,14C AMS Marine 13,311,24,<0,NA,OxCal,4.2,no,after making the reservoir correction this date is post-bomb so rather than calibrating it we used it to set a uniform prior on the upper bound of the core spanning from 1951-2001 (year of collection)
+10,OS-101647,11,G. ruber (white),740,25,14C AMS Marine 13,311,24,95.0,46,OxCal,4.2,no,NA
+20,OS-101648,21,G. ruber (white),1030,25,14C AMS Marine 13,311,24,368.0,42,OxCal,4.2,no,NA
+30,OS-101649,31,G. ruber (white),1300,20,14C AMS Marine 13,311,24,575.0,31,OxCal,4.2,no,NA
+41,LL-152758,42,G. ruber (white),1565,30,14C AMS Marine 13,311,24,731.0,36,OxCal,4.2,no,NA
+50,OS-101650,51,G. ruber (white),1480,25,14C AMS Marine 13,311,24,782.0,41,OxCal,4.2,no,NA
+60,OS-101651,61,G. ruber (white),1650,25,14C AMS Marine 13,311,24,914.0,37,OxCal,4.2,no,NA
+70,OS-101652,71,G. ruber (white),1840,25,14C AMS Marine 13,311,24,1121.0,45,OxCal,4.2,no,NA
+80,OS-101654,81,G. ruber (white),2210,25,14C AMS Marine 13,311,24,1452.0,46,OxCal,4.2,no,NA
+90,LL-152759,91,G. ruber (white),2465,30,14C AMS Marine 13,311,24,1709.0,50,OxCal,4.2,no,NA
+110,OS-101655,111,G. ruber (white),2590,25,14C AMS Marine 13,311,24,1931.0,45,OxCal,4.2,no,NA
+130,OS-101657,131,G. ruber (white),2910,25,14C AMS Marine 13,311,24,2308.0,43,OxCal,4.2,no,NA
+145,OS-110259,146,G. ruber (white),3150,20,14C AMS Marine 13,311,24,2656.0,49,OxCal,4.2,no,NA
+150,LL-152760,151,G. ruber (white),3030,35,14C AMS Marine 13,311,24,NA,NA,NA,NA,yes,this date was rejected because it is reversed.
+160,OS-101658,161,G. ruber (white),3570,30,14C AMS Marine 13,311,24,3090.0,59,OxCal,4.2,no,NA
+181,OS-101660,182,G. ruber (white),3970,45,14C AMS Marine 13,311,24,3596.0,65,OxCal,4.2,no,NA
+200,LL-152761,201,G. ruber (white),4395,30,14C AMS Marine 13,311,24,4140.0,61,OxCal,4.2,no,NA
+220,LL-156467,221,G. ruber (white),4765,35,14C AMS Marine 13,311,24,4643.0,69,OxCal,4.2,no,NA
+260,LL-152762,261,G. ruber (white),5485,30,14C AMS Marine 13,311,24,5546.0,44,OxCal,4.2,no,NA
+340,LL-156468,341,G. ruber (white),6790,35,14C AMS Marine 13,311,24,7051.0,64,OxCal,4.2,no,NA
+420,LL-152763,421,G. ruber (white),9430,35,14C AMS Marine 13,311,24,9831.0,88,OxCal,4.2,no,NA
+460,LL-156469,461,G. ruber (white),10045,40,14C AMS Marine 13,311,24,10687.0,80,OxCal,4.2,no,NA
+520,LL-152764,521,G. ruber (white),11730,40,14C AMS Marine 13,311,24,12883.0,77,OxCal,4.2,no,NA
+560,LL-156470,561,G. ruber (white),12910,45,14C AMS Marine 13,311,24,14165.0,141,OxCal,4.2,no,NA
+580,LL-159387,581,G. ruber (white),14160,40,14C AMS Marine 13,311,24,16187.0,90,OxCal,4.2,no,NA
+600,LL-156471,601,G. ruber (white),15370,70,14C AMS Marine 13,311,24,17767.0,102,OxCal,4.2,no,NA
+640,LL-152765,641,G. ruber (white),16570,60,14C AMS Marine 13,311,24,19241.0,119,OxCal,4.2,no,NA
+680,LL-159388,681,G. ruber (white),21150,70,14C AMS Marine 13,311,24,24548.0,154,OxCal,4.2,no,NA
+700,LL-156472,701,G. ruber (white),23160,160,14C AMS Marine 13,311,24,26504.0,201,OxCal,4.2,no,NA
+780,LL-156473,781,G. ruber (white),27170,260,14C AMS Marine 13,311,24,30635.0,240,OxCal,4.2,no,NA
+840,LL-156474,841,G. ruber (white),29180,340,14C AMS Marine 13,311,24,33264.0,284,OxCal,4.2,no,NA
+900,LL-152766,901,G. ruber (white),34930,450,14C AMS Marine 13,311,24,37001.0,385,OxCal,4.2,no,NA

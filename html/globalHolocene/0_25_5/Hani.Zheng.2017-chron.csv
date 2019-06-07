@@ -1,0 +1,11 @@
+age (yr BP),depth_top (cm),depth_bot (cm),type (unitless),uncertainty_plus (unitless),ucertainty_minus (unitless),include (NA)
+Modern,48,48,Core top,0,0,Y
+1810.0,155,155,C14 Uncalibrated,1838,1782,Y
+3604.0,260,260,C14 Uncalibrated,3639,3569,Y
+5260.0,353,353,C14 Uncalibrated,5302,5218,Y
+6710.0,428,428,C14 Uncalibrated,6766,6654,Y
+7890.0,492,492,C14 Uncalibrated,7939,7841,Y
+9080.0,568,568,C14 Uncalibrated,9131,9029,Y
+10348.0,680,680,C14 Uncalibrated,10394,10302,Y
+11216.0,755,755,C14 Uncalibrated,11264,11168,Y
+15802.0,880,880,C14 Uncalibrated,15887,15717,Y

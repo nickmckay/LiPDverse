@@ -1,0 +1,397 @@
+---
+title: "MD02-2517.Bhattacharya.2018"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 526
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MD02-2517.Bhattacharya.2018
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MD02-2517.Bhattacharya.2018.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/MD02-2517.Bhattacharya.2018.lpd)
+            
+
+[Download paleoData only (csv)](MD02-2517.Bhattacharya.2018.csv)
+            
+
+[Download chronData only (csv)](MD02-2517.Bhattacharya.2018-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/24890
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Bhattacharya, Tripti"), list(name = "Tierney, Jessica E."), list(name = "Addison, Jason A."), list(name = "Murray, James W."))
+<p style="margin-left: 10px"><strong>journal: </strong>Nature Geoscience
+<p style="margin-left: 10px"><strong>volume: </strong>11
+<p style="margin-left: 10px"><strong>pages: </strong>848-852
+<p style="margin-left: 10px"><strong>title: </strong>Ice-sheet modulation of deglacial North American monsoon intensification
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>27.48
+<p style="margin-left: 0px"><strong>longitude: </strong>-112.07
+<p style="margin-left: 0px"><strong>elevation: </strong>-881
+<p style="margin-left: 0px"><strong>siteName: </strong>Guaymas Basin
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6677ee77
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe821d307
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>calibrated age yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>precipitation (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6485a41e
+<p style="margin-left: 10px"><strong>variableName: </strong>precipitation
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>precipitation,,,percent,July-September, Climate Reconstruction,,Bayesian inference,N, Mean percent July-September rainfall
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>monsoon
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7f11f122
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta D, C-30 fatty acid,,per mil VSMOW,,Paleoceanography,,compound-specific isotope ratio mass spectrometry,N,
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB76705f2e
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta D, C-30 fatty acid,,per mil VSMOW,,Paleoceanography,corrected,compound-specific isotope ratio mass spectrometry,N, corrected for ice volume
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc492332b
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d13Cwax delta 13C, C-30 fatty acid,,per mil VSMOW,,Paleoceanography,,compound-specific isotope ratio mass spectrometry,N,
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>JAS_error (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB698b0051
+<p style="margin-left: 10px"><strong>variableName: </strong>JAS_error
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB96546f10
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB10892138
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>14C_raw_error
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7235f3dc
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfe587308
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>material (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8a933392
+<p style="margin-left: 10px"><strong>variableName: </strong>material
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>description: </strong>14C_raw
+</details>
+<details style="margin-left: 10px">
+<summary>error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd0f40893
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>benthic_planktonic_corrected_age (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2408e9e0
+<p style="margin-left: 10px"><strong>variableName: </strong>benthic_planktonic_corrected_age
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>type (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB32334d88
+<p style="margin-left: 10px"><strong>variableName: </strong>type
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>calib_curve (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc5d701f4
+<p style="margin-left: 10px"><strong>variableName: </strong>calib_curve
+<p style="margin-left: 10px"><strong>units: </strong>NA
+<p style="margin-left: 10px"><strong>description: </strong>delta_R
+</details>
+<details style="margin-left: 10px">
+<summary>correction (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB18ad9c63
+<p style="margin-left: 10px"><strong>variableName: </strong>correction
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>delta_R_error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBeacd8eb4
+<p style="margin-left: 10px"><strong>variableName: </strong>delta_R_error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9b88eee3
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb5da72b2
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### precipitation (percent)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### dD (permil)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### dD (permil)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### JAS_error (percent)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### age (yr BP)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### depth_top (cm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### depth_bot (cm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### material (NA)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### error (yr)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### benthic_planktonic_corrected_age (NA)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### type (NA)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### calib_curve (NA)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### correction (yr)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### delta_R_error (yr)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### cal_age (yr BP)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### cal_age_error (yr)
+```{r}
+plotCol(chronTS,ind = 13)
+```

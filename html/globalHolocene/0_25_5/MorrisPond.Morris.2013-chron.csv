@@ -1,0 +1,21 @@
+depth (cm),age (yr BP),error (unitless),maerial (NA),type (NA),calibrated_YN (NA)
+0,-59,0,Gyttja,210PB,calibrated
+2,-54,2,Gyttja,210PB,calibrated
+4,-47,2,Gyttja,210PB,calibrated
+6,-38,2,Gyttja,210PB,calibrated
+8,-27,3,Gyttja,210PB,calibrated
+10,-17,3,Gyttja,210PB,calibrated
+12,-12,4,Gyttja,210PB,calibrated
+14,-5,5,Gyttja,210PB,calibrated
+16,5,6,Gyttja,210PB,calibrated
+18,12,9,Gyttja,210PB,calibrated
+20,27,10,Gyttja,210PB,calibrated
+22,39,11,Gyttja,210PB,calibrated
+24,64,12,Gyttja,210PB,calibrated
+36,738,20,Pollen,AMS14C,uncalibrated
+88,1360,20,Pollen,AMS14C,uncalibrated
+183,2804,25,Pollen,AMS14C,uncalibrated
+258,4516,26,Pollen,AMS14C,uncalibrated
+333,5893,25,Pollen,AMS14C,uncalibrated
+405,7452,29,Pollen,AMS14C,uncalibrated
+481,7901,28,Pollen,AMS14C,uncalibrated

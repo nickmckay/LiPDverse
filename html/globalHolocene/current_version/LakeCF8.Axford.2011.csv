@@ -1,0 +1,52 @@
+depth (cm),age (BP),temperature (degC),temperature (missing),nonReliabletemperature (missing),temperatureComposite (degC),reliable (missing),Commentregardingreliability1 (missing),reliable (missing),Commentregardingreliability2 (missing)
+0.125,-55,NA,NA,6.2,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+1.125,-34,NA,NA,6.2,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+1.625,-23,NA,NA,6,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+2.125,2,NA,NA,6,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+3.375,90,NA,NA,6,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+9,1188.703,NA,NA,5.9,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+19,2131.505,NA,NA,5.9,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+29,3230.387,NA,NA,6,NA,N,late Holocene samples may overestimate temperature (edge of calibration space),N,late Holocene samples may overestimate temperature (edge of calibration space)
+39,4425.349,6.5,6.1,NA,-2.733,Y,NA,Y,NA
+45,5163.485,6.7,6.2,NA,-2.583,Y,NA,Y,NA
+51,5901.649,7.9,6.4,NA,-1.883,Y,NA,Y,NA
+57,6626.883,7.8,6.6,NA,-1.833,Y,NA,Y,NA
+63,7351.185,8.9,7.8,NA,-0.683,Y,NA,Y,NA
+65,7535.446,9.5,8.4,NA,-0.083,Y,NA,Y,NA
+69,7895.251,8.8,8.8,NA,-0.233,Y,NA,Y,NA
+70,7983.386,9.5,9.6,NA,0.517,Y,NA,Y,NA
+72,8157.477,9,9.7,NA,0.317,Y,NA,Y,NA
+73.5,8286.139,9.7,10,NA,0.817,Y,NA,Y,NA
+74.5,8371.005,10.1,10.3,NA,1.167,Y,NA,Y,NA
+75,8413.166,9.9,10.2,NA,1.017,Y,NA,Y,NA
+75.5,8455.145,9.2,9.8,NA,0.467,Y,NA,Y,NA
+77,8579.993,10,7.9,NA,-0.083,Y,NA,Y,NA
+77.5,8621.246,8.5,6.9,NA,-1.333,Y,NA,Y,NA
+78,8662.317,9.7,10.3,NA,0.967,Y,NA,Y,NA
+79,8743.915,9.8,10.3,NA,1.017,Y,NA,Y,NA
+80.5,8864.949,9.3,9.5,NA,0.367,Y,NA,Y,NA
+80.75,8884.963,9.9,10.2,NA,1.017,Y,NA,Y,NA
+81.5,8944.731,9.9,10.5,NA,1.167,Y,NA,Y,NA
+82.5,9023.786,10.2,10.7,NA,1.417,Y,NA,Y,NA
+83,9063.041,10,10.3,NA,1.117,Y,NA,Y,NA
+84,9141.007,10,10.7,NA,1.317,Y,NA,Y,NA
+84.5,9179.717,9,7.7,NA,-0.683,Y,NA,Y,NA
+85,9218.246,10.1,8.2,NA,0.117,Y,NA,Y,NA
+85.75,9275.699,9.1,9.9,NA,0.467,Y,NA,Y,NA
+86,9294.759,8.8,7.2,NA,-1.033,Y,NA,Y,NA
+86.5,9332.743,10.3,10.9,NA,1.567,Y,NA,Y,NA
+87,9370.545,10,10.7,NA,1.317,Y,NA,Y,NA
+88.5,9482.863,9.1,9.9,NA,0.467,Y,NA,Y,NA
+90,9593.546,10.2,10.7,NA,1.417,Y,NA,Y,NA
+92,9738.581,8.9,9.7,NA,0.267,Y,NA,Y,NA
+94,9880.711,9.7,10.3,NA,0.967,Y,NA,Y,NA
+95.5,9985.401,9.5,10,NA,0.717,Y,NA,Y,NA
+97,10088.457,10,10.3,NA,1.117,Y,NA,Y,NA
+100,10289.666,9.3,10,NA,0.617,Y,NA,Y,NA
+101,10355.283,9.8,10.4,NA,1.067,Y,NA,Y,NA
+103,10484.337,10,10.7,NA,1.317,Y,NA,Y,NA
+105,10610.486,9.9,10.5,NA,1.167,Y,NA,Y,NA
+109,10854.067,8.4,6.5,NA,-1.583,Y,NA,Y,NA
+113,11086.025,8.1,6.4,NA,-1.783,Y,NA,Y,NA
+117,11306.361,3.4,5.6,NA,-4.533,Y,NA,Y,NA
+120,11463.986,4,5.6,NA,-4.233,Y,NA,Y,NA

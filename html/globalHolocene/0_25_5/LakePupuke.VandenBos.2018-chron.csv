@@ -1,0 +1,9 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+Top,0,0,Core top,-57,-54,-60,Y,"Dates have no thickness, because depth is event-corrected"
+Rangitoto1/2,84,84,Tephra,530,561,499,Y,"Dates have no thickness, because depth is event-corrected"
+Taupo,205,205,Tephra,1718,1728,1708,Y,"Dates have no thickness, because depth is event-corrected"
+Tuhua,399,399,Tephra,7637,7737,7537,Y,"Dates have no thickness, because depth is event-corrected"
+Rotoma,465,465,Tephra,9423,9543,9303,Y,"Dates have no thickness, because depth is event-corrected"
+Waiohau,618,618,Tephra,14009,14164,13854,Y,"Dates have no thickness, because depth is event-corrected"
+Rotorua,653,653,Tephra,15635,16047,15223,Y,"Dates have no thickness, because depth is event-corrected"
+Rerewhakaaitu,701,701,Tephra,17496,17958,17034,Y,"Dates have no thickness, because depth is event-corrected"

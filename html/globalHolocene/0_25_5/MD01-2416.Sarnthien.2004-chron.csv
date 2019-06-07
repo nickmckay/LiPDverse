@@ -1,0 +1,5 @@
+depth (m),age (yr),event (unitless),depth_comp (m),sample (yr BP),error (unitless),calibrated (unitless)
+0.007,4.884,MD01-2416,0.087,KIA20147,0.03,5.632
+0.16,5.945,MD01-2416,0.24,KIA20148,0.033,6.79
+0.51,9.232,MD01-2416,0.59,KIA20150,0.044,10.306
+0,3.745,MD01-2416PC,0.003,KIA17084,0.05,4.217

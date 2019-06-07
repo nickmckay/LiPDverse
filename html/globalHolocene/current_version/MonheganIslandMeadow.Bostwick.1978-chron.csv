@@ -1,0 +1,18 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+60,Carbon-14,110722,60,995,NA,NA
+173.5,Carbon-14,110723,65,1480,NA,NA
+274,Carbon-14,110724,70,2925,NA,NA
+396,Carbon-14,110725,75,3345,NA,NA
+554,Carbon-14,110726,75,3830,NA,NA
+742,Carbon-14,110727,80,4990,NA,NA
+904,Carbon-14,110728,75,5730,NA,NA
+1004,Carbon-14,110729,105,7535,NA,NA
+1125,Carbon-14,110730,155,9710,NA,NA
+1240.5,Carbon-14,110731,100,10320,NA,NA
+1259,Carbon-14,110732,105,10020,(shell fraction),NA
+1264,Carbon-14,110733,195,10745,(organic fraction),NA
+1269,Carbon-14,110734,110,10565,(shell fraction),NA
+1279,Carbon-14,110735,100,12280,(shell fraction),NA
+1289,Carbon-14,110736,85,11215,(shell fraction),NA
+1295.5,Carbon-14,110737,800,16320,(organic fraction),NA
+1305.5,Carbon-14,110738,90,9835,(shell fraction),NA

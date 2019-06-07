@@ -1,0 +1,9 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+0,1,Core top,-55,-55,-55,Y,Lake cored in spring 2009; Modern age confirmed with Pb-210 dating
+63,64,C14 Uncalibrated,4115,4150,4080,Y,NA
+127,131,C14 Uncalibrated,6090,6130,6050,Y,NA
+211,212,C14 Uncalibrated,7260,7300,7220,Y,NA
+273,274,C14 Uncalibrated,8580,8630,8530,Y,NA
+307,309,C14 Uncalibrated,9550,9600,9500,Y,NA
+371,375,C14 Uncalibrated,10020,10080,9960,Y,NA
+415,419,C14 Uncalibrated,11010,11070,10950,Y,NA

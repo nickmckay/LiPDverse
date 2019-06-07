@@ -1,0 +1,19 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+51,440,25,AMS14C,mollusk shell
+21,55,NA,AMS14C,mollusk shell
+86,545,25,AMS14C,mollusk shell
+125,905,25,AMS14C,mollusk shell
+75.4,492,39,AMS14C,mollusk shell
+110.4,1160,45,AMS14C,mollusk shell
+110.4,1185,40,AMS14C,turritela
+144.4,1370,45,AMS14C,mollusk shell
+172.4,1880,160,AMS14C,foraminifera
+199.4,2007,37,AMS14C,mollusk shell
+247.4,2340,55,AMS14C,mollusk shell
+390.4,5860,40,AMS14C,mollusk shell
+257,1960,45,AMS14C,turritela
+464,2920,35,AMS14C,turritela
+522,3690,30,AMS14C,mollusk shell
+632,6120,55,AMS14C,turritela
+699,8215,45,AMS14C,mollusk shell
+738,9735,55,AMS14C,mollusk shell

@@ -1,0 +1,12 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+280,Carbon-14,108780,60,2460,gyttja,"Delta C13 not calculated on CAMS AMS samples, assumed to be -25.0. Dates 16,150 (CAMS-6600) and 9060 (CAMS-6601) appear to be too young."
+330,Carbon-14,108781,80,4500,gyttja,NA
+372,Carbon-14,108782,90,6960,gyttja,NA
+475,Carbon-14,108783,80,8460,gyttja,NA
+521,Carbon-14,108784,80,11510,bark,NA
+655,Carbon-14,108785,110,12790,terrestrial macros,NA
+720,Carbon-14,108786,110,14740,organic sand,NA
+826,Carbon-14,108787,100,16240,organic sand,NA
+930,Carbon-14,108788,110,16150,organic sand,NA
+930,Carbon-14,108789,70,18180,twigs,NA
+1026,Carbon-14,108790,90,9060,organic sand,NA

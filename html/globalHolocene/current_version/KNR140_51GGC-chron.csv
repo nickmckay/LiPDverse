@@ -1,0 +1,20 @@
+depth (cm),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),sensorSpecies (),measurementN (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),rejected (),notes ()
+210,14C,NA,NA,NA,planktic foraminifera,NA,NA,KIA 20514,7.31,0.055,0.56,NA,delta-R = 160
+280,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14761,10.1,0.055,0.56,NA,NA
+290,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14762,10.2,0.055,0.56,NA,NA
+300,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14763,10.7,0.06,0.56,NA,NA
+310,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14764,11.35,0.065,0.56,NA,NA
+310,14C,309,311,2,benthic foraminifera,U. peregrina,appr. 100,NOSAMS 19141,11.65,0.1,NA,TRUE,not used by Anderson
+312,14C,NA,NA,NA,benthic foraminifera,U. peregrina,appr. 100,NOSAMS 16709,11.5,0.075,NA,TRUE,not used by Anderson
+320,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14765,11.95,0.06,0.56,NA,NA
+330,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14766,12.25,0.1,0.56,NA,NA
+340,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14767,11.4,0.05,0.56,NA,NA
+350,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14768,13.15,0.085,0.56,NA,NA
+360,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14769,14.3,0.085,0.56,NA,NA
+370,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14770,14.75,0.08,0.56,NA,NA
+380,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14771,18.1,0.11,0.56,NA,NA
+380,14C,NA,NA,NA,planktic foraminifera,G. sacculifer,appr. 1000,NOSAMS 35604,17.6,0.1,NA,TRUE,not used by Anderson
+390,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14772,17.5,0.1,0.56,NA,NA
+400,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14773,20.2,0.13,0.56,NA,NA
+410,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14774,23.6,0.19,0.56,NA,NA
+420,14C,NA,NA,NA,planktic foraminifera,G. ruber >250um,appr. 1000,NOSAMS 14775,25.5,0.23,NA,TRUE,not used by Anderson

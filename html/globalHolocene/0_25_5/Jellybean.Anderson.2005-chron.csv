@@ -1,0 +1,11 @@
+depth (cm),age (yrBP),type (NA),error (yr),material (NA),notes (NA)
+0,-52,surface,NA,surface,calibrated age. Assumed top age based on collection year (2002)
+15,90,short_lived_isotopes,NA,bulk sediment,calibrated age. Pb-210 and Cs-137 at this depth shown as adjusted age
+15,240,AMS14C,30,Wood,NA
+41.5,920,AMS14C,35,Wood,NA
+59.5,1175,AMS14C,35,Wood,NA
+64,1135,tephra,NA,White River Ash (2-s age range),calibrated age
+87,1750,AMS14C,40,Charcoal,NA
+170.5,4000,AMS14C,35,Pollen,NA
+244.5,4800,AMS14C,35,Wood,NA
+336.5,6675,AMS14C,50,Pollen,NA

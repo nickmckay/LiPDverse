@@ -1,0 +1,27 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+8.5,2061,39,AMS14C,bulk sediment
+35.5,2950,35,AMS14C,bulk sediment
+72.5,4380,40,AMS14C,bulk sediment
+102.5,4900,40,AMS14C,bulk sediment
+129,6690,45,AMS14C,bulk sediment
+146,6467,44,AMS14C,bulk sediment
+174,7838,51,AMS14C,wood
+210,9113,60,AMS14C,bulk sediment
+232,9547,59,AMS14C,bulk sediment
+252,10268,62,AMS14C,bulk sediment
+282,10617,58,AMS14C,bulk sediment
+292,11170,61,AMS14C,bulk sediment
+312,12174,84,AMS14C,bulk sediment
+332,13250,69,AMS14C,wood
+362,14650,70,AMS14C,bulk sediment
+382,15890,84,AMS14C,bulk sediment
+397,17400,80,AMS14C,bulk sediment
+407,23600,150,AMS14C,bulk sediment
+413,24600,170,AMS14C,bulk sediment
+423,24800,100,AMS14C,bulk sediment
+438,26400,210,AMS14C,bulk sediment
+450,27000,290,AMS14C,bulk sediment
+462,27500,230,AMS14C,bulk sediment
+473,28300,290,AMS14C,bulk sediment
+504,30780,390,AMS14C,bulk sediment
+593.5,40090,418,AMS14C,bulk sediment

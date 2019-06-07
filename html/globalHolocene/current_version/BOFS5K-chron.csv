@@ -1,0 +1,20 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr),rejected ()
+0,14C,planktic foraminifera calcite,G. bulloides,2.02,0.14,TRUE
+20,14C,planktic foraminifera calcite,G. inflata,4.97,0.13,NA
+38,14C,planktic foraminifera calcite,G. bulloides,8.86,0.13,NA
+44,14C,planktic foraminifera calcite,G. inflata,14.97,0.18,TRUE
+46,14C,planktic foraminifera calcite,G. bulloides,11.18,0.15,NA
+46,14C,planktic foraminifera calcite,N. pachyderma (s),10.77,0.13,NA
+73,14C,planktic foraminifera calcite,G. bulloides,12.86,0.15,TRUE
+74,14C,planktic foraminifera calcite,G. bulloides,12.99,0.16,TRUE
+74,14C,planktic foraminifera calcite,N. pachyderma (s),15.37,0.18,NA
+78,14C,planktic foraminifera calcite,N. pachyderm (s),16.52,0.18,TRUE
+80,14C,planktic foraminifera calcite,N. pachyderma (s),16.51,0.17,NA
+90,14C,planktic foraminifera calcite,N. pachyderma (s),17.65,0.22,NA
+100,14C,planktic foraminifera calcite,N. pachyderma (s),20.21,0.28,NA
+114,14C,planktic foraminifera calcite,N. pachyderma (s),22.96,0.33,NA
+130,14C,planktic foraminifera calcite,N. pachyderma (s),25.3,0.4,NA
+148,14C,planktic foraminifera calcite,N. pachyderma (s),28.8,0.53,NA
+202,14C,planktic foraminifera calcite,G. bulloides,35.5,1.1,TRUE
+202,14C,planktic foraminifera calcite,N. pachyderma (s),35.2,1,TRUE
+238,14C,planktic foraminifera calcite,N. pachyderma (s),30.44,0.63,TRUE

@@ -1,0 +1,16 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+10,245,30,AMS14C,G. ruber and O. universa
+64.5,1725,25,AMS14C,G. ruber and G. sacculifer
+102,2965,55,AMS14C,G. ruber
+132,3500,35,AMS14C,G. ruber
+210,5600,40,AMS14C,G. ruber
+242.5,7845,40,AMS14C,G. ruber and G. sacculifer
+257,9070,60,AMS14C,G. ruber
+279,10470,70,AMS14C,mixed planktonic forminifers
+310,12580,80,AMS14C,mixed planktonic forminifers
+356,14130,100,AMS14C,G. ruber
+391,18830,120,AMS14C,G. ruber
+452,18810,150,AMS14C,G. ruber
+497,20660,180,AMS14C,G. ruber
+540.5,21840,220,AMS14C,G. ruber
+581.5,22230,190,AMS14C,mixed planktonic forminifers

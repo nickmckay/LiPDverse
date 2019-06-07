@@ -1,0 +1,473 @@
+---
+title: "Ammersee.vonGrafenstein.1996"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 22
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Ammersee.vonGrafenstein.1996
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Ammersee.vonGrafenstein.1996.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Ammersee.vonGrafenstein.1996.lpd)
+            
+
+[Download paleoData only (csv)](Ammersee.vonGrafenstein.1996.csv)
+            
+
+[Download chronData only (csv)](Ammersee.vonGrafenstein.1996-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "von Grafenstein, Ulrich"), list(name = "Erlenkeuser, Helmut"), list(name = "Mueller, Jens"), list(name = "Trimborn, Peter"), list(name = "Alefs, Joachim"))
+<p style="margin-left: 10px"><strong>journal: </strong>Geochimica et Cosmochimica Acta
+<p style="margin-left: 10px"><strong>volume: </strong>60
+<p style="margin-left: 10px"><strong>pages: </strong>4025-4036
+<p style="margin-left: 10px"><strong>title: </strong>A 200 year mid-European air temperature record preserved in lake sediments: An extension of the δ18Op-air temperature relation into the past
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>47.1
+<p style="margin-left: 0px"><strong>longitude: </strong>11.0166
+<p style="margin-left: 0px"><strong>elevation: </strong>533
+<p style="margin-left: 0px"><strong>siteName: </strong>Ammersee
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MATe1bac2fad0
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT887ebe2143
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfc08b8a1
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS96VOAM01
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the response of d180L to the temperature controlled variations in d18Op will be characteristic for each lake and, therefore, must be evaluated by hydrological investigations for any lake used for paleoclimatic reconstructions...d18OL of Lake Ammersee proved to be sensitive to mean air temperature variations with periods higher than 10 years and amplitudes larger than 0.3 Kelvin.
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>monitoring of lake and inflow waters
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>see above
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>integrationTime: </strong>2.7
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>lake residence time claculations
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>Years
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>P_isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>see above
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>integrationTime: </strong>2.7
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>lake residence time claculations
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>Years
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>see above
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>integrationTime: </strong>2.7
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>lake residence time claculations
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>Years
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron1
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>midpoint depth
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron15
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>years before 1950 (calibrated age, or ages that dont need calibration)
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (yr14C BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron2
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>yr14C BP
+<p style="margin-left: 10px"><strong>description: </strong>14C years before 1950
+</details>
+<details style="margin-left: 10px">
+<summary>age14Cuncertainty (yr14C BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron3
+<p style="margin-left: 10px"><strong>variableName: </strong>age14Cuncertainty
+<p style="margin-left: 10px"><strong>units: </strong>yr14C BP
+<p style="margin-left: 10px"><strong>description: </strong>14C years uncertainty
+</details>
+<details style="margin-left: 10px">
+<summary>fractionModern (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron4
+<p style="margin-left: 10px"><strong>variableName: </strong>fractionModern
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>fraction of modern 14C activity
+</details>
+<details style="margin-left: 10px">
+<summary>fractionModernUncertainty (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron5
+<p style="margin-left: 10px"><strong>variableName: </strong>fractionModernUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>fraction of modern 14C activity uncertainty
+</details>
+<details style="margin-left: 10px">
+<summary>delta13C (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron6
+<p style="margin-left: 10px"><strong>variableName: </strong>delta13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta13C of material analyzed for 14C
+</details>
+<details style="margin-left: 10px">
+<summary>delta13Cuncertainty (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron7
+<p style="margin-left: 10px"><strong>variableName: </strong>delta13Cuncertainty
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta13C uncertainty
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron8
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>thickness of sample (along depth axis)
+</details>
+<details style="margin-left: 10px">
+<summary>labID (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron9
+<p style="margin-left: 10px"><strong>variableName: </strong>labID
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>laboratory ID from radiocarbon facility
+</details>
+<details style="margin-left: 10px">
+<summary>materialDated (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron10
+<p style="margin-left: 10px"><strong>variableName: </strong>materialDated
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>material analyzed
+</details>
+<details style="margin-left: 10px">
+<summary>activity (Bq g1)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron11
+<p style="margin-left: 10px"><strong>variableName: </strong>activity
+<p style="margin-left: 10px"><strong>units: </strong>Bq g1
+<p style="margin-left: 10px"><strong>description: </strong>210Pb, 239+240Pu or 137Cs activity
+</details>
+<details style="margin-left: 10px">
+<summary>activityUncertainty (Bq g1)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron12
+<p style="margin-left: 10px"><strong>variableName: </strong>activityUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>Bq g1
+<p style="margin-left: 10px"><strong>description: </strong>210Pb, 239+240Pu or 137Cs activity uncertainty
+</details>
+<details style="margin-left: 10px">
+<summary>supportedActivity (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron13
+<p style="margin-left: 10px"><strong>variableName: </strong>supportedActivity
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Y if supported 210Pb activity, N if unsupported 210Pb activity
+</details>
+<details style="margin-left: 10px">
+<summary>x210PbModel (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron14
+<p style="margin-left: 10px"><strong>variableName: </strong>x210PbModel
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>model used to convert 210Pb activity to age (e.g., constant rate of supply)
+</details>
+<details style="margin-left: 10px">
+<summary>ageUncertainty (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron16
+<p style="margin-left: 10px"><strong>variableName: </strong>ageUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>uncertainty in age
+</details>
+<details style="margin-left: 10px">
+<summary>reservoirAge14C (yr14C BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron17
+<p style="margin-left: 10px"><strong>variableName: </strong>reservoirAge14C
+<p style="margin-left: 10px"><strong>units: </strong>yr14C BP
+<p style="margin-left: 10px"><strong>description: </strong>14C reservoir age
+</details>
+<details style="margin-left: 10px">
+<summary>reservoirAge14CUncertainty (yr14C BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron18
+<p style="margin-left: 10px"><strong>variableName: </strong>reservoirAge14CUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>yr14C BP
+<p style="margin-left: 10px"><strong>description: </strong>14C reservoir age uncertainty
+</details>
+<details style="margin-left: 10px">
+<summary>useInAgeModel (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron19
+<p style="margin-left: 10px"><strong>variableName: </strong>useInAgeModel
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>was this date used in the age modelpermil
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### age (yr BP)
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### age14C (yr14C BP)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age14Cuncertainty (yr14C BP)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### fractionModern (unitless)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### fractionModernUncertainty (unitless)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### delta13C (permil)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### delta13Cuncertainty (permil)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### thickness (cm)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### labID (unitless)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### materialDated (unitless)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### activity (Bq g1)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### activityUncertainty (Bq g1)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### supportedActivity (unitless)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### x210PbModel (unitless)
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### ageUncertainty (yr BP)
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### reservoirAge14C (yr14C BP)
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### reservoirAge14CUncertainty (yr14C BP)
+```{r}
+plotCol(chronTS,ind = 18)
+```
+
+### useInAgeModel (unitless)
+```{r}
+plotCol(chronTS,ind = 19)
+```

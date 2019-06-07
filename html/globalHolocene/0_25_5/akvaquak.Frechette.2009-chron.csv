@@ -1,0 +1,12 @@
+depth (cm),age (bp),age14C_orig (bp),age_error (years),age14C (bp14C),cal_age_range_old (bp),cal_age_range_young (2_s),age_type (unitless),lab_id (unitless),rejected_dates (unitless),material_dated (unitless),note (unitless)
+0,-48,NA,NA,NA,NA,NA,3,NA,NA,NA,2
+11.5,NA,1000,50,1000,963,902,1,7,NA,2,NA
+11.5,NA,1700,45,1700,NA,NA,2,8,1,1,1
+23.5,NA,2510,45,1973,1951,1879,2,3,NA,1,NA
+31.5,NA,2270,60,2270,2245,2177,1,9,NA,2,NA
+31.5,NA,2840,55,2840,NA,NA,2,10,1,1,1
+43.5,NA,4290,50,3753,4158,4076,2,4,NA,1,NA
+63.5,NA,6810,55,6273,7270,7158,2,5,NA,1,NA
+83,NA,7670,60,7670,NA,NA,2,6,1,1,1
+83,NA,7330,95,7330,8205,8020,1,2,NA,2,NA
+142.5,NA,8560,100,8560,9634,9466,1,1,NA,2,NA

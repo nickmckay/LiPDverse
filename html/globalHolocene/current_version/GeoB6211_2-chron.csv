@@ -1,0 +1,13 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr)
+18,14C,planktonic foraminifera,"G. ruber, G. sacculifer",KIA30528,1.685,0.03
+35,14C,planktonic foraminifera,"G. ruber, G. sacculifer",KIA35166,3.17,0.04
+55,14C,planktonic foraminifera,"G. ruber, G. sacculifer",KIA35165,4.625,0.045
+73,14C,planktonic foraminifera,NA,KIA30527,7.145,0.055
+86,14C,planktonic foraminifera,NA,NOSAMS75186,9.37,0.04
+95,14C,planktonic foraminifera,NA,KIA35163,9.92,0.07
+101,14C,planktonic foraminifera,NA,KIA35162,9.81,0.11
+123,14C,planktonic foraminifera,NA,KIA30526,12.6,0.07
+218,14C,planktonic foraminifera,NA,KIA30525,13.34,0.08
+358,14C,planktonic foraminifera,NA,KIA30524,14.86,0.09
+448,14C,bivalve,NA,KIA30531,15.59,0.1
+583,14C,bivalve,NA,KIA30530,16.4,0.12

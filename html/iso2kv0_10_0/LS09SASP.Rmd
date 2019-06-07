@@ -1,0 +1,263 @@
+---
+title: "LS09SASP"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 290
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS09SASP
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS09SASP.lpd)
+            
+
+[Download data only (csv)](LS09SASP.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>Methodology in Smittenberg and Sachs, 2007, Journal of Chromatography, 1169:70-76
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Sachs, Julian P. , Sachse, Dirk , Smittenberg, Rienk H. , Zhang, Zhaohui , Battisti, David S. , Golubic, Stjepko
+<p style="margin-left: 10px"><strong>journal: </strong>Nature Geoscience
+<p style="margin-left: 10px"><strong>volume: </strong>2
+<p style="margin-left: 10px"><strong>pages: </strong>-6
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Southward movement of the Pacific intertropical convergence zone AD 1400?1850
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1038/NGEO554
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>7.15
+<p style="margin-left: 0px"><strong>longitude: </strong>134.3667
+<p style="margin-left: 0px"><strong>elevation: </strong>NA
+<p style="margin-left: 0px"><strong>siteName: </strong>Spooky Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT3e773ec33c
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT851bf03235
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS09SASP01A
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>aquatic biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>dD values of lake surface water are controlled by the amount of rainfall, its isotopic composition and the amount of mixing with the underlying seawater. As rain also increases the density stratification in the lakes, decreasing mixing, surface water dD values are expected to be significantly lower during wet periods compared with dry periods. Conclusions of the paper are about moisture balance (P-E) in the tropical Pacific.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>Precipitation amount
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Permanent anoxia in the subsurface water confines phytoplankton, dominated by dinoflagellates and diatoms24, to the oxygenated, brackish and deuterium-depleted surface water where their lipid ?D values can be expected to closely co-vary with the surface water ?Dvalues25,26. ?D values of that water are controlled by the amount of rainfall, its isotopic composition and the amount of mixing with the underlying sea water. As rain also increases the density stratification in the lakes, decreasing mixing, surface water ?D values are expected to be significantly lower during wet periods compared with dry periods.  Zhang and Sachs 2007, Organic Geochemistry, 38: 582-608.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>P_amount
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Permanent anoxia in the subsurface water confines phytoplankton, dominated by dinoflagellates and diatoms24, to the oxygenated, brackish and deuterium-depleted surface water where their lipid ?D values can be expected to closely co-vary with the surface water ?Dvalues25,26. ?D values of that water are controlled by the amount of rainfall, its isotopic composition and the amount of mixing with the underlying sea water. As rain also increases the density stratification in the lakes, decreasing mixing, surface water ?D values are expected to be significantly lower during wet periods compared with dry periods.  Zhang and Sachs 2007, Organic Geochemistry, 38: 582-608.
+<p style="margin-left: 20px"><strong>direction: </strong>depends on source, transport history, etc
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>rainfall d2H
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Permanent anoxia in the subsurface water confines phytoplankton, dominated by dinoflagellates and diatoms24, to the oxygenated, brackish and deuterium-depleted surface water where their lipid dD values can be expected to closely co-vary with the surface water dDvalues25,26. dD values of that water are controlled by the amount of rainfall, its isotopic composition and the amount of mixing with the underlying sea water. As rain also increases the density stratification in the lakes, decreasing mixing, surface water dD values are expected to be significantly lower during wet periods compared with dry periods.  Zhang and Sachs 2007, Organic Geochemistry, 38: 582-608.
+<p style="margin-left: 20px"><strong>direction: </strong>positive (more mixing, higher d2H in surface waters)
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>mixing with sea water which is in bottom of meromictic lake
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD292174f8
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>aquatic biomarker
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>variable: </strong>I_E
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### dD
+```{r}
+plotCol(thisTS,ind = 1)
+```

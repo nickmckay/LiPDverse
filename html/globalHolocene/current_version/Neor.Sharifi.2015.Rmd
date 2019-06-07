@@ -1,0 +1,704 @@
+---
+title: "Neor.Sharifi.2015"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 610
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Neor.Sharifi.2015
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Neor.Sharifi.2015.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Neor.Sharifi.2015.lpd)
+            
+
+[Download paleoData only (csv)](Neor.Sharifi.2015.csv)
+            
+
+[Download chronData only (csv)](Neor.Sharifi.2015-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Peat
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Sharifi, Arash"), list(name = "Pourmand, Ali"), list(name = "Canuel, Elizabeth A."), list(name = "Ferer-Tyler, Erin"), list(name = "Peterson, Larry C."), list(name = "Aichner, Bernhard"), list(name = "Feakins, Sarah J."), list(name = "Daryaee, Touraj"), list(name = "Djamali, Morteza"), list(name = "Beni, Abdolmajid Naderi"), list(name = "Lahijani, Hamid A.K."), list(name = "Swart, Peter K."))
+<p style="margin-left: 10px"><strong>citeKey: </strong>needs0needsatitle
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>123
+<p style="margin-left: 10px"><strong>title: </strong>Abrupt climate variability since the last deglaciation based on a high-resolution, multi-proxy peat record from NW Iran: The hand that rocked the Cradle of Civilization?
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>37.9603
+<p style="margin-left: 0px"><strong>longitude: </strong>48.5553
+<p style="margin-left: 0px"><strong>elevation: </strong>2500
+<p style="margin-left: 0px"><strong>siteName: </strong>Neor
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RmTsXec5TAz
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RkBySFegyAr
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RCAYfVTwycK
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>Al (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf4122774
+<p style="margin-left: 10px"><strong>variableName: </strong>Al
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Di (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa2495850
+<p style="margin-left: 10px"><strong>variableName: </strong>Di
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>K (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6829f158
+<p style="margin-left: 10px"><strong>variableName: </strong>K
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Ca (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7ebb9095
+<p style="margin-left: 10px"><strong>variableName: </strong>Ca
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Ti (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD11e48644
+<p style="margin-left: 10px"><strong>variableName: </strong>Ti
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Fe (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa0c4d833
+<p style="margin-left: 10px"><strong>variableName: </strong>Fe
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Rb (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5f3dd8a6
+<p style="margin-left: 10px"><strong>variableName: </strong>Rb
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Zr (cps) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5c1376c8
+<p style="margin-left: 10px"><strong>variableName: </strong>Zr
+<p style="margin-left: 10px"><strong>units: </strong>cps
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RbDKfSFdRjY
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RWsu3AzM3zF
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>sampleID (missing) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc0f4c0db
+<p style="margin-left: 10px"><strong>variableName: </strong>sampleID
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>water (percent) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe71af74e
+<p style="margin-left: 10px"><strong>variableName: </strong>water
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (percent) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf6b13108
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TOCmg (mg) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD40b7d7fb
+<p style="margin-left: 10px"><strong>variableName: </strong>TOCmg
+<p style="margin-left: 10px"><strong>units: </strong>mg
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfb41ac25
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RTes0bjj6jA
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RuMmU4Hzz25
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>dustFlux (g/cm2/yr) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>dumdittydum
+<p style="margin-left: 10px"><strong>variableName: </strong>dustFlux
+<p style="margin-left: 10px"><strong>units: </strong>g/cm2/yr
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>DUST
+<p style="margin-left: 20px"><strong>variableDetail: </strong>Flux
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>water (percent) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD40de6222
+<p style="margin-left: 10px"><strong>variableName: </strong>water
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (percent) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9d0943b3
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>wetBulkDensity (g/cm3) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD17363e37
+<p style="margin-left: 10px"><strong>variableName: </strong>wetBulkDensity
+<p style="margin-left: 10px"><strong>units: </strong>g/cm3
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>dryBulkDensity (g/cm3) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD27c8da78
+<p style="margin-left: 10px"><strong>variableName: </strong>dryBulkDensity
+<p style="margin-left: 10px"><strong>units: </strong>g/cm3
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SR (mm/yr) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7c93f88b
+<p style="margin-left: 10px"><strong>variableName: </strong>SR
+<p style="margin-left: 10px"><strong>units: </strong>mm/yr
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>LORCA (g/m2/yr) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDab365df4
+<p style="margin-left: 10px"><strong>variableName: </strong>LORCA
+<p style="margin-left: 10px"><strong>units: </strong>g/m2/yr
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ash (percent) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf9372ab8
+<p style="margin-left: 10px"><strong>variableName: </strong>ash
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Ti (g/g) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDab328fd0
+<p style="margin-left: 10px"><strong>variableName: </strong>Ti
+<p style="margin-left: 10px"><strong>units: </strong>g/g
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Tiash (g/g) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfe3f4988
+<p style="margin-left: 10px"><strong>variableName: </strong>Tiash
+<p style="margin-left: 10px"><strong>units: </strong>g/g
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RaWRlbqPcNT
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RkMZPuDTKew
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfefd61ba
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>M
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Id (missing) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD412abd40
+<p style="margin-left: 10px"><strong>variableName: </strong>Id
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>s (missing) [4-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD725a8ba1
+<p style="margin-left: 10px"><strong>variableName: </strong>s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RbQ42o3KsOe
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RsnKoS4ch55
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>ID (BP) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd1f01b63
+<p style="margin-left: 10px"><strong>variableName: </strong>ID
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Paq (missing) [5-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD75a11332
+<p style="margin-left: 10px"><strong>variableName: </strong>Paq
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD85bb7ccc
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+</details>
+<details style="margin-left: 10px">
+<summary>dummy2 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD827e465b
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy2
+</details>
+<details style="margin-left: 10px">
+<summary>dummy3 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa4d11f9c
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy3
+</details>
+<details style="margin-left: 10px">
+<summary>dummy4 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2507e758
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy4
+</details>
+<details style="margin-left: 10px">
+<summary>dummy5 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1b626450
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy5
+</details>
+<details style="margin-left: 10px">
+<summary>dummy6 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD47267875
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy6
+</details>
+<details style="margin-left: 10px">
+<summary>dummy7 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3275acca
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy7
+</details>
+<details style="margin-left: 10px">
+<summary>dummy8 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD487825d4
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy8
+</details>
+<details style="margin-left: 10px">
+<summary>dummy9 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD386dba50
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy9
+</details>
+<details style="margin-left: 10px">
+<summary>dummy10 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5b3f0c34
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy10
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Al (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Di (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### K (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### Ca (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### Ti (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### Fe (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### Rb (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### Zr (cps) [1-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### sampleID (missing) [2-1]
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### water (percent) [2-1]
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### TOC (percent) [2-1]
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### TOCmg (mg) [2-1]
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### d13C (permil) [2-1]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### dustFlux (g/cm2/yr) [3-1]
+```{r}
+plotCol(thisTS,ind = 30)
+```
+
+### water (percent) [3-1]
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### TOC (percent) [3-1]
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### wetBulkDensity (g/cm3) [3-1]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### dryBulkDensity (g/cm3) [3-1]
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### SR (mm/yr) [3-1]
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+### LORCA (g/m2/yr) [3-1]
+```{r}
+plotCol(thisTS,ind = 26)
+```
+
+### ash (percent) [3-1]
+```{r}
+plotCol(thisTS,ind = 27)
+```
+
+### Ti (g/g) [3-1]
+```{r}
+plotCol(thisTS,ind = 28)
+```
+
+### Tiash (g/g) [3-1]
+```{r}
+plotCol(thisTS,ind = 29)
+```
+
+### dD (permil) [4-1]
+```{r}
+plotCol(thisTS,ind = 34)
+```
+
+### Id (missing) [4-1]
+```{r}
+plotCol(thisTS,ind = 31)
+```
+
+### s (missing) [4-1]
+```{r}
+plotCol(thisTS,ind = 35)
+```
+
+### ID (BP) [5-1]
+```{r}
+plotCol(thisTS,ind = 36)
+```
+
+### Paq (missing) [5-1]
+```{r}
+plotCol(thisTS,ind = 39)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### dummy2 ()
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### dummy3 ()
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### dummy4 ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### dummy5 ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### dummy6 ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### dummy7 ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### dummy8 ()
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### dummy9 ()
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### dummy10 ()
+```{r}
+plotCol(chronTS,ind = 10)
+```

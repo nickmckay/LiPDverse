@@ -1,0 +1,15 @@
+depth (cm),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr),rejected ()
+3.5,14C,3,4,1,planktic foraminifera,G. sacculifer,1.437,0.066,NA
+35.5,14C,35,36,1,planktic foraminifera,G. sacculifer,1.897,0.056,NA
+71.5,14C,71,72,1,planktic foraminifera,G. sacculifer,2.575,0.056,NA
+91.5,14C,91,92,1,planktic foraminifera,G. sacculifer,2.986,0.067,NA
+127.5,14C,127,128,1,planktic foraminifera,G. sacculifer,3.869,0.065,NA
+171.5,14C,171,172,1,planktic foraminifera,G. sacculifer,4.404,0.057,NA
+211.5,14C,211,212,1,planktic foraminifera,G. sacculifer,5.323,0.067,NA
+251.5,14C,251,252,1,planktic foraminifera,G. sacculifer,6.81,0.066,NA
+311.5,14C,311,312,1,planktic foraminifera,G. sacculifer,9.329,0.072,NA
+551.5,14C,NA,NA,NA,planktic foraminifera,G. sacculifer,13.9,0.09,NA
+599.5,14C,NA,NA,NA,planktic foraminifera,G. sacculifer,15.54,0.09,NA
+651.5,14C,NA,NA,NA,planktic foraminifera,G. sacculifer,18.16,0.105,NA
+699.5,14C,NA,NA,NA,planktic foraminifera,G. sacculifer,17.68,0.1,TRUE
+801.5,14C,NA,NA,NA,planktic foraminifera,G. sacculifer,19.305,0.105,NA

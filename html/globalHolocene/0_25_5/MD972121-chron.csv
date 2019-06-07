@@ -1,0 +1,15 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+54.5,1800,15,tephra,tephra
+106.5,3280,20,tephra,tephra
+190.5,4830,20,tephra,tephra
+270.5,6130,30,tephra,tephra
+342.5,8530,10,tephra,tephra
+408.5,9810,50,tephra,tephra
+35.5,1139,56,AMS14C,G. inflata
+40.5,1748,56,AMS14C,G. inflata
+58.5,2203,56,AMS14C,G. inflata
+110.5,3241,56,AMS14C,G. inflata
+196.5,5379,57,AMS14C,G. inflata
+310.5,8286,61,AMS14C,G. inflata
+420.5,10818,70,AMS14C,G. inflata
+480.5,12265,96,AMS14C,G. inflata

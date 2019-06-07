@@ -1,0 +1,590 @@
+---
+title: "Ew0408-85JC.Praetorius.2015"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 30
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Ew0408-85JC.Praetorius.2015
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Ew0408-85JC.Praetorius.2015.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Ew0408-85JC.Praetorius.2015.lpd)
+            
+
+[Download data only (csv)](Ew0408-85JC.Praetorius.2015.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>marine sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Nature
+<p style="margin-left: 10px"><strong>volume: </strong>527
+<p style="margin-left: 10px"><strong>pages: </strong>362-366
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>North Pacific deglacial hypoxic events linked to abrupt ocean warming
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>59.55
+<p style="margin-left: 0px"><strong>longitude: </strong>-144.15
+<p style="margin-left: 0px"><strong>elevation: </strong>-682
+<p style="margin-left: 0px"><strong>siteName: </strong>Ew0408-85JC
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB205e60ed
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd5ae5e07
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>Temperature (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7f30ec1a
+<p style="margin-left: 10px"><strong>variableName: </strong>Temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Core (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2909d5c0
+<p style="margin-left: 10px"><strong>variableName: </strong>Core
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Sample interval (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc95efe9f
+<p style="margin-left: 10px"><strong>variableName: </strong>Sample interval
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>UK37 (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe3f532bd
+<p style="margin-left: 10px"><strong>variableName: </strong>UK37
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>UK37_error (1sigma) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1bab37e5
+<p style="margin-left: 10px"><strong>variableName: </strong>UK37_error
+<p style="margin-left: 10px"><strong>units: </strong>1sigma
+</details>
+<details style="margin-left: 10px">
+<summary>U371sigmaUncertainty- (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3e867964
+<p style="margin-left: 10px"><strong>variableName: </strong>U371sigmaUncertainty-
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>K37s (Âµg/g) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5cd68ff7
+<p style="margin-left: 10px"><strong>variableName: </strong>K37s
+<p style="margin-left: 10px"><strong>units: </strong>Âµg/g
+</details>
+<details style="margin-left: 10px">
+<summary>Temperature_uncertainty_plus (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB42a6c0cf
+<p style="margin-left: 10px"><strong>variableName: </strong>Temperature_uncertainty_plus
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>Temperature_uncertainty_minus (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc13e4c20
+<p style="margin-left: 10px"><strong>variableName: </strong>Temperature_uncertainty_minus
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1d190b4f
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB96b73de1
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>BSI (percentByWeight) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7834c192
+<p style="margin-left: 10px"><strong>variableName: </strong>BSI
+<p style="margin-left: 10px"><strong>units: </strong>percentByWeight
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2d20e857
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5a8e3c39
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>Al (percent) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB71fc9c51
+<p style="margin-left: 10px"><strong>variableName: </strong>Al
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>Units in percent by weight
+</details>
+<details style="margin-left: 10px">
+<summary>Mn (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf6dadb2e
+<p style="margin-left: 10px"><strong>variableName: </strong>Mn
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>Co (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf460632d
+<p style="margin-left: 10px"><strong>variableName: </strong>Co
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>Cr (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf779f0eb
+<p style="margin-left: 10px"><strong>variableName: </strong>Cr
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>U (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb594b51a
+<p style="margin-left: 10px"><strong>variableName: </strong>U
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>Mo (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9ee28e24
+<p style="margin-left: 10px"><strong>variableName: </strong>Mo
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>Cd (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9b890d33
+<p style="margin-left: 10px"><strong>variableName: </strong>Cd
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>Mo_xs (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe33b40a0
+<p style="margin-left: 10px"><strong>variableName: </strong>Mo_xs
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>U_xs (ppm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe6712311
+<p style="margin-left: 10px"><strong>variableName: </strong>U_xs
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8649545b
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>depth in core
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBbb16b78b
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (percent) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB28cb3718
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>Percent by weight
+</details>
+<details style="margin-left: 10px">
+<summary>TN (percent) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB102b2159
+<p style="margin-left: 10px"><strong>variableName: </strong>TN
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>percent by weight
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB927c120e
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Organic matter d13C
+</details>
+<details style="margin-left: 10px">
+<summary>dN15 (permil) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB16a076cb
+<p style="margin-left: 10px"><strong>variableName: </strong>dN15
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Sedimentary d15N
+</details>
+<details style="margin-left: 10px">
+<summary>dN15_corrected (permil) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd8fee875
+<p style="margin-left: 10px"><strong>variableName: </strong>dN15_corrected
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Corrected dN15
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4c5a6f2d
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>depth in core
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc512582f
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d13C_benthic (permil) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3c8f95e9
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C_benthic
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Uvigerina peregrina d13C
+</details>
+<details style="margin-left: 10px">
+<summary>d18O_benthic (permil) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB66ce1b6b
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O_benthic
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Uvigerina peregrina d18O
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf4c2c8b7
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>NPS depth. Data originally published in Davies et al., 2011.
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc4516003
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18O_plank (permil) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB704d56ad
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O_plank
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>NPS Planktonic d18O permil. Data from planktonic foraminifera species N.pachyderma sinistral (Nps)
+</details>
+<details style="margin-left: 10px">
+<summary>d13C_plank (permil) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd5901305
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C_plank
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>NPS Planktonic d13C permil. Data from planktonic foraminifera species N.pachyderma sinistral (Nps)
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe5f54dba
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB294b1334
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18O_Gb (permil) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdc5425d8
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O_Gb
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Data from planktonic foraminifera species G.bulloides (Gb)
+</details>
+<details style="margin-left: 10px">
+<summary>d13C_Gb (permil) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb0b64bea
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C_Gb
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Data from planktonic foraminifera species G.bulloides (Gb)
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Temperature (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### Core (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Sample interval (cm) [1-1]
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### UK37 (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### UK37_error (1sigma) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### U371sigmaUncertainty- (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### K37s (Âµg/g) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### Temperature_uncertainty_plus (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### Temperature_uncertainty_minus (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### BSI (percentByWeight) [1-2]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Al (percent) [1-3]
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### Mn (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### Co (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### Cr (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### U (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### Mo (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### Cd (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### Mo_xs (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### U_xs (ppm) [1-3]
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+### TOC (percent) [1-4]
+```{r}
+plotCol(thisTS,ind = 28)
+```
+
+### TN (percent) [1-4]
+```{r}
+plotCol(thisTS,ind = 29)
+```
+
+### d13C (permil) [1-4]
+```{r}
+plotCol(thisTS,ind = 30)
+```
+
+### dN15 (permil) [1-4]
+```{r}
+plotCol(thisTS,ind = 31)
+```
+
+### dN15_corrected (permil) [1-4]
+```{r}
+plotCol(thisTS,ind = 32)
+```
+
+### d13C_benthic (permil) [1-5]
+```{r}
+plotCol(thisTS,ind = 35)
+```
+
+### d18O_benthic (permil) [1-5]
+```{r}
+plotCol(thisTS,ind = 36)
+```
+
+### d18O_plank (permil) [1-6]
+```{r}
+plotCol(thisTS,ind = 39)
+```
+
+### d13C_plank (permil) [1-6]
+```{r}
+plotCol(thisTS,ind = 40)
+```
+
+### d18O_Gb (permil) [1-7]
+```{r}
+plotCol(thisTS,ind = 43)
+```
+
+### d13C_Gb (permil) [1-7]
+```{r}
+plotCol(thisTS,ind = 44)
+```

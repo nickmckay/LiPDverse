@@ -1,0 +1,13 @@
+depth (cm),dateType (),measurementMaterial (),labID (),age14C (kyr),age14CUncertainty (kyr),notes ()
+5,14C,Bivalve,KIA-3137,NA,NA,"Since “bomb” carbon, i.e., 14C ages younger than 1950, was often detected in near-surface sediments, a zero age was assumed for the sediment surface"
+28,14C,Bivalve,AAR-2702,0.9,0.055,NA
+90,14C,Bivalve,KIA-3138,2.09,0.03,NA
+120,14C,Bivalve,KIA-3139,2.68,0.03,NA
+158,14C,Bivalve,AAR-2703,3.235,0.065,NA
+195,14C,Bivalve,KIA-3140,4.05,0.04,NA
+241,14C,Bivalve,AAR-2704,4.62,0.065,NA
+270,14C,Bivalve,AAR-2705,5.06,0.07,NA
+315,14C,Bivalve,KIA-3141,5.92,0.04,NA
+349,14C,Bivalve,AAR-2706,6.48,0.075,NA
+406,14C,Bivalve,AAR-2707,7.12,0.075,NA
+445,14C,Bivalve,KIA-3142,8.35,0.05,NA

@@ -1,0 +1,10 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CHi (kyr),age14CLow (kyr),reservoirAge (kyr),rejected ()
+28,14C,planktic foraminifera calcite,Globorotalia inflata,KIA2590,4.52,0.05,0.05,0.4,NA
+43,14C,planktic foraminifera calcite,Globorotalia inflata,KIA2589,7.07,0.04,0.04,0.4,NA
+103,14C,planktic foraminifera calcite,Globorotalia inflata,KIA2588,12.15,0.05,0.05,0.4,NA
+108,14C,planktic foraminifera calcite,Globorotalia inflata,KIA557,12.68,0.07,0.07,0.4,NA
+138,14C,planktic foraminifera calcite,Globigerina bulloides,KIA4109,14.06,0.06,0.06,0.4,NA
+183,14C,planktic foraminifera calcite,Globorotalia inflata,KIA556,17.14,0.12,0.13,0.4,NA
+243,14C,planktic foraminifera calcite,Globorotalia inflata,KIA555,18.74,0.13,0.13,0.4,TRUE
+288,14C,planktic foraminifera calcite,Globigerina bulloides,KIA4110,29.13,0.24,0.24,0.4,NA
+333,14C,planktic foraminifera calcite,Globorotalia inflata,KIA554,35.37,0.96,1.09,0.4,NA

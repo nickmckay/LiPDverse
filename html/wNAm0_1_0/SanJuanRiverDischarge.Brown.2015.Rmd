@@ -1,0 +1,444 @@
+---
+title: "SanJuanRiverDischarge.Brown.2015"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 112
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#SanJuanRiverDischarge.Brown.2015
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](SanJuanRiverDischarge.Brown.2015.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/SanJuanRiverDischarge.Brown.2015.lpd)
+            
+
+[Download data only (csv)](SanJuanRiverDischarge.Brown.2015.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Research
+<p style="margin-left: 10px"><strong>volume: </strong>83
+<p style="margin-left: 10px"><strong>pages: </strong>415-426
+<p style="margin-left: 10px"><strong>title: </strong>Multi-millennial streamflow dynamics in two forested watersheds on Vancouver Island, Canada
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>48.58
+<p style="margin-left: 0px"><strong>longitude: </strong>-124.31
+<p style="margin-left: 0px"><strong>elevation: </strong>0
+<p style="margin-left: 0px"><strong>siteName: </strong>San Juan River Discharge
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB62b8d80f
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>Jan (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2e0851cd
+<p style="margin-left: 10px"><strong>variableName: </strong>Jan
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>January San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>JAN
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>stream flow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>MAR (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB218898e5
+<p style="margin-left: 10px"><strong>variableName: </strong>MAR
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>posititive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>MAR
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>APR (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBead47512
+<p style="margin-left: 10px"><strong>variableName: </strong>APR
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>APR
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>MAY (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9e64da1f
+<p style="margin-left: 10px"><strong>variableName: </strong>MAY
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>MAY
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>JUN (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfd11dca7
+<p style="margin-left: 10px"><strong>variableName: </strong>JUN
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>JUN
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>JUL (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB19830653
+<p style="margin-left: 10px"><strong>variableName: </strong>JUL
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>AUG
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>AUG (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc8115edd
+<p style="margin-left: 10px"><strong>variableName: </strong>AUG
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>AUG
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>SEP (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB897fcde6
+<p style="margin-left: 10px"><strong>variableName: </strong>SEP
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>SEP
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>stream flow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>OCT (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3990f6f9
+<p style="margin-left: 10px"><strong>variableName: </strong>OCT
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>OCT
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>NOV (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5c38be79
+<p style="margin-left: 10px"><strong>variableName: </strong>NOV
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>NOV
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>DEC (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB29838933
+<p style="margin-left: 10px"><strong>variableName: </strong>DEC
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>postive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>DEC
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>ANN_discharge (mm/year)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2dfe3174
+<p style="margin-left: 10px"><strong>variableName: </strong>ANN_discharge
+<p style="margin-left: 10px"><strong>units: </strong>mm/year
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>streamflow
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Feb (mm/month)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBad833140
+<p style="margin-left: 10px"><strong>variableName: </strong>Feb
+<p style="margin-left: 10px"><strong>units: </strong>mm/month
+<p style="margin-left: 10px"><strong>description: </strong>San Juan River discharge (Q) at gauging station 48.58°N, 124.31°W. Coastal rainforest. Watershed area: 578km2. Watershed average annual precipitation: 3519mm. 
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Jan (mm/month)
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### MAR (mm/month)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### APR (mm/month)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### MAY (mm/month)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### JUN (mm/month)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### JUL (mm/month)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### AUG (mm/month)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### SEP (mm/month)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### OCT (mm/month)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### NOV (mm/month)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### DEC (mm/month)
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### ANN_discharge (mm/year)
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Feb (mm/month)
+```{r}
+plotCol(thisTS,ind = 3)
+```

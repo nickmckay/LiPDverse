@@ -1,0 +1,238 @@
+---
+title: "CarletonLake.Upiter.2014"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 16
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CarletonLake.Upiter.2014
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CarletonLake.Upiter.2014.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/CarletonLake.Upiter.2014.lpd)
+            
+
+[Download data only (csv)](CarletonLake.Upiter.2014.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/16296
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>52
+<p style="margin-left: 10px"><strong>pages: </strong>11-26
+<p style="margin-left: 10px"><strong>pubYear: </strong>2014
+<p style="margin-left: 10px"><strong>title: </strong>Middle to late Holocene chironomid-inferred July temperatures for the central Northwest Territories, Canada
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>36
+<p style="margin-left: 10px"><strong>pages: </strong>295-314
+<p style="margin-left: 10px"><strong>title: </strong>A northwest North American training set: distribution of freshwater midges in relation to air temperature and lake depth
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>41
+<p style="margin-left: 10px"><strong>pages: </strong>349-368
+<p style="margin-left: 10px"><strong>title: </strong>Development of a chironomid-based air temperature inference model for the central Canadian Arctic
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>64.2572
+<p style="margin-left: 0px"><strong>longitude: </strong>-110.1008
+<p style="margin-left: 0px"><strong>elevation: </strong>420
+<p style="margin-left: 0px"><strong>siteName: </strong>Carleton Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0cea6043
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB79ca3f15
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>calendar years before 1950 AD
+</details>
+<details style="margin-left: 10px">
+<summary>temp_JulyB06 (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB26a7a8a1
+<p style="margin-left: 10px"><strong>variableName: </strong>temp_JulyB06
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>temp-JulyB06 surface temperature, , , degC, July, reconstruction, , based on Barley et al (2006) transfer function,N
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temp_JulyB06error (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBbf8d9921
+<p style="margin-left: 10px"><strong>variableName: </strong>temp_JulyB06error
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>temp-JulyB06err surface temperature, , , degC, July, reconstruction, , based on Barley et al (2006) transfer function,N
+</details>
+<details style="margin-left: 10px">
+<summary>temp_JulyP09 (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3f10d57b
+<p style="margin-left: 10px"><strong>variableName: </strong>temp_JulyP09
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>temp-JulyP09err surface temperature, , , degC, July, reconstruction, , based on Porinchu et al (2009) transfer function,N
+</details>
+<details style="margin-left: 10px">
+<summary>temp_Julyp09error (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB58e4edbb
+<p style="margin-left: 10px"><strong>variableName: </strong>temp_Julyp09error
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>temp-JulyP09err surface temperature, , , degC, July, reconstruction, , based on Porinchu et al (2009) transfer function,N
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temp_JulyB06 (degC)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### temp_JulyB06error (degC)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### temp_JulyP09 (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### temp_Julyp09error (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```

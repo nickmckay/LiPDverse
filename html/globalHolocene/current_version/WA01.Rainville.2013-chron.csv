@@ -1,0 +1,38 @@
+depth (c),age (yr BP),type (NA),depth_top (cm),depth_bot (cm),error (yr),calibrated_vs_non (NA),material (NA)
+0.25,-58.13,210Pb,0,0.5,NA,calibrated,bulk
+0.75,-57.72,210Pb,0.5,1,NA,calibrated,bulk
+1.25,-57.311,210Pb,1,1.5,NA,calibrated,bulk
+1.75,-56.496,210Pb,1.5,2,NA,calibrated,bulk
+2.25,-55.904,210Pb,2,2.5,NA,calibrated,bulk
+2.75,-55.323,210Pb,2.5,3,NA,calibrated,bulk
+3.25,-54.315,210Pb,3,3.5,NA,calibrated,bulk
+3.75,-52.975,210Pb,3.5,4,NA,calibrated,bulk
+4.25,-51.691,210Pb,4,4.5,NA,calibrated,bulk
+4.75,-50.024,210Pb,4.5,5,NA,calibrated,bulk
+5.25,-47.784,210Pb,5,5.5,NA,calibrated,bulk
+5.75,-46.129,210Pb,5.5,6,NA,calibrated,bulk
+6.25,-44.664,210Pb,6,6.5,NA,calibrated,bulk
+6.75,-42.17,210Pb,6.5,7,NA,calibrated,bulk
+7.25,-39.507,210Pb,7,7.5,NA,calibrated,bulk
+7.75,-37.532,210Pb,7.5,8,NA,calibrated,bulk
+8.25,-35.233,210Pb,8,8.5,NA,calibrated,bulk
+8.75,-33.007,210Pb,8.5,9,NA,calibrated,bulk
+9.25,-30.804,210Pb,9,9.5,NA,calibrated,bulk
+9.75,-28.15,210Pb,9.5,10,NA,calibrated,bulk
+10.25,-25.328,210Pb,10,10.5,NA,calibrated,bulk
+10.75,-22.457,210Pb,10.5,11,NA,calibrated,bulk
+11.25,-19.429,210Pb,11,11.5,NA,calibrated,bulk
+11.75,-16.745,210Pb,11.5,12,NA,calibrated,bulk
+12.25,-14.42,210Pb,12,12.5,NA,calibrated,bulk
+12.75,-11.715,210Pb,12.5,13,NA,calibrated,bulk
+13.25,-8.785,210Pb,13,13.5,NA,calibrated,bulk
+13.75,-5.833,210Pb,13.5,14,NA,calibrated,bulk
+14.25,-3.026,210Pb,14,14.5,NA,calibrated,bulk
+14.75,0.027,210Pb,14.5,15,NA,calibrated,bulk
+15,160,14C,13,17,40,AMS14C,twig
+55.5,1147,Tephra - White River Ash,52,59,66.5,calibrated,white river ash
+92.5,3350,14C,92,93,40,AMS14C,wood fragments
+128.5,4260,14C,128,129,40,AMS14C,wood fragments
+189,6470,14C,188,190,40,AMS14C,twig
+208.5,7300,14C,208,209,50,AMS14C,wood fragments
+253.5,9410,14C,253,254,50,AMS14C,twig

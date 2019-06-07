@@ -1,0 +1,1742 @@
+---
+title: "Station803.Bringue.2012"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 784
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Station803.Bringue.2012
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Station803.Bringue.2012.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Station803.Bringue.2012.lpd)
+            
+
+[Download paleoData only (csv)](Station803.Bringue.2012.csv)
+            
+
+[Download chronData only (csv)](Station803.Bringue.2012-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Bringue, Manuel"), list(name = "Rochon, Andre"))
+<p style="margin-left: 10px"><strong>journal: </strong>Marine Geology
+<p style="margin-left: 10px"><strong>volume: </strong>291-294
+<p style="margin-left: 10px"><strong>pages: </strong>83-96
+<p style="margin-left: 10px"><strong>title: </strong>Late Holocene paleoceanography and climate variability over the Mackenzie Slope (Beaufort Sea, Canadian Arctic)
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>70.6328
+<p style="margin-left: 0px"><strong>longitude: </strong>-135.8803
+<p style="margin-left: 0px"><strong>elevation: </strong>-218
+<p style="margin-left: 0px"><strong>siteName: </strong>Station 803
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5fb8e5a4
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0856a3ae
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1da17ab5
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>8
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>AUG
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953 (m) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd68d542b
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>sea ice cover in months/year
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>ICE
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth-range (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB53e68761
+<p style="margin-left: 10px"><strong>variableName: </strong>depth-range
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe86c3850
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB219bb723
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9b9fe4ce
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB55a8955e
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB630281bf
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf35ccd49
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB530c34d4
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdfe80620
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBbffe27a8
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb2b90adc
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB979f32af
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB79168f92
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7981e0bb
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB668c53ad
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8b54567d
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf735a0d6
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf7e97d2c
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe5d5c17a
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0911d108
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBef149c50
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB18d3e2dc
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc6ba74c8
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6259e3cf
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfd4ee3a0
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6179b3f9
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6e01a776
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB29bdb01b
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6d36256c
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB946f8057
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB733a1585
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6e0c6b5d
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953_i (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa187f463
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953_s (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe0dc24f9
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953/3 (missing) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb59bbe54
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7717a7f7
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>year (year ce) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB96cd89ae
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>year ce
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBeef661d0
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb68390ad
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>august
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth-range (cm) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa5ca5bf6
+<p style="margin-left: 10px"><strong>variableName: </strong>depth-range
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB11eee4ca
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb19d797a
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc032af98
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB53f348f1
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBedc87e21
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb0f9a263
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB93255a9c
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe95c56a7
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5489a6ec
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5972b76c
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf34cf890
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB118d2170
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB06675ffd
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb45782c6
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa216e079
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBcf3dfd5f
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2350250e
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa88ad0e3
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1baf7f84
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe639c566
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfcbba369
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf013315a
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB67f1ec10
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9bf1ebb7
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfc497fa0
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf924906e
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3351f7c4
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB81987935
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfd4751af
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc87e721e
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe2fd65d8
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953_i (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB03f35735
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB397a390f
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953_s (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1fa55bc1
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953/3 (missing) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa7652ecd
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1064eba4
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>year (year ce) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB147188d8
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>year ce
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB17f15760
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB460ab94e
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>august
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth-range (cm) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6cb0885b
+<p style="margin-left: 10px"><strong>variableName: </strong>depth-range
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8a9c366c
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe8525a2b
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc9b2e67d
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TFEV/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe5d7fe4b
+<p style="margin-left: 10px"><strong>variableName: </strong>TFEV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd60b353b
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB40593100
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0cb86668
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SFEV/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe7c3d5a0
+<p style="margin-left: 10px"><strong>variableName: </strong>SFEV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd15eeee2
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB677f5039
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB605a3f9e
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>THIV/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBeb176066
+<p style="margin-left: 10px"><strong>variableName: </strong>THIV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB93876c18
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB07ec7d58
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdc9424f3
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SHIV/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf956da65
+<p style="margin-left: 10px"><strong>variableName: </strong>SHIV/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa2d03151
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB069fbb10
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2ba2caf1
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBbedc283c
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7a58a27d
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6b06825b
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SAUG/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB3912b99a
+<p style="margin-left: 10px"><strong>variableName: </strong>SAUG/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2e5e2e3b
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB72c68913
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb24c1947
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TETE/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0e8c4176
+<p style="margin-left: 10px"><strong>variableName: </strong>TETE/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2e782f9f
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe192e50f
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBbc0c6c65
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SETE/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb06c31dd
+<p style="margin-left: 10px"><strong>variableName: </strong>SETE/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953_i (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8d658c89
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953_i
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4cfaa231
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953_s (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe2ea913c
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953_s
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>IMON1953/3 (missing) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd8acfbdb
+<p style="margin-left: 10px"><strong>variableName: </strong>IMON1953/3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1463d71d
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth-range (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6129a63a
+<p style="margin-left: 10px"><strong>variableName: </strong>depth-range
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>210Pb (dpm/g) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8924fae4
+<p style="margin-left: 10px"><strong>variableName: </strong>210Pb
+<p style="margin-left: 10px"><strong>units: </strong>dpm/g
+</details>
+<details style="margin-left: 10px">
+<summary>error (dpm/g) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB85122e13
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>dpm/g
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB350fd60d
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>material (NA) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB94c2cc1c
+<p style="margin-left: 10px"><strong>variableName: </strong>material
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>dry-weight (g) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB7e790a75
+<p style="margin-left: 10px"><strong>variableName: </strong>dry-weight
+<p style="margin-left: 10px"><strong>units: </strong>g
+</details>
+<details style="margin-left: 10px">
+<summary>conventional-age (yr BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB80edc616
+<p style="margin-left: 10px"><strong>variableName: </strong>conventional-age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>measured-age (yr BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB768299ac
+<p style="margin-left: 10px"><strong>variableName: </strong>measured-age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>error (yr) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfdf9903c
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>13C/12C_ratio (ratio) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdbf4a440
+<p style="margin-left: 10px"><strong>variableName: </strong>13C/12C_ratio
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+<p style="margin-left: 10px"><strong>description: </strong>permil/permil
+</details>
+<details style="margin-left: 10px">
+<summary>deltaYr (yr) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5b2c5752
+<p style="margin-left: 10px"><strong>variableName: </strong>deltaYr
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>correction (yr) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB07579fb7
+<p style="margin-left: 10px"><strong>variableName: </strong>correction
+<p style="margin-left: 10px"><strong>units: </strong>yr
+<p style="margin-left: 10px"><strong>description: </strong>Total correction
+</details>
+<details style="margin-left: 10px">
+<summary>calander (yr BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe2634314
+<p style="margin-left: 10px"><strong>variableName: </strong>calander
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### IMON1953 (m) [1-1]
+```{r}
+plotCol(thisTS,ind = 37)
+```
+
+### depth-range (cm) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### TFEV_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### TFEV (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### TFEV_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### TFEV/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### SFEV_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### SFEV (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### SFEV_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### SFEV/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### THIV_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### THIV (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### THIV_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### THIV/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### SHIV_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### SHIV (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### SHIV_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### SHIV/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### temperature (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### temperature (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### temperature (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### SAUG_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### SAUG (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+### SAUG_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 26)
+```
+
+### SAUG/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 27)
+```
+
+### TETE_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 28)
+```
+
+### TETE (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 29)
+```
+
+### TETE_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 30)
+```
+
+### TETE/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 31)
+```
+
+### SETE_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 32)
+```
+
+### SETE (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 33)
+```
+
+### SETE_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 34)
+```
+
+### SETE/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 35)
+```
+
+### IMON1953_i (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 36)
+```
+
+### IMON1953_s (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 38)
+```
+
+### IMON1953/3 (missing) [1-1]
+```{r}
+plotCol(thisTS,ind = 39)
+```
+
+### temperature (degC) [1-2]
+```{r}
+plotCol(thisTS,ind = 61)
+```
+
+### depth-range (cm) [1-2]
+```{r}
+plotCol(thisTS,ind = 40)
+```
+
+### TFEV_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 44)
+```
+
+### TFEV (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 45)
+```
+
+### TFEV_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 46)
+```
+
+### TFEV/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 47)
+```
+
+### SFEV_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 48)
+```
+
+### SFEV (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 49)
+```
+
+### SFEV_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 50)
+```
+
+### SFEV/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 51)
+```
+
+### THIV_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 52)
+```
+
+### THIV (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 53)
+```
+
+### THIV_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 54)
+```
+
+### THIV/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 55)
+```
+
+### SHIV_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 56)
+```
+
+### SHIV (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 57)
+```
+
+### SHIV_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 58)
+```
+
+### SHIV/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 59)
+```
+
+### temperature (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 60)
+```
+
+### temperature (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 62)
+```
+
+### temperature (degC) [1-2]
+```{r}
+plotCol(thisTS,ind = 63)
+```
+
+### SAUG_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 64)
+```
+
+### SAUG (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 65)
+```
+
+### SAUG_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 66)
+```
+
+### SAUG/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 67)
+```
+
+### TETE_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 68)
+```
+
+### TETE (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 69)
+```
+
+### TETE_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 70)
+```
+
+### TETE/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 71)
+```
+
+### SETE_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 72)
+```
+
+### SETE (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 73)
+```
+
+### SETE_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 74)
+```
+
+### SETE/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 75)
+```
+
+### IMON1953_i (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 76)
+```
+
+### IMON1953 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 77)
+```
+
+### IMON1953_s (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 78)
+```
+
+### IMON1953/3 (missing) [1-2]
+```{r}
+plotCol(thisTS,ind = 79)
+```
+
+### temperature (degC) [1-3]
+```{r}
+plotCol(thisTS,ind = 101)
+```
+
+### depth-range (cm) [1-3]
+```{r}
+plotCol(thisTS,ind = 80)
+```
+
+### TFEV_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 84)
+```
+
+### TFEV (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 85)
+```
+
+### TFEV_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 86)
+```
+
+### TFEV/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 87)
+```
+
+### SFEV_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 88)
+```
+
+### SFEV (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 89)
+```
+
+### SFEV_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 90)
+```
+
+### SFEV/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 91)
+```
+
+### THIV_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 92)
+```
+
+### THIV (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 93)
+```
+
+### THIV_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 94)
+```
+
+### THIV/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 95)
+```
+
+### SHIV_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 96)
+```
+
+### SHIV (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 97)
+```
+
+### SHIV_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 98)
+```
+
+### SHIV/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 99)
+```
+
+### temperature (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 100)
+```
+
+### temperature (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 102)
+```
+
+### temperature (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 103)
+```
+
+### SAUG_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 104)
+```
+
+### SAUG (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 105)
+```
+
+### SAUG_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 106)
+```
+
+### SAUG/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 107)
+```
+
+### TETE_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 108)
+```
+
+### TETE (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 109)
+```
+
+### TETE_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 110)
+```
+
+### TETE/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 111)
+```
+
+### SETE_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 112)
+```
+
+### SETE (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 113)
+```
+
+### SETE_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 114)
+```
+
+### SETE/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 115)
+```
+
+### IMON1953_i (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 116)
+```
+
+### IMON1953 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 117)
+```
+
+### IMON1953_s (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 118)
+```
+
+### IMON1953/3 (missing) [1-3]
+```{r}
+plotCol(thisTS,ind = 119)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm) [1-1]
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### depth-range (cm) [1-1]
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### 210Pb (dpm/g) [1-1]
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### error (dpm/g) [1-1]
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### depth (cm) [1-2]
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### material (NA) [1-2]
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### dry-weight (g) [1-2]
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### conventional-age (yr BP) [1-2]
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### measured-age (yr BP) [1-2]
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### error (yr) [1-2]
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### 13C/12C_ratio (ratio) [1-2]
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### deltaYr (yr) [1-2]
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### correction (yr) [1-2]
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### calander (yr BP) [1-2]
+```{r}
+plotCol(chronTS,ind = 14)
+```

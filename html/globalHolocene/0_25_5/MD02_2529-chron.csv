@@ -1,0 +1,16 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),reservoirAgeUncertainty (kyr),rejected ()
+12,14C,planktic foraminifera calcite,N. dutertrei,0.87,0.045,0.05,0.049,NA
+136,14C,planktic foraminifera calcite,N. dutertrei,3.48,0.08,0.05,0.049,NA
+359.5,14C,planktic foraminifera calcite,N. dutertrei,10.14,0.07,0.05,0.049,NA
+407.5,14C,planktic foraminifera calcite,N. dutertrei,11.92,0.09,0.05,0.049,NA
+407.5,14C,planktic foraminifera calcite,G. ruber,11.67,0.1,0.05,0.049,TRUE
+469.5,14C,planktic foraminifera calcite,N. dutertrei,14.08,0.1,0.05,0.049,NA
+469.5,14C,planktic foraminifera calcite,G. ruber,14.26,0.14,0.05,0.049,TRUE
+470.5,14C,planktic foraminifera calcite,N. dutertrei,14.53,0.11,0.05,0.049,NA
+470.5,14C,planktic foraminifera calcite,G. ruber,14.44,0.11,0.05,0.049,TRUE
+518,14C,planktic foraminifera calcite,N. dutertrei,16.62,0.13,0.05,0.049,NA
+518,14C,planktic foraminifera calcite,G. ruber,16.73,0.14,0.05,0.049,TRUE
+590.5,14C,planktic foraminifera calcite,N. dutertrei,20.47,0.13,0.05,0.049,NA
+680,14C,planktic foraminifera calcite,N. dutertrei,25.97,0.24,0.05,0.049,NA
+688.5,14C,planktic foraminifera calcite,N. dutertrei,26.58,0.26,0.05,0.049,NA
+790.5,14C,planktic foraminifera calcite,N. dutertrei,34.26,0.65,0.05,0.049,NA

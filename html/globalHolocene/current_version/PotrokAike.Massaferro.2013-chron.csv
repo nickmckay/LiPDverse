@@ -1,0 +1,17 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+POZ-834,43.5,43.5,Core top,440,30,30,Y
+POZ-897,50,50,C14 Uncalibrated,655,25,25,Y
+POZ-3570,57.5,57.5,C14 Uncalibrated,735,25,25,Y
+POZ-896,92.5,92.5,C14 Uncalibrated,1470,40,40,Y
+POZ-5182,237.5,237.5,C14 Uncalibrated,2300,35,35,Y
+POZ-8549,345.5,345.5,C14 Uncalibrated,3600,35,35,Y
+POZ-8398,529.5,529.5,C14 Uncalibrated,4465,50,50,Y
+POZ-8550,673.5,673.5,C14 Uncalibrated,6440,70,70,Y
+POZ-8391,763,763,C14 Uncalibrated,7025,50,50,Y
+POZ-8546,890.5,890.5,C14 Uncalibrated,7260,50,50,Y
+POZ-8392,1052.5,1052.5,C14 Uncalibrated,7580,50,50,Y
+POZ-5985,1398.5,1398.5,C14 Uncalibrated,8930,50,50,Y
+POZ-8548,1493.5,1493.5,C14 Uncalibrated,10240,60,60,Y
+POZ-8396,1578.5,1578.5,C14 Uncalibrated,11200,60,60,Y
+POZ-8397,1676.5,1676.5,C14 Uncalibrated,12490,70,70,Y
+POZ-5073,1888.5,1888.5,C14 Uncalibrated,13450,70,70,Y

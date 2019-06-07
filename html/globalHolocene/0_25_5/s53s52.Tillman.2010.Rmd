@@ -1,0 +1,428 @@
+---
+title: "s53s52.Tillman.2010"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 733
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#s53s52.Tillman.2010
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](s53s52.Tillman.2010.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/s53s52.Tillman.2010.lpd)
+            
+
+[Download paleoData only (csv)](s53s52.Tillman.2010.csv)
+            
+
+[Download chronData only (csv)](s53s52.Tillman.2010-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Peat
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/15444
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Kaislahti Tillman, Paeivi"), list(name = "Holzkaemper, Steffen"), list(name = "Kuhry, Peter"), list(name = "Sannel, A. Britta K."), list(name = "Loader, Neil J."), list(name = "Robertson, Iain"))
+<p style="margin-left: 10px"><strong>journal: </strong>Palaeogeography, Palaeoclimatology, Palaeoecology
+<p style="margin-left: 10px"><strong>volume: </strong>298
+<p style="margin-left: 10px"><strong>title: </strong>Long-term climate variability in continental subarctic Canada: A 6200-year record derived from stable isotopes in peat
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>59.8917
+<p style="margin-left: 0px"><strong>longitude: </strong>-104.2083
+<p style="margin-left: 0px"><strong>elevation: </strong>394.5
+<p style="margin-left: 0px"><strong>siteName: </strong>s53s52
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTEY6OZVIK
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT99YF15U2
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTJ6FGBAO9
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>S52 (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTVX2SM7LR
+<p style="margin-left: 10px"><strong>variableName: </strong>S52
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTUW08TPA3
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTX88AXAYH
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT9MUKBHAW
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT316LD1O7
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT0V5BPR7J
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (years) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTKKUBWAPT
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>years
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_old (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTQGNFZ8HD
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_old
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_young (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT8460X7IR
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_young
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTKS6IK09O
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTB45D1RWY
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTZGFNR8MV
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (mm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTQNBVP8TU
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (mm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTXY8U9A35
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTX5YQBO1H
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (years) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTX3WWKDOE
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>years
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_old (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT1B1OHO3A
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_old
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_young (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTHVUKPU4F
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_young
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTIRC5BZD3
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age_type () [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTAF07ZKTT
+<p style="margin-left: 10px"><strong>variableName: </strong>age_type
+</details>
+<details style="margin-left: 10px">
+<summary>lab_id () [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTV2GPQTK6
+<p style="margin-left: 10px"><strong>variableName: </strong>lab_id
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### S52 (missing)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age (bp) [1-1]
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### depth (cm) [1-1]
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### depth_bot (mm) [1-1]
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### depth_top (mm) [1-1]
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age14C (bp) [1-1]
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### age_error (years) [1-1]
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### cal_age_range_old (bp) [1-1]
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### cal_age_range_young (bp) [1-1]
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### thickness (mm) [1-1]
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### age (bp) [2-1]
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### depth (cm) [2-1]
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### depth_bot (mm) [2-1]
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### depth_top (mm) [2-1]
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### age14C (bp) [2-1]
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### age_error (years) [2-1]
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### cal_age_range_old (bp) [2-1]
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### cal_age_range_young (bp) [2-1]
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### thickness (mm) [2-1]
+```{r}
+plotCol(chronTS,ind = 18)
+```
+
+### age_type () [2-1]
+```{r}
+plotCol(chronTS,ind = 19)
+```
+
+### lab_id () [2-1]
+```{r}
+plotCol(chronTS,ind = 20)
+```

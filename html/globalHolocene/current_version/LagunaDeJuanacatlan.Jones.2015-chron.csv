@@ -1,0 +1,30 @@
+depth (cm),age (yr BP),ref (unitless),core (unitless),type (unitless),Core_depth (cm),Depth of top of sample (cm),Depth of bottom of sample (cm) (cm),14C enrichment (unitless),youngest_error (yr BP),oldest_error (yr BP),calibrated age (yrs before 1950 AD) (yr BP),youngest calibrated age (yrs before 1950 AD) (yr BP),oldest calibrated age (yrs before 1950 AD) (yr BP),1 sigma or 2 sigma? (unitless),Reservoir Correction/R (unitless),Calibration used (unitless),Comments (unitless),probability (unitless),d13C (unitless)
+NA,NA,NA,NA,137Cs,NA,NA,NA,NA,NA,NA,-36,NA,NA,NA,NA,NA,Metcalfe et al. 2010: age model based on 5th order polynomial fit to dates below 1.511 cm and a quadradic curve above 1.511 cm,NA,NA
+NA,NA,NA,NA,137Cs,NA,NA,NA,NA,NA,NA,-13,NA,NA,NA,NA,NA,Jones et al. 2015: Age model based on 2nd order polynomial from 0-262.21 cm then a 5th order polynomial below 262.21 cm,NA,NA
+sed trap,NA,Metcalfe et al. 2010,Sediment trap,NA,NA,NA,NA,105.86+/-0.32,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,-35.9
+0.0,NA,Metcalfe et al. 2010,2A-1M,NA,27,0,1,106.85+/-0.32,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,-32.5
+14.0,NA,Metcalfe et al. 2010,2A-1M,NA,44,14,15,118.22+/-0.31,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,-30.3
+33.5,353,Metcalfe et al. 2010,2A-1M,NA,60.5,33.5,34.5,95.70+/-0.29,329,377,NA,316,494,2,NA,Calib 5.0/Intcal04,NA,100,-31.2
+66.0,312,Metcalfe et al. 2010,1A-1K-1,NA,123,66,67,96.18+/-0.29,288,336,NA,348,459,2,NA,Calib 5.0/Intcal04,NA,77,-28.4
+105.5,281,Metcalfe et al. 2010,2A-1K-2,NA,65,92.5,93.5,96.56+/-0.29,257,305,359.5,287,432,2,NA,Calib 5.0/Intcal04,NA,100,-30
+118.7,317,Metcalfe et al. 2010,2A-1K-2,NA,90.5,118.7,119.3,96.13+/-0.25,296,338,403,348,458,2,NA,Calib 5.0/Intcal04,NA,79,-30
+143.6,543,Metcalfe et al. 2010,2A-1K-2,NA,115,143.6,144.2,93.47+/-0.22,524,562,539,521,557,2,NA,Calib 5.0/Intcal04,NA,80,-29.5
+167.0,737,Metcalfe et al. 2010,2A-1K-3,NA,31,167,167.6,91.23+/-0.27,713,761,685.5,659,712,2,NA,Calib 5.0/Intcal04,NA,99,-29.9
+191.0,912,Metcalfe et al. 2010,2A-1K-3,NA,61,191,191.5,89.27+/-0.24,891,933,843,772,914,2,NA,Calib 5.0/Intcal04,NA,100,-30.9
+234.2,1338,Metcalfe et al. 2010,2A-1K-3,NA,107,234.2,234.7,84.66+/-0.21,1318,1358,1279.5,1258,1301,2,NA,Calib 5.0/Intcal04,NA,95,-32
+256.8,1622,Metcalfe et al. 2010,2A-1K-4,NA,1,256.8,257.4,81.71+/-0.19,1604,1640,1522,1485,1559,2,NA,Calib 5.0/Intcal04,NA,70,-33.1
+290.7,2024,Metcalfe et al. 2010,2A-1K-4,NA,34,290.7,291.8,77.73+/-0.2,2004,2044,1965,1922,2008,2,NA,Calib 5.0/Intcal04,NA,94,-30.1
+321.9,2135,Metcalfe et al. 2010,2A-1K-4,NA,65.5,321.9,322.8,76.66+/-0.21,2113,2157,2098,2040,2156,2,NA,Calib 5.0/Intcal04,NA,88,-27.6
+357.05,2411,Jones et al. 2015,2A-1K-4,NA,99,356.4,357.7,74.08+/-0.23,2386,2436,2421.5,2351,2492,2,NA,NA,NA,90,-30.3
+383.3,2624,Jones et al. 2015,2A-1K-5,NA,10.5,383,383.6,72.13+/-0.23,2598,2650,2752,2728,2776,2,NA,NA,NA,100,-29.9
+412.45,2976,Jones et al. 2015,2A-1K-5,NA,38.5,412.1,412.8,69.04+/-0.23,2950,3002,3163,3070,3256,2,NA,NA,NA,100,-31
+453.05,3211,Jones et al. 2015,2A-1K-5,NA,76,452.6,453.5,67.05+/-0.22,3184,3238,3425.5,3377,3474,2,NA,NA,NA,100,-30
+482.35,3414,Jones et al. 2015,2A-1K-5,NA,108,482.1,482.6,65.38+/-0.22,3387,3441,3650.5,3580,3721,2,NA,NA,NA,97,-28.9
+526.15,3871,Jones et al. 2015,2A-1K-6,NA,32,525.8,526.5,61.76+/-0.22,3843,3899,4322.5,4231,4414,2,NA,NA,NA,96,-25.4
+546.7,3918,Jones et al. 2015,2A-1K-6,NA,54,546.6,546.8,61.4+/-0.22,3890,3946,4353,4282,4424,2,NA,NA,NA,94,-31.3
+566.2,4043,Jones et al. 2015,2A-1K-6,NA,85.5,566.1,566.3,60.45+/-0.2,4017,4069,4502.5,4427,4578,2,NA,NA,NA,98,-27.9
+596.65,4152,Jones et al. 2015,2A-1K-6,NA,117,596.2,597.1,59.64+/-0.2,4125,4179,4675,4581,4769,2,NA,NA,NA,80,-27.6
+628.9,4304,Jones et al. 2015,1A-1K-7,NA,28,628.4,629.4,58.52+/-0.19,4278,4330,4861,4832,4890,2,NA,NA,NA,91,-30
+653.9,4468,Jones et al. 2015,1A-1K-7,NA,54.5,653.4,654.4,57.34+/-0.19,4442,4494,5158,5031,5285,2,NA,NA,NA,89,-28.7
+690.8,4655,Jones et al. 2015,1A-1K-7,NA,88.5,690.4,691.2,56.02+/-0.22,4624,4686,5404.5,5342,5467,2,NA,NA,NA,85,-32.2
+723.05,5055,Jones et al. 2015,1A-1K-7,NA,121,722.7,723.4,53.3+/-0.19,5027,5083,5818,5736,5900,2,NA,NA,NA,100,-28.9

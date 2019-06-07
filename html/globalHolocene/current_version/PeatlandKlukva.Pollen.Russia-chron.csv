@@ -1,0 +1,8 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+0,0,Core top,-63,-63,-63,Y
+30,35,C14 Uncalibrated,1050,1090,980,Y
+60,65,C14 Uncalibrated,2400,2470,2330,Y
+130,135,C14 Uncalibrated,4880,4920,4780,Y
+160,165,C14 Uncalibrated,6610,6690,6530,Y
+220,225,C14 Uncalibrated,6980,7060,6900,Y
+260,265,C14 Uncalibrated,8140,8240,8040,Y

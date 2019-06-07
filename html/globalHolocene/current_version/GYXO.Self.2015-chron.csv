@@ -1,0 +1,17 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,NA,Core top,-56,NA,NA,NA,NA,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,0.38,NA,Pb210-Lead,-52,-50,-54,2,2,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,1.13,NA,Pb210-Lead,-42,-40,-44,2,2,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,1.88,NA,Pb210-Lead,-29,-27,-31,2,2,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,2.13,NA,Pb210-Lead,-25,-23,-27,2,2,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,2.38,NA,Pb210-Lead,-19,-17,-21,2,2,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,2.88,NA,Pb210-Lead,-5,-2,-8,3,3,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,3.13,NA,Pb210-Lead,3,6,0,3,3,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,3.38,NA,Pb210-Lead,14,18,10,4,4,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,3.63,NA,Pb210-Lead,26,31,21,5,5,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,4.13,NA,Pb210-Lead,63,75,51,12,12,Y,Modelled from Pb-210 data; raw data in supplementary data
+NA,4.38,NA,Pb210-Lead,93,119,67,26,26,Y,Modelled from Pb-210 data; raw data in supplementary data
+SUERC-51090,11.75,12,C14 Uncalibrated,1527,1562,1492,35,35,Y,bulk sediment
+SUERC-51091,19,19.25,C14 Uncalibrated,2488,2523,2453,35,35,Y,bulk sediment
+SUERC-51092,26.25,26.5,C14 Uncalibrated,2311,2346,2276,35,35,N,bulk sediment
+Beta-312807,31.75,32.5,C14 Uncalibrated,3210,3240,3180,30,30,Y,bulk sediment

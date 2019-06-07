@@ -1,0 +1,9 @@
+depth (cm),age (yrBP),depth_range (cm),error (yr),type (NA),material (NA)
+90,1890,-10,90,AMS14C,NA
+137.5,3080,-5,90,AMS14C,NA
+149,3390,-2,130,tephra,St Helens Yn
+192.5,5470,-5,90,AMS14C,NA
+222,6730,-9,40,tephra,Mazama Ash
+242.5,8150,-5,100,AMS14C,NA
+263.5,9540,-8,100,AMS14C,NA
+282,10290,-4,80,AMS14C,NA

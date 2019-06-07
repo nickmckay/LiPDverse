@@ -1,0 +1,10 @@
+depth (cm),age (kyr),dateType (unitless),measurementMaterial (unitless),labID (unitless),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),calibrationCurve (unitless)
+5,1.239,14C,planktonic foraminifera,KIA33119,1.7,0.025,0.4,marine04
+25,1.991,14C,planktonic foraminifera,KIA24904,2.43,0.03,0.4,marine04
+60,3.063,14C,planktonic foraminifera,KIA33120,3.31,0.03,0.4,marine04
+110,6.131,14C,planktonic foraminifera,KIA24905,5.755,0.03,0.4,marine04
+160,7.803,14C,planktonic foraminifera,KIA33121,7.37,0.04,0.4,marine04
+185,9.447,14C,planktonic foraminifera,KIA24906,8.81,0.04,0.4,marine04
+340,19.979,14C,planktonic foraminifera,KIA25875,17.15,0.08,0.4,marine04
+585,27.362,14C,solitary cup coral,KIA24907,23.05,0.14,0.4,NA
+880,35.415,14C,planktonic foraminifera,KIA24903,31.85,0.35,0.4,NA

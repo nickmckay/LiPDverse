@@ -1,0 +1,376 @@
+---
+title: "KirmanLake.MacDonald.2016"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 51
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#KirmanLake.MacDonald.2016
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](KirmanLake.MacDonald.2016.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/KirmanLake.MacDonald.2016.lpd)
+            
+
+[Download data only (csv)](KirmanLake.MacDonald.2016.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://dataverse.harvard.edu/dataverse/UCLAGMacDonald
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Scientific Reports
+<p style="margin-left: 10px"><strong>volume: </strong>6
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Prolonged California aridity linked to climate warming and Pacific sea surface temperature
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>38.34
+<p style="margin-left: 0px"><strong>longitude: </strong>-119.4997
+<p style="margin-left: 0px"><strong>elevation: </strong>2174
+<p style="margin-left: 0px"><strong>siteName: </strong>Kirman Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf0fb5a64
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB149c0928
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB43b5926b
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>LOI (%) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD99e0a86f
+<p style="margin-left: 10px"><strong>variableName: </strong>LOI
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>P. nitidum (no/cc) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf8a0875d
+<p style="margin-left: 10px"><strong>variableName: </strong>P. nitidum
+<p style="margin-left: 10px"><strong>units: </strong>no/cc
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>V humeralis (no/cc) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD170a77c2
+<p style="margin-left: 10px"><strong>variableName: </strong>V humeralis
+<p style="margin-left: 10px"><strong>units: </strong>no/cc
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2cf4acc5
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d15N (permil) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD192cfe3e
+<p style="margin-left: 10px"><strong>variableName: </strong>d15N
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>C:N (ratio) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD20a23a58
+<p style="margin-left: 10px"><strong>variableName: </strong>C:N
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>pinus/atremisia (ratio) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD77876d6d
+<p style="margin-left: 10px"><strong>variableName: </strong>pinus/atremisia
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0ce0b069
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB085212fc
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBab7f92e5
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>lake_depth (m) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD41437034
+<p style="margin-left: 10px"><strong>variableName: </strong>lake_depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>diatom inferred depth (m)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>P-E
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>salinity (mg/L) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD912708fe
+<p style="margin-left: 10px"><strong>variableName: </strong>salinity
+<p style="margin-left: 10px"><strong>units: </strong>mg/L
+<p style="margin-left: 10px"><strong>description: </strong>diatom inferred salinity
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>P-E
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB40e681b6
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBea59fb0f
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (unknown) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1366a520
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>unknown
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>chacoal_influx (no/cm2/yr) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3393aa57
+<p style="margin-left: 10px"><strong>variableName: </strong>chacoal_influx
+<p style="margin-left: 10px"><strong>units: </strong>no/cm2/yr
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>FIRE
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### LOI (%) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### P. nitidum (no/cc) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### V humeralis (no/cc) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### d13C (permil) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### d15N (permil) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### C:N (ratio) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### pinus/atremisia (ratio) [1-1]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### lake_depth (m) [2-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### salinity (mg/L) [2-1]
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### chacoal_influx (no/cm2/yr) [3-1]
+```{r}
+plotCol(thisTS,ind = 16)
+```

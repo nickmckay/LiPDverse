@@ -1,0 +1,14 @@
+depth (cm) [1-1],age (yr bp) [1-1],section (unitless) [1-1],depth_range (cm) [1-1],error (yr) [1-1],depth (cm) [1-2],age (yr bp) [1-2],core (unitless) [1-2],error (yr) [1-2],material (unitless) [1-2]
+101.5,3060,II,6.0-9,35,19,1450,V95-2P,61,pollen
+473,10000,V,77-81,40,141,3050,V95-2P,51,pollen
+650,14450,VIIa,55-58,65,217,4110,V95-2P,61,pollen
+714,13600,VIIb,22-24,55,330,6290,V95-2P,61,pollen
+772,17300,XII,24.5-26,75,438,9260,V95-2P,60,pollen
+883,14600,XIII,35-37,60,466,8180,V95-2P,51,pollen
+NA,NA,NA,NA,NA,487,10540,V95-2P,61,pollen
+NA,NA,NA,NA,NA,508,11140,V95-2P,61,pollen
+NA,NA,NA,NA,NA,618,12910,V95-2P,71,pollen
+NA,NA,NA,NA,NA,687,12400,V95-2P,71,charcoal
+NA,NA,NA,NA,NA,709,13240,V95-2P,82,charcoal
+NA,NA,NA,NA,NA,275,9570,V95-3P,160,pollen
+NA,NA,NA,NA,NA,915,10230,V95-7P,110,pollen

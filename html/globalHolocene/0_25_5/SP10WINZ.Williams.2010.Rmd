@@ -1,0 +1,496 @@
+---
+title: "SP10WINZ.Williams.2010"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 772
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#SP10WINZ.Williams.2010
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](SP10WINZ.Williams.2010.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/SP10WINZ.Williams.2010.lpd)
+            
+
+[Download paleoData only (csv)](SP10WINZ.Williams.2010.csv)
+            
+
+[Download chronData only (csv)](SP10WINZ.Williams.2010-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Speleothem
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Williams, Paul"), list(name = "Neil, Helen"), list(name = "Zhao, Jian-Xin"))
+<p style="margin-left: 10px"><strong>journal: </strong>International Journal of Speleology
+<p style="margin-left: 10px"><strong>volume: </strong>39
+<p style="margin-left: 10px"><strong>pages: </strong>99-112
+<p style="margin-left: 10px"><strong>title: </strong>Age frequency distribution and revised stable isotope curves for New Zealand speleothems: palaeoclimatic implications
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Williams, P.W."), list(name = "King, D.N.T."), list(name = "Zhao, J.-X."), list(name = "Collerson, K.D."))
+<p style="margin-left: 10px"><strong>journal: </strong>Earth and Planetary Science Letters
+<p style="margin-left: 10px"><strong>volume: </strong>230
+<p style="margin-left: 10px"><strong>pages: </strong>99-112
+<p style="margin-left: 10px"><strong>title: </strong>Late Pleistocene to Holocene composite speleothem 18O and 13C chronologies from South Island, New Zealand—did a global Younger Dryas really exist?
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-42
+<p style="margin-left: 0px"><strong>longitude: </strong>172
+<p style="margin-left: 0px"><strong>siteName: </strong>South Island Composite Record, New Zealand
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT2a587a2727
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBddd86f51
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SP10WINZ01A_d18O_corr
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>Precipitation_amount
+<p style="margin-left: 20px"><strong>variableDetail: </strong>Monsoon strength
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>Samples pass the Hendy test
+<p style="margin-left: 20px"><strong>fraction: </strong>0.97
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>integrationTime: </strong>average 41
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>not said, but ages were determined by TIMS or alpha-counting (info from Williams et al., 2005)
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>years
+<p style="margin-left: 20px"><strong>variable: </strong>P_isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>Samples pass the Hendy test
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>integrationTime: </strong>average 41
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>not said, but ages were determined by TIMS or alpha-counting (info from Williams et al., 2005)
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>year
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SP10WINZ01A_d13C
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>composition C3-C4 plants
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SP10WINZ01A
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Evident relationship of speleothem ?18O and temperature, which is generally positive (Williams et al. 2004, 2005, Whittaker 2008). It is probable that significant changes to d18Op would have resulted from perturbations in oceanic and atmospheric circulation patterns that altered the relative mix of vapour from subtropical and sub-Antarctic sources
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>year
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>Changes in annual temperature modulated by oceanic circulation and gradients
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>There is a presend-day positive relationship between ?18O of precipitation and temperature of +0.35? / <ef><bf><bd>C.,Calculations with dripwater d18O values and calcite d18O values,,1 to 10,lamina counting, high resolution sampling to 100 microns,temperature,,year,,,,,,rainfall amount and source,,,,,,,,,,,,,https://docs.google.com/spreadsheets/d/1WNzh05-BveXAV0WvY6duO7iRR_drkRSgmosDu0BBmyU
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>Samples pass the Hendy test
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>integrationTime: </strong>average 41
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>not said, but ages were determined by TIMS or alpha-counting (info from Williams et al., 2005)
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>Samples pass the Hendy test
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>groundwater d18O
+<p style="margin-left: 20px"><strong>integrationTime: </strong>average 41
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>not said, but ages were determined by TIMS or alpha-counting (info from Williams et al., 2005)
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron16
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Corrected U-Th age of the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron29
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Calendar year
+</details>
+<details style="margin-left: 10px">
+<summary>depthUTh (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron1
+<p style="margin-left: 10px"><strong>variableName: </strong>depthUTh
+<p style="margin-left: 10px"><strong>units: </strong>mm
+<p style="margin-left: 10px"><strong>description: </strong>mid-point depth of the sub-sample drilled for U-Th age
+</details>
+<details style="margin-left: 10px">
+<summary>SampleID (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron2
+<p style="margin-left: 10px"><strong>variableName: </strong>SampleID
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Sample ID for the U-Th age measured
+</details>
+<details style="margin-left: 10px">
+<summary>U238 (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron4
+<p style="margin-left: 10px"><strong>variableName: </strong>U238
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>238U content of the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>Th230_U238activity (activity)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron10
+<p style="margin-left: 10px"><strong>variableName: </strong>Th230_U238activity
+<p style="margin-left: 10px"><strong>units: </strong>activity
+<p style="margin-left: 10px"><strong>description: </strong>[230Th/238U] activity measured in the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>U_Thactivity_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron11
+<p style="margin-left: 10px"><strong>variableName: </strong>U_Thactivity_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Analytical uncertainty of 230Th-238U activity
+</details>
+<details style="margin-left: 10px">
+<summary>Th230_Th232ratio (ppm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron12
+<p style="margin-left: 10px"><strong>variableName: </strong>Th230_Th232ratio
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+<p style="margin-left: 10px"><strong>description: </strong>[230Th/232Th] ratio in the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>AgeUncorrected (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron14
+<p style="margin-left: 10px"><strong>variableName: </strong>AgeUncorrected
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Uncorrected U-Th age of the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>AgeUncorr_error (yrs)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron15
+<p style="margin-left: 10px"><strong>variableName: </strong>AgeUncorr_error
+<p style="margin-left: 10px"><strong>units: </strong>yrs
+<p style="margin-left: 10px"><strong>description: </strong>Analytical uncertainty of Uncorrected Age
+</details>
+<details style="margin-left: 10px">
+<summary>AgeCorr_error (yrs)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron17
+<p style="margin-left: 10px"><strong>variableName: </strong>AgeCorr_error
+<p style="margin-left: 10px"><strong>units: </strong>yrs
+<p style="margin-left: 10px"><strong>description: </strong>Uncertainty of Corrected Age (includes Th correction)
+</details>
+<details style="margin-left: 10px">
+<summary>U234_U238initial ((ratio))</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron18
+<p style="margin-left: 10px"><strong>variableName: </strong>U234_U238initial
+<p style="margin-left: 10px"><strong>units: </strong>(ratio)
+<p style="margin-left: 10px"><strong>description: </strong>Calculated initial 234U/U238 in the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>U234/U238i_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron19
+<p style="margin-left: 10px"><strong>variableName: </strong>U234/U238i_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Analytical uncertainty of calculated 234U/U238 initial
+</details>
+<details style="margin-left: 10px">
+<summary>U234_U238initial ((ratio))</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron30
+<p style="margin-left: 10px"><strong>variableName: </strong>U234_U238initial
+<p style="margin-left: 10px"><strong>units: </strong>(ratio)
+<p style="margin-left: 10px"><strong>description: </strong>Calculated 234U/U238 in the sub-sample
+</details>
+<details style="margin-left: 10px">
+<summary>U234/U238i_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>chron31
+<p style="margin-left: 10px"><strong>variableName: </strong>U234/U238i_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>Analytical uncertainty of calculated 234U/U238
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### temperature (permil)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age (AD)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### year (AD)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### depthUTh (mm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### SampleID (unitless)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### U238 (ppb)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### Th230_U238activity (activity)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### U_Thactivity_error (unitless)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### Th230_Th232ratio (ppm)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### AgeUncorrected (AD)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### AgeUncorr_error (yrs)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### AgeCorr_error (yrs)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### U234_U238initial ((ratio))
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### U234/U238i_error (unitless)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### U234_U238initial ((ratio))
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### U234/U238i_error (unitless)
+```{r}
+plotCol(chronTS,ind = 15)
+```

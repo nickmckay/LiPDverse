@@ -1,0 +1,283 @@
+---
+title: "ScreamingLynxLake.Clegg.2011"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 744
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#ScreamingLynxLake.Clegg.2011
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](ScreamingLynxLake.Clegg.2011.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/ScreamingLynxLake.Clegg.2011.lpd)
+            
+
+[Download paleoData only (csv)](ScreamingLynxLake.Clegg.2011.csv)
+            
+
+[Download chronData only (csv)](ScreamingLynxLake.Clegg.2011-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Clegg, B. F."), list(name = "Kelly, R."), list(name = "Clarke, G. H."), list(name = "Walker, I. R."), list(name = "Hu, F. S."))
+<p style="margin-left: 10px"><strong>journal: </strong>Proceedings of the National Academy of Sciences
+<p style="margin-left: 10px"><strong>volume: </strong>108
+<p style="margin-left: 10px"><strong>title: </strong>Nonlinear response of summer temperature to Holocene insolation forcing in Alaska
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>66.0667
+<p style="margin-left: 0px"><strong>longitude: </strong>-145.4
+<p style="margin-left: 0px"><strong>elevation: </strong>223
+<p style="margin-left: 0px"><strong>siteName: </strong>Screaming Lynx Lake
+<p style="margin-left: 0px"><strong>country: </strong>United States
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RVwRvFiYgjh
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R70zKk7ZGum
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>OriginalDateID ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RUmOYcpZrIc
+<p style="margin-left: 10px"><strong>variableName: </strong>OriginalDateID
+</details>
+<details style="margin-left: 10px">
+<summary>TopDepthofDate (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RjAS25MfWxO
+<p style="margin-left: 10px"><strong>variableName: </strong>TopDepthofDate
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>BottomDepthofDate (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R6ZbUpa79vr
+<p style="margin-left: 10px"><strong>variableName: </strong>BottomDepthofDate
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>DateType ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ri1kzK3CPC1
+<p style="margin-left: 10px"><strong>variableName: </strong>DateType
+</details>
+<details style="margin-left: 10px">
+<summary>DateBP ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RgNQtMvL67f
+<p style="margin-left: 10px"><strong>variableName: </strong>DateBP
+</details>
+<details style="margin-left: 10px">
+<summary>Uncertaintyplus ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R98WosuI6xm
+<p style="margin-left: 10px"><strong>variableName: </strong>Uncertaintyplus
+</details>
+<details style="margin-left: 10px">
+<summary>Uncertaintyminus ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RtBVPVziXqi
+<p style="margin-left: 10px"><strong>variableName: </strong>Uncertaintyminus
+</details>
+<details style="margin-left: 10px">
+<summary>IncludeYN ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RfaKl7QA2Ua
+<p style="margin-left: 10px"><strong>variableName: </strong>IncludeYN
+</details>
+<details style="margin-left: 10px">
+<summary>AdditionalNotes ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RjpbsQ8Uslr
+<p style="margin-left: 10px"><strong>variableName: </strong>AdditionalNotes
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### OriginalDateID ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### TopDepthofDate (cm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### BottomDepthofDate (cm)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### DateType ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### DateBP ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### Uncertaintyplus ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### Uncertaintyminus ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### IncludeYN ()
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### AdditionalNotes ()
+```{r}
+plotCol(chronTS,ind = 9)
+```

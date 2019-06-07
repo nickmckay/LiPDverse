@@ -1,0 +1,11 @@
+depth (cm),age (yr BP),type (NA),labID (unitless),upper_depth (cm),lower_depth (cm),error (yr),material (NA),rejected (NA),notes (NA)
+0,-56,surface,NA,0,0,1,surface,NA,Assumed top age based on collection year (2006)
+10.5,765,AMS14C,114287,10,11,40,wood,NA,NA
+25.5,2100,AMS14C,105112,25,26,35,twig,NA,NA
+30.5,2450,AMS14C,113013,30,31,45,wood,NA,NA
+45.5,3700,AMS14C,113014,45,46,50,wood,NA,NA
+103.5,5185,AMS14C,113015,103,104,40,wood,x,Age rejected by authors
+143.5,4545,AMS14C,111173,143,144,35,wood,NA,NA
+186.5,4960,AMS14C,93525,186,187,30,wood,NA,NA
+242.5,5965,AMS14C,113016,242,243,50,needle,NA,NA
+253.75,6910,AMS14C,116970,253.5,254,60,wood,NA,NA

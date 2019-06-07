@@ -1,0 +1,14 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-65.0,NA,NA,Y,NA
+UBA-26358,19,20,C14 Uncalibrated,post 1950,NA,NA,Y,Piecea abieas needles
+UBA-26357,36,37,C14 Uncalibrated,1220.0,1252,1188,Y,Piecea abieas needles
+UBA-25564,52,53,C14 Uncalibrated,1255.0,1285,1225,Y,Piecea abieas needles
+UBA-26356,90,91,C14 Uncalibrated,1677.0,1704,1650,Y,Piecea abieas needles
+NA,129,130,Pollen stratigraphic marker,2612.0,NA,NA,Y,Pollen inferred age
+NA,139,140,Pollen stratigraphic marker,2875.0,NA,NA,Y,Pollen inferred age
+UBA-26355,154,155,C14 Uncalibrated,4008.0,4039,3977,N,"Outlier, Piecea abieas needles"
+UBA-26354,198,199,C14 Uncalibrated,3985.0,4018,3952,Y,Piecea abieas needles
+NA,199,200,Pollen stratigraphic marker,4481.0,NA,NA,Y,Pollen inferred age
+NA,209,210,Pollen stratigraphic marker,4689.0,NA,NA,Y,Pollen inferred age
+NA,224,225,Pollen stratigraphic marker,5511.0,NA,NA,Y,Pollen inferred age
+UBA-24393,243,244,C14 Uncalibrated,5774.0,5807,5741,Y,Piecea abieas needles

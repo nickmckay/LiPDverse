@@ -1,0 +1,6 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+65,Carbon-14,165400,80,3910,"1 Cyperaceae seed, 5 Betulaceae seeds",Vance et al. (1997) reject date as too old.
+77.5,Carbon-14,165401,80,2050,bulk sediment,Vance et al. (1997) reject date as too old.
+162.5,Carbon-14,165402,60,2760,"5 Amaranthaceae [Chenopodiaceae] seeds, 1 Scirpus seed",NA
+196.5,Carbon-14,165403,110,4090,20 Amaranthaceae [Chenopodiaceae],NA
+344,Carbon-14,110016,250,5030,seed,NA

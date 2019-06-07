@@ -1,0 +1,21 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,NA,Core top,-49,-49,-49,Y,"interface, collected in CE1999"
+30,35,C14 Uncalibrated,1290,1330,1250,Y,data from the 14C lab
+59,61,C14 Uncalibrated,2120,2160,2080,Y,data from the 14C lab
+95,100,C14 Uncalibrated,2410,2450,2370,Y,data from the 14C lab
+153,153,C14 Uncalibrated,3030,3070,2990,Y,data from the 14C lab
+220,220,C14 Uncalibrated,4290,4330,4250,Y,data from the 14C lab
+295,295,C14 Uncalibrated,4890,4930,4850,Y,data from the 14C lab
+349,349,C14 Uncalibrated,4990,5030,4950,Y,data from the 14C lab
+395,398,C14 Uncalibrated,5000,5040,4960,Y,data from the 14C lab
+453,453,C14 Uncalibrated,6160,6200,6120,Y,data from the 14C lab
+544,549,C14 Uncalibrated,6320,6360,6280,Y,data from the 14C lab
+0,1,Pb210-Lead,-44,-44,-44,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+1,2,Pb210-Lead,-29,-28,-30,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+2,3,Pb210-Lead,-19,-17,-21,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+3,4,Pb210-Lead,-7,-5,-9,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+4,5,Pb210-Lead,8,11,5,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+5,6,Pb210-Lead,30,38,22,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+6,7,Pb210-Lead,62,83,41,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+7,8,Pb210-Lead,90,122,58,Y,originally reported vs base year of CE 1999; converted here to base year 1950
+8,9,Pb210-Lead,131,244,18,Y,originally reported vs base year of CE 1999; converted here to base year 1950

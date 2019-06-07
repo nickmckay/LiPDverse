@@ -1,0 +1,297 @@
+---
+title: "PI19POYU"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 678
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#PI19POYU
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](PI19POYU.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/PI19POYU.lpd)
+            
+
+[Download paleoData only (csv)](PI19POYU.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>pore ice
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Porter, Trevor J."), list(name = "Schoenemann, Spruce W."), list(name = "Davies, Lauren J."), list(name = "Steig, Eric J."), list(name = "Bandara, Sasiri"), list(name = "Froese, Duane G."))
+<p style="margin-left: 10px"><strong>journal: </strong>Nature Communications
+<p style="margin-left: 10px"><strong>volume: </strong>10
+<p style="margin-left: 10px"><strong>title: </strong>Recent summer warming in northwestern Canada exceeds the Holocene thermal maximum
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>65.21
+<p style="margin-left: 0px"><strong>longitude: </strong>-138.32
+<p style="margin-left: 0px"><strong>elevation: </strong>740
+<p style="margin-left: 0px"><strong>siteName: </strong>DHP174
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4d7c7658
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>composite core depth
+</details>
+<details style="margin-left: 10px">
+<summary>deltaT (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfb6b61e3
+<p style="margin-left: 10px"><strong>variableName: </strong>deltaT
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>Reconstructed summer temperature anomalies expressed relative to the Holocene mean.
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>pore ice age (cal bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB97df4eee
+<p style="margin-left: 10px"><strong>variableName: </strong>pore ice age
+<p style="margin-left: 10px"><strong>units: </strong>cal bp
+<p style="margin-left: 10px"><strong>description: </strong>calibrated years BP (BP = AD 1950)
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB73fbe78c
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>composite dD record
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBf7bafce3
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>composite d18O
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d-excess (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB53aebb8d
+<p style="margin-left: 10px"><strong>variableName: </strong>d-excess
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>composite d-excess record
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>dD_swcorr (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB10668658
+<p style="margin-left: 10px"><strong>variableName: </strong>dD_swcorr
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>composite seawater-corrected dD record
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d18O_swcorr (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa755355a
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O_swcorr
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>composite seawater-corrected d18O record
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d-excess_swcorr (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa617473b
+<p style="margin-left: 10px"><strong>variableName: </strong>d-excess_swcorr
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>composite seawater-corrected d-excess record
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>deltaT - 1 sigma (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5fb47861
+<p style="margin-left: 10px"><strong>variableName: </strong>deltaT - 1 sigma
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>deltaT -1 sigma, expressed relative to the Holocene mean
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>deltaT + 1 sigma (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0c2a385a
+<p style="margin-left: 10px"><strong>variableName: </strong>deltaT + 1 sigma
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>deltaT + 1 sigma, expressed relative to the Holocene mean
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### deltaT (degC)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### pore ice age (cal bp)
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### dD (permil)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### d-excess (permil)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### dD_swcorr (permil)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### d18O_swcorr (permil)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### d-excess_swcorr (permil)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### deltaT - 1 sigma (degC)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### deltaT + 1 sigma (degC)
+```{r}
+plotCol(thisTS,ind = 11)
+```

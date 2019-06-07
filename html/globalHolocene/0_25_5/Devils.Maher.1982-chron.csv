@@ -1,0 +1,18 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+21.5,Carbon-14,109057,55,245,organic lake sediment,"Depths recorded in GEOCHRON are those from Maher 1982, rather than those reported in Radiocarbon by Bender et al, 1980. (jk/11Aug92)"
+151.5,Carbon-14,109058,65,2055,gyttja,NA
+166.5,Carbon-14,109059,65,2430,gyttja,NA
+265,Carbon-14,109060,65,4105,gyttja,NA
+336,Carbon-14,109061,65,5245,gyttja,NA
+397,Carbon-14,109062,75,6920,gyttja,NA
+457,Carbon-14,109063,85,8640,gyttja,NA
+516,Carbon-14,109064,100,10080,gyttja,NA
+544,Carbon-14,109065,105,10620,silty gyttja,NA
+601,Carbon-14,109066,115,12260,gyttja (2nd core),NA
+601,Carbon-14,109067,125,12880,silty gyttja,NA
+607,Carbon-14,109068,160,12520,sediment and clay (2nd core),NA
+474,Carbon-14,165134,50,8590,"needles, wood, seeds, leaves",NA
+535,Carbon-14,165135,50,9740,"needles, wood, seeds, leaves",NA
+550,Carbon-14,165136,140,10110,"needles, wood, seeds, leaves",NA
+583.75,Carbon-14,165137,50,10730,"needles, wood, seeds, leaves",NA
+633,Carbon-14,165138,130,12580,"needles, wood, seeds, leaves",NA

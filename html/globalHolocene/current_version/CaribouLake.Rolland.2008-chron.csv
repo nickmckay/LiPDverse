@@ -1,0 +1,7 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),IncludeYN (),AdditionalNotes ()
+UCI-21586,10.25,10.75,C14 Uncalibrated,1660,251,Y,Humics; correct by subtracting 850 yr
+UCI-21589,24.75,25.25,C14 Uncalibrated,2585,25,Y,Humics; correct by subtracting 850 yr
+UCI-21585,35.75,36.25,C14 Uncalibrated,3285,25,Y,Humics; correct by subtracting 850 yr
+Beta-222049,44.5,45.5,C14 Uncalibrated,6120,40,N,Chironomids
+Beta-220586,62,62.5,C14 Uncalibrated,8370,40,N,Chironomids
+UCI-28832,80,81,C14 Uncalibrated,7925,20,Y,Marine shell - correct by subtracting 850 yr

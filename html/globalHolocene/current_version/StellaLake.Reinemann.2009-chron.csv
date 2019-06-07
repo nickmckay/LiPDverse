@@ -1,0 +1,6 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+NA,0,0.25,Core top,-57,NA,NA,Y
+OS-64661,33,33.25,C14 Uncalibrated,185,215,155,Y
+OS-64648,112.5,112.75,C14 Uncalibrated,2080,2115,2045,Y
+OS-64661,233,233.25,C14 Uncalibrated,3920,3955,3885,Y
+OS-64649,320.5,320.75,C14 Uncalibrated,5970,6010,5930,Y

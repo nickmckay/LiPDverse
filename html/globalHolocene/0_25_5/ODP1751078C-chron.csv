@@ -1,0 +1,19 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+31,1070,35,AMS14C,planktic/benthic forams and otoliths
+91,2490,40,AMS14C,planktic forams
+174,4210,35,AMS14C,planktic forams
+199,4900,35,AMS14C,planktic forams
+261,6685,45,AMS14C,planktic forams
+331,8570,60,AMS14C,planktic forams
+361,8930,70,AMS14C,snail
+451,9520,70,AMS14C,mollusks
+601,10920,90,AMS14C,planktic forams/fract. mollusks
+711,12110,90,AMS14C,fract. mollusk/scaphopods
+711,12260,90,AMS14C,fract. mollusk/scaphopods
+781,12730,80,AMS14C,fract. mollusk
+871,15530,120,AMS14C,fract. mollusks
+901,16990,130,AMS14C,planktic forams
+931,17790,140,AMS14C,fract. mollusk
+961,15780,120,AMS14C,fract. mollusk
+971,16610,130,AMS14C,fract. mollusk
+981,19070,170,AMS14C,fract. mollusk

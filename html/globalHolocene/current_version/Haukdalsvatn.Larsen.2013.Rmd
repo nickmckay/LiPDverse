@@ -1,0 +1,262 @@
+---
+title: "Haukdalsvatn.Larsen.2013"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 297
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Haukdalsvatn.Larsen.2013
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Haukdalsvatn.Larsen.2013.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Haukdalsvatn.Larsen.2013.lpd)
+            
+
+[Download paleoData only (csv)](Haukdalsvatn.Larsen.2013.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/15444
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Geirsdottir, Aslaug"), list(name = "Miller, Gifford H."), list(name = "Larsen, Darren J."), list(name = "Olafsdottir, Saedis"))
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>70
+<p style="margin-left: 10px"><strong>title: </strong>Abrupt Holocene climate transitions in the northern North Atlantic region recorded by synchronized lacustrine records in Iceland
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>65.03
+<p style="margin-left: 0px"><strong>longitude: </strong>-21.37
+<p style="margin-left: 0px"><strong>elevation: </strong>32
+<p style="margin-left: 0px"><strong>siteName: </strong>Haukdalsvatn
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT2GU5YYU4
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT1MIABVMZ
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>C/N (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTPN59WXQT
+<p style="margin-left: 10px"><strong>variableName: </strong>C/N
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (mg/g) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTJA63TZF9
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>mg/g
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>MS (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT0MRT42I4
+<p style="margin-left: 10px"><strong>variableName: </strong>MS
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>SE (cm yr-1) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTFGEYP759
+<p style="margin-left: 10px"><strong>variableName: </strong>SE
+<p style="margin-left: 10px"><strong>units: </strong>cm yr-1
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>BSi (mg/g) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTHNRVE4OY
+<p style="margin-left: 10px"><strong>variableName: </strong>BSi
+<p style="margin-left: 10px"><strong>units: </strong>mg/g
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTICDNXB5M
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>PC1 (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTHKXK8JQ3
+<p style="margin-left: 10px"><strong>variableName: </strong>PC1
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>LOOKUP
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d13C (permil) [1-1]
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### C/N (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### TOC (mg/g) [1-1]
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### MS (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### SE (cm yr-1) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### BSi (mg/g) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### PC1 (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```

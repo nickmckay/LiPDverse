@@ -1,0 +1,349 @@
+---
+title: "Castor.Nelson.2011"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 18
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Castor.Nelson.2011
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Castor.Nelson.2011.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Castor.Nelson.2011.lpd)
+            
+
+[Download data only (csv)](Castor.Nelson.2011.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/10310
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>citeKey: </strong>stansell2012lacustrinestableisotopere
+<p style="margin-left: 10px"><strong>journal: </strong>Proceedings of the National Academy of Sciences
+<p style="margin-left: 10px"><strong>volume: </strong>108
+<p style="margin-left: 10px"><strong>pages: </strong>3870-3875
+<p style="margin-left: 10px"><strong>pubYear: </strong>2012
+<p style="margin-left: 10px"><strong>title: </strong>Drought variability in the Pacific Northwest from a 6,000-yr lake sediment record
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>48.54
+<p style="margin-left: 0px"><strong>longitude: </strong>-119.56
+<p style="margin-left: 0px"><strong>elevation: </strong>594
+<p style="margin-left: 0px"><strong>siteName: </strong>Castor Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa50a38e7
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276f
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>average_RGB (grayscale) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro068
+<p style="margin-left: 10px"><strong>variableName: </strong>average_RGB
+<p style="margin-left: 10px"><strong>units: </strong>grayscale
+<p style="margin-left: 10px"><strong>description: </strong>raw grayscale values
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>anti-correlation with PDSI, modeling and understanding of lake and catchment processes
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>local: </strong>TRUE
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>effective
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth (unitless) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro068xz
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa50a38e7xa
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>grayscale_detrended (grayscale) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276fxb
+<p style="margin-left: 10px"><strong>variableName: </strong>grayscale_detrended
+<p style="margin-left: 10px"><strong>units: </strong>grayscale
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>local: </strong>TRUE
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>effective
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>grayscale20lp_detrended (grayscale) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276fxc
+<p style="margin-left: 10px"><strong>variableName: </strong>grayscale20lp_detrended
+<p style="margin-left: 10px"><strong>units: </strong>grayscale
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>local: </strong>TRUE
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>effective
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth (unitless) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro068aa
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa50a38e7bb
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18O_raw (permil) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276fcc
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O_raw
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>effective
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d13C_raw (permil) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276fdd
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C_raw
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (unitless) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro068ee
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa50a38e7ff
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>d18O_detrended (permil) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276fgg
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O_detrended
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>effective
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d13C_detrended (permil) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7e6276fhh
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C_detrended
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### average_RGB (grayscale) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### grayscale_detrended (grayscale) [1-2]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### grayscale20lp_detrended (grayscale) [1-2]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### d18O_raw (permil) [1-3]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### d13C_raw (permil) [1-3]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### d18O_detrended (permil) [1-4]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### d13C_detrended (permil) [1-4]
+```{r}
+plotCol(thisTS,ind = 15)
+```

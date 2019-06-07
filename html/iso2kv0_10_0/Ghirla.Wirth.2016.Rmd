@@ -1,0 +1,251 @@
+---
+title: "Ghirla.Wirth.2016"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 93
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Ghirla.Wirth.2016
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Ghirla.Wirth.2016.lpd)
+            
+
+[Download data only (csv)](Ghirla.Wirth.2016.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://doi.org/10.1594/PANGAEA.864869
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>NEEDS AUTHORS!
+<p style="margin-left: 10px"><strong>citeKey: </strong>needs0needsatitle
+<p style="margin-left: 10px"><strong>pubYear: </strong>0
+<p style="margin-left: 10px"><strong>title: </strong>NEEDS A TITLE!
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2016.07.020
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>45.9166
+<p style="margin-left: 0px"><strong>longitude: </strong>8.8225
+<p style="margin-left: 0px"><strong>elevation: </strong>415
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RPHweR1QmIB
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R5WIXHkMSy1
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rf8UWgr1aOY
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>dD (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD76e57382
+<p style="margin-left: 10px"><strong>variableName: </strong>dD
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>SMOW delta Deuterium [per mil SMOW] (dD) * PI: Wirth, Stefanie B (https://orcid.org/0000-0002-1276-8506, stefanie.wirth@alumni.ethz.ch)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>dDsd (sd)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD8b59dec3
+<p style="margin-left: 10px"><strong>variableName: </strong>dDsd
+<p style="margin-left: 10px"><strong>units: </strong>sd
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>n-C28 (ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµg/g)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9b09f13e
+<p style="margin-left: 10px"><strong>variableName: </strong>n-C28
+<p style="margin-left: 10px"><strong>units: </strong>ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµg/g
+<p style="margin-left: 10px"><strong>description: </strong>n-fatty acid C28 [ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµg/g] (n-C28 FA) * PI: Wirth, Stefanie B (https://orcid.org/0000-0002-1276-8506, stefanie.wirth@alumni.ethz.ch
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (%)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD35a37878
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>%
+<p style="margin-left: 10px"><strong>description: </strong>Carbon, organic, total [%] (TOC) * PI: Wirth, Stefanie B (https://orcid.org/0000-0002-1276-8506, stefanie.wirth@alumni.ethz.ch) * COMMENT: wt%
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>CT (HU)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD31e25c27
+<p style="margin-left: 10px"><strong>variableName: </strong>CT
+<p style="margin-left: 10px"><strong>units: </strong>HU
+<p style="margin-left: 10px"><strong>description: </strong>Computer tomograph value [HU] (CT value) * PI: Wirth, Stefanie B (https://orcid.org/0000-0002-1276-8506, stefanie.wirth@alumni.ethz.ch)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>lithology ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDdf743a22
+<p style="margin-left: 10px"><strong>variableName: </strong>lithology
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### dD
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### dDsd
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### n-C28
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### TOC
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### CT
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### lithology
+```{r}
+plotCol(thisTS,ind = 9)
+```

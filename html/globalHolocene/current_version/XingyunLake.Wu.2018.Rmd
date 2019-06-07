@@ -1,0 +1,286 @@
+---
+title: "XingyunLake.Wu.2018"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 868
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#XingyunLake.Wu.2018
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](XingyunLake.Wu.2018.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/XingyunLake.Wu.2018.lpd)
+            
+
+[Download paleoData only (csv)](XingyunLake.Wu.2018.csv)
+            
+
+[Download chronData only (csv)](XingyunLake.Wu.2018-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Wu, Duo"), list(name = "Chen, Xuemei"), list(name = "Lv, Feiya"), list(name = "Brenner, Mark"), list(name = "Curtis, Jason"), list(name = "Zhou, Aifeng"), list(name = "Chen, Jianhui"), list(name = "Abbott, Mark"), list(name = "Yu, Junqing"), list(name = "Chen, Fahu"))
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>193
+<p style="margin-left: 10px"><strong>title: </strong>Decoupled early Holocene summer temperature and monsoon precipitation in southwest China
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>24.33
+<p style="margin-left: 0px"><strong>longitude: </strong>102.78
+<p style="margin-left: 0px"><strong>elevation: </strong>1722
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RLGca28s3Z5
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RCnq74zYHvB
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R5CokUKoo1D
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf97892fc
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>Temp
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>error (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2fd86c42
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc19fb918
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+</details>
+<details style="margin-left: 10px">
+<summary>dummy2 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf97d77f9
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy2
+</details>
+<details style="margin-left: 10px">
+<summary>dummy3 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3a7b4581
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy3
+</details>
+<details style="margin-left: 10px">
+<summary>dummy4 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD70d6bde6
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy4
+</details>
+<details style="margin-left: 10px">
+<summary>dummy5 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD674c567f
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy5
+</details>
+<details style="margin-left: 10px">
+<summary>dummy6 ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbfe20fb5
+<p style="margin-left: 10px"><strong>variableName: </strong>dummy6
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### error (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### dummy2 ()
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### dummy3 ()
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### dummy4 ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### dummy5 ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### dummy6 ()
+```{r}
+plotCol(chronTS,ind = 6)
+```

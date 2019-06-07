@@ -1,0 +1,20 @@
+depth (cm),dateType (),thickness (cm),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr)
+3,14C,0.03,planktic foraminifera,mixed,KIA 28442,0.93,0.03
+28,14C,0.28,planktic foraminifera,mixed,KIA 28441,2.945,0.045
+58,14C,0.58,planktic foraminifera,mixed,KIA 28440,4.555,0.035
+98,14C,0.98,planktic foraminifera,mixed,KIA 28438,6.29,0.05
+148,14C,1.48,planktic foraminifera,mixed,KIA 28437,8.91,0.055
+178,14C,1.78,planktic foraminifera,mixed,KIA 28436,9.73,0.06
+208,14C,2.08,planktic foraminifera,mixed,KIA 28435,10.075,0.06
+248,14C,2.48,planktic foraminifera,mixed,KIA 28434,10.47,0.06
+283,14C,2.83,planktic foraminifera,mixed,KIA 28431,10.57,0.06
+333,14C,3.33,planktic foraminifera,mixed,KIA 28430,10.84,0.06
+378,14C,3.78,planktic foraminifera,mixed,KIA 28429,10.92,0.07
+413,14C,4.13,planktic foraminifera,mixed,KIA 28428,11.22,0.07
+458,14C,4.58,planktic foraminifera,mixed,KIA 27758,11.87,0.08
+478,14C,4.78,planktic foraminifera,mixed,KIA 27757,12.14,0.09
+508,14C,5.08,planktic foraminifera,mixed,KIA 27755,12.68,0.09
+533,14C,5.33,planktic foraminifera,mixed,KIA 27754,13.12,0.1
+558,14C,5.58,planktic foraminifera,mixed,KIA 27753,13.53,0.1
+593,14C,5.93,planktic foraminifera,mixed,KIA 27752,14.02,0.12
+633,14C,6.33,planktic foraminifera,mixed,KIA 27751,14.45,0.11

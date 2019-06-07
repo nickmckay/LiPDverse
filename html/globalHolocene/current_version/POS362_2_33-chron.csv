@@ -1,0 +1,16 @@
+depth (cm),age (kyr),dateType (),thickness (cm),ageUncertainty (kyr),measurementMaterial (),sensorSpecies (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),notes ()
+1.5,0.075,absolute,3,0.075,NA,NA,NA,NA,NA,"The uppermost 3 cm of the core contains steamboat cinder remnants indicating that these sediments were deposited between AD1800 and AD1950 (i.e., 75±75 yr BP)"
+30,NA,14C,1,NA,planktic foraminifera,mixed species,3.825,0.03,0.4,NA
+50,NA,14C,1,NA,planktic foraminifera,mixed species,5.695,0.03,0.4,NA
+75,NA,14C,1,NA,planktic foraminifera,mixed species,6.855,0.035,0.515,NA
+100,NA,14C,1,NA,planktic foraminifera,mixed species,7.34,0.045,0.515,NA
+151.5,NA,14C,5,NA,planktic foraminifera,mixed species,7.92,0.045,0.515,NA
+200,NA,14C,1,NA,planktic foraminifera,mixed species,8.115,0.055,0.515,NA
+251.5,NA,14C,5,NA,planktic foraminifera,mixed species,8.36,0.04,0.515,NA
+300,NA,14C,1,NA,planktic foraminifera,mixed species,8.375,0.06,0.515,NA
+327,NA,14C,6,NA,planktic foraminifera,mixed species,8.495,0.035,0.515,NA
+399,NA,14C,2,NA,planktic foraminifera,mixed species,8.44,0.045,0.515,NA
+463,NA,14C,4,NA,planktic foraminifera,mixed species,8.68,0.04,0.515,NA
+499,NA,14C,2,NA,planktic foraminifera,mixed species,8.805,0.045,0.515,NA
+547,NA,14C,6,NA,planktic foraminifera,mixed species,9.01,0.035,0.515,NA
+557,NA,14C,2,NA,planktic foraminifera,mixed species,8.78,0.05,0.515,NA

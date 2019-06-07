@@ -1,0 +1,15 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0.5,Core top,-56,NA,NA,NA,date core was taken
+Poz-2212,27.5,28,C14 Uncalibrated,720,30,30,Y,bulk sediments dated
+Poz-21076,51.5,52,C14 Uncalibrated,820,30,30,Y,bulk sediments dated
+Poz-22158,83.5,84,C14 Uncalibrated,1105,30,30,Y,bulk sediments dated
+Poz-21077,114,115,C14 Uncalibrated,1920,35,35,Y,bulk sediments dated
+Poz-22127,149,150,C14 Uncalibrated,2345,35,35,Y,bulk sediments dated
+Poz-21078,184,185,C14 Uncalibrated,2700,35,35,Y,bulk sediments dated
+Poz-22160,209,210,C14 Uncalibrated,2920,35,35,Y,bulk sediments dated
+Poz-21080,244,245,C14 Uncalibrated,3580,40,40,Y,bulk sediments dated
+Poz-22159,279,280,C14 Uncalibrated,3955,35,35,Y,bulk sediments dated
+Poz-21081,304,305,C14 Uncalibrated,4900,40,40,Y,bulk sediments dated
+Poz-22161,329,330,C14 Uncalibrated,7010,50,50,Y,bulk sediments dated
+Poz-21082,359,360,C14 Uncalibrated,9010,60,60,Y,bulk sediments dated
+Poz-22162,370,371,C14 Uncalibrated,10190,60,60,Y,bulk sediments dated

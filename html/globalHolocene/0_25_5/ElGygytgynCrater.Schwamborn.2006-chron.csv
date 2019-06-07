@@ -1,0 +1,13 @@
+age (yr bp),sampleID (unitless),depthTop (cm),depthBot (cm),type (unitless),errorPlus (yr bp),errorMinus (yr bp),includeY/N (unitless)
+-69,NA,0,0,Core top,0,0,Y
+3000,KIA25979,20,25,C14 Uncalibrated,3030,2970,Y
+3095,KIA25980,43,48,C14 Uncalibrated,3140,3050,Y
+3670,KIA23976,114,119,C14 Uncalibrated,3700,3640,Y
+3665,KIA25981,150,155,C14 Uncalibrated,3700,3630,N
+8145,KIA28241,207,212,C14 Uncalibrated,8190,8100,N
+5585,KIA23977,233,238,C14 Uncalibrated,5625,5545,Y
+8760,KIA23978,265,270,C14 Uncalibrated,8805,8715,Y
+8830,KIA23979,292,297,C14 Uncalibrated,8885,8775,Y
+8885,KIA24865,314,319,C14 Uncalibrated,8925,8845,N
+8920,KIA28242,325,330,C14 Uncalibrated,9030,8810,Y
+11160,KIA23980,463,468,C14 Uncalibrated,11230,11090,Y

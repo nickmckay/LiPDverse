@@ -1,0 +1,526 @@
+---
+title: "SouthernCalifornia.OhlweinWahl.2012"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 117
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#SouthernCalifornia.OhlweinWahl.2012
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](SouthernCalifornia.OhlweinWahl.2012.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/SouthernCalifornia.OhlweinWahl.2012.lpd)
+            
+
+[Download data only (csv)](SouthernCalifornia.OhlweinWahl.2012.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>31
+<p style="margin-left: 10px"><strong>pages: </strong>17-29
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Review of probabilistic pollen-climate transfer methods
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>33.7689
+<p style="margin-left: 0px"><strong>longitude: </strong>-116.66
+<p style="margin-left: 0px"><strong>elevation: </strong>2399
+<p style="margin-left: 0px"><strong>siteName: </strong>SouthernCalifornia
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf5ece966
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb97c2461
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Tanom (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb59e4b87
+<p style="margin-left: 10px"><strong>variableName: </strong>Tanom
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Panom (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf970effe1
+<p style="margin-left: 10px"><strong>variableName: </strong>Panom
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>precip
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>T-SD (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd88d222a
+<p style="margin-left: 10px"><strong>variableName: </strong>T-SD
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>T+SD (degC) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf970effe
+<p style="margin-left: 10px"><strong>variableName: </strong>T+SD
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>p-SD (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf970effe2
+<p style="margin-left: 10px"><strong>variableName: </strong>p-SD
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>p+SD (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf970effe3
+<p style="margin-left: 10px"><strong>variableName: </strong>p+SD
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>CoreSite (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf970effe4
+<p style="margin-left: 10px"><strong>variableName: </strong>CoreSite
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>HCCM = Hual Cu Cuish Meadow
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD378d6e9c
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbfc7cf4e
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Tanom (degC) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD537be86c
+<p style="margin-left: 10px"><strong>variableName: </strong>Tanom
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Panom (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD387da3e90
+<p style="margin-left: 10px"><strong>variableName: </strong>Panom
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>precip
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>T-SD (degC) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD387da3e9
+<p style="margin-left: 10px"><strong>variableName: </strong>T-SD
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>T+SD (degC) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa6507caf
+<p style="margin-left: 10px"><strong>variableName: </strong>T+SD
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>p-SD (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD387da3e10
+<p style="margin-left: 10px"><strong>variableName: </strong>p-SD
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>p+SD (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD387da3e11
+<p style="margin-left: 10px"><strong>variableName: </strong>p+SD
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>CoreSite (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD387da3e12
+<p style="margin-left: 10px"><strong>variableName: </strong>CoreSite
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>TM = Taquitz Medow, 33.768889, -116.66
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD77e16009
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD874a9b97
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Tanon (degC) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbf7cf949
+<p style="margin-left: 10px"><strong>variableName: </strong>Tanon
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>Panom (cm) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbf7cf950c
+<p style="margin-left: 10px"><strong>variableName: </strong>Panom
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>M
+<p style="margin-left: 20px"><strong>variableDetail: </strong>precip
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>core (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD981a64bd
+<p style="margin-left: 10px"><strong>variableName: </strong>core
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>T-SD (degC) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9e9f437d
+<p style="margin-left: 10px"><strong>variableName: </strong>T-SD
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>T+SD (degC) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbf7cf9491
+<p style="margin-left: 10px"><strong>variableName: </strong>T+SD
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>P-SD (cm) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbf7cf951c
+<p style="margin-left: 10px"><strong>variableName: </strong>P-SD
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>P+SD (cm) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbf7cf952c
+<p style="margin-left: 10px"><strong>variableName: </strong>P+SD
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Tanom (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### Panom (cm) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### T-SD (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### T+SD (degC) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### p-SD (cm) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### p+SD (cm) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### CoreSite (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### Tanom (degC) [2-1]
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### Panom (cm) [2-1]
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### T-SD (degC) [2-1]
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### T+SD (degC) [2-1]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### p-SD (cm) [2-1]
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### p+SD (cm) [2-1]
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### CoreSite (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### Tanon (degC) [3-1]
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### Panom (cm) [3-1]
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+### core (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### T-SD (degC) [3-1]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### T+SD (degC) [3-1]
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### P-SD (cm) [3-1]
+```{r}
+plotCol(thisTS,ind = 26)
+```
+
+### P+SD (cm) [3-1]
+```{r}
+plotCol(thisTS,ind = 27)
+```

@@ -1,0 +1,14 @@
+depth (cm),age (kyr),dateType (),measurementMaterial (),sensorSpecies (),notes ()
+0,0,14C,planktonic foraminifera calcite,G. bulloides,"this is probably not a real date. The paper mentions 10 14C dates, so I don't know where these 13 control points come from"
+14.5,0.298,14C,planktonic foraminifera calcite,G. bulloides,NA
+43,1.06,14C,planktonic foraminifera calcite,G. bulloides,NA
+85,2.339,14C,planktonic foraminifera calcite,G. bulloides,NA
+127,3.465,14C,planktonic foraminifera calcite,G. bulloides,NA
+184,5.017,14C,planktonic foraminifera calcite,G. bulloides,NA
+246,6.697,14C,planktonic foraminifera calcite,G. bulloides,NA
+295,8.099,14C,planktonic foraminifera calcite,G. bulloides,NA
+346,9.548,14C,planktonic foraminifera calcite,G. bulloides,NA
+397,11.11,14C,planktonic foraminifera calcite,G. bulloides,NA
+442,11.6,14C,planktonic foraminifera calcite,G. bulloides,NA
+515,12.9,14C,planktonic foraminifera calcite,G. bulloides,NA
+560,14,14C,planktonic foraminifera calcite,G. bulloides,NA

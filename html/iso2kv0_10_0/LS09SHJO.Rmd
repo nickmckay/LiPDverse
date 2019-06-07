@@ -1,0 +1,251 @@
+---
+title: "LS09SHJO"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 293
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS09SHJO
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS09SHJO.lpd)
+            
+
+[Download data only (csv)](LS09SHJO.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>The Holocene
+<p style="margin-left: 10px"><strong>volume: </strong>19
+<p style="margin-left: 10px"><strong>pages: </strong>523-535
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Lateglacial and Holocene hydroclimate inferred from a groundwater flow-through lake, Northern Rocky Mountains, USA
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1177/0959683609104029
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>47.0457
+<p style="margin-left: 0px"><strong>longitude: </strong>-113.1426
+<p style="margin-left: 0px"><strong>elevation: </strong>1200
+<p style="margin-left: 0px"><strong>siteName: </strong>Jones
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT1dadaae75f
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>age
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT7f549b1615
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>midpoint of contiguous 1 cm samples
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS09SHJO
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Oxygen isotopes point toward maximum evaporative forcing early in the Holocene, by or before 9000 cal. yr BP. Mineralogical indicators of lake salinity decline gradually after 6000 cal. yr BP but freshening was episodically reversed and modern lake geochemistry was achieved late in the Holocene, after 1400 cal. yr BP. The Lateglacial?Holocene transition is marked by an abrupt and sustained geochemical anomaly reflecting reduced evaporative forcing and lake freshening...Oxygen isotopes record a rich spectrum of high-frequency variation interpreted as dominantly transient response to fluid balance change, but are relatively insensitive to low-frequency changes better reflected in sediment mineralogy. Oxygen and carbon isotopes covary closely at high frequencies but are decoupled at low frequencies by longterm lake basin changes in carbon cycling.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>E:P (groundwater "fluid balance")
+<p style="margin-left: 20px"><strong>variableDetail: </strong>groundwater
+<p style="margin-left: 20px"><strong>direction: </strong>increase
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The persistent dominance of endogenic carbonate minerals requires a dynamic balance between groundwater inflow, evaporative concentration and groundwater outflow. "Fluid balance"In groundwater-dominated lakes, sediment geochemistry becomes closely linked to changes in lake?groundwater exchange and groundwater recharge at all timescales.
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>integrationTime: </strong>17
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>dating, sampling resolution
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>I_E
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>lithologic unit (NA)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT2ff8c27ecf
+<p style="margin-left: 10px"><strong>variableName: </strong>lithologic unit
+<p style="margin-left: 10px"><strong>units: </strong>NA
+</details>
+<details style="margin-left: 10px">
+<summary>Calcite (fraction)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MATa0deabb6a2
+<p style="margin-left: 10px"><strong>variableName: </strong>Calcite
+<p style="margin-left: 10px"><strong>units: </strong>fraction
+</details>
+<details style="margin-left: 10px">
+<summary>Aragonite (fraction)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MATb0401ca5f0
+<p style="margin-left: 10px"><strong>variableName: </strong>Aragonite
+<p style="margin-left: 10px"><strong>units: </strong>fraction
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### lithologic unit
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### Calcite
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### Aragonite
+```{r}
+plotCol(thisTS,ind = 6)
+```

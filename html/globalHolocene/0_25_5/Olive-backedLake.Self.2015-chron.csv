@@ -1,0 +1,13 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+OBD 404,69,69.5,C14 Uncalibrated,1478,1496,1460,18,18,Y,OP tephra
+OBA 383–388,83,88,C14 Uncalibrated,1806,1822,1790,16,16,Y,KS1 tephra
+OBD 417–420,83,88,C14 Uncalibrated,1806,1822,1790,16,16,Y,KS1 tephra
+OBA 426,125.5,126.5,C14 Uncalibrated,2597,2616,2578,19,19,Y,Bulk sediment
+OBA 442,141.5,142.5,C14 Uncalibrated,3085,3107,3063,22,22,Y,Bulk sediment
+OBA 466,165.5,166.5,C14 Uncalibrated,3503,3527,3479,24,24,Y,Bulk sediment
+OBA 490,189.5,190.5,C14 Uncalibrated,3864,3885,3843,21,21,Y,Bulk sediment
+OBA 528,227.5,228.5,C14 Uncalibrated,4637,4684,4590,47,47,Y,Bulk sediment
+OBD 552–553,244,245,C14 Uncalibrated,5125,5170,5080,45,45,Y,Moss leaves and stems
+OBA 560,259.5,260.5,C14 Uncalibrated,5820,5852,5788,32,32,Y,Bulk sediment
+OBD 598–599,291,292,C14 Uncalibrated,6955,7005,6905,50,50,Y,Moss leaves and stems
+OBD 599,292.5,294,C14 Uncalibrated,6957,6987,6927,30,30,Y,KHG6900 tephra

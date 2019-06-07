@@ -1,0 +1,8 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core Top,-60,-60,-60,Y,core collected 2010
+Poz-35983,43,44,C14 Uncalibrated,2870,2900,2840,Y,plant macroremains
+Poz-35984,111,112,C14 Uncalibrated,3990,4025,3955,Y,plant macroremains
+Poz-36014,163,164,C14 Uncalibrated,4750,4785,4715,Y,plant macroremains
+Poz-36016,220,221,C14 Uncalibrated,6140,6180,6100,Y,plant macroremains
+Poz-36017,236,237,C14 Uncalibrated,6490,6530,6450,Y,plant macroremains
+Poz-36018,326,327,C14 Uncalibrated,7460,7510,7410,Y,plant macroremains

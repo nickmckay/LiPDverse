@@ -1,0 +1,12 @@
+depth (cm),age (yr),error (yr),type (unitless),material (unitless)
+5.5,900,25,AMS14C,G. ruber pink
+38.75,3080,30,AMS14C,G. ruber pink
+73,4840,35,AMS14C,G. ruber pink
+143,7185,40,AMS14C,G. ruber pink
+190.25,8710,40,AMS14C,G. ruber pink
+213,9885,50,AMS14C,G. ruber pink
+258,10900,60,AMS14C,G. ruber pink
+303,12470,60,AMS14C,G. ruber pink
+343,13660,90,AMS14C,mixed planktonic foraminifers
+433,16170,110,AMS14C,mixed planktonic foraminifers
+523,18440,150,AMS14C,mixed planktonic foraminifers

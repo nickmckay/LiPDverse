@@ -1,0 +1,337 @@
+---
+title: "IC13THQU"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 204
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#IC13THQU
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](IC13THQU.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/iso2kv0_11_0/IC13THQU.lpd)
+            
+
+[Download data only (csv)](IC13THQU.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>glacier ice
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/cdo/f?p=519:1:::::P1_STUDY_ID:14174
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>RN, IAM
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Thompson, L. G.;Mosley-Thompson, E.;Davis, M. E.;Zagorodnov, V. S.;Howat, I. M.;Mikhalenko, V. N.;Lin, P.- N.
+<p style="margin-left: 10px"><strong>citeKey: </strong>thompson2013annuallyresolvedicecorere
+<p style="margin-left: 10px"><strong>journal: </strong>Science
+<p style="margin-left: 10px"><strong>volume: </strong>340
+<p style="margin-left: 10px"><strong>pages: </strong>945-950
+<p style="margin-left: 10px"><strong>pubYear: </strong>2013
+<p style="margin-left: 10px"><strong>title: </strong>Annually resolved ice core records of tropical climate variability over the past 1800 years
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1126/science.1234210
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Thompson, L.G.
+<p style="margin-left: 10px"><strong>citeKey: </strong>thompson2013httpswwwncdcnoaagovpaleostudy14174DataCitation
+<p style="margin-left: 10px"><strong>title: </strong>World Data Center for Paleoclimatology
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-13.9333
+<p style="margin-left: 0px"><strong>longitude: </strong>-70.8333
+<p style="margin-left: 0px"><strong>elevation: </strong>5670
+<p style="margin-left: 0px"><strong>siteName: </strong>Quelccaya Ice Cap
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>SAm
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT1AJCFBVF
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_035
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>delta18O ice
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Three-year running mean significantly correlated to SST Nino 4 region
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@condensationLevel
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mwe)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_036
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mwe
+<p style="margin-left: 10px"><strong>description: </strong>Ice accumulation rate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>dust (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_037
+<p style="margin-left: 10px"><strong>variableName: </strong>dust
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Dust (0.63 to 20 microns diameter)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>F (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_038
+<p style="margin-left: 10px"><strong>variableName: </strong>F
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>F - concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Cl (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_039
+<p style="margin-left: 10px"><strong>variableName: </strong>Cl
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>Cl - concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>sulfate (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_040
+<p style="margin-left: 10px"><strong>variableName: </strong>sulfate
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>SO4 2- concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>nitrate (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_041
+<p style="margin-left: 10px"><strong>variableName: </strong>nitrate
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>NO3 - concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Na (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_042
+<p style="margin-left: 10px"><strong>variableName: </strong>Na
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>Na + concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ammonium (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_043
+<p style="margin-left: 10px"><strong>variableName: </strong>ammonium
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>NH4 + concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>K (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_044
+<p style="margin-left: 10px"><strong>variableName: </strong>K
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>K + concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Mg (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_045
+<p style="margin-left: 10px"><strong>variableName: </strong>Mg
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>Mg 2+ concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Ca (ppb)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>SAm_046
+<p style="margin-left: 10px"><strong>variableName: </strong>Ca
+<p style="margin-left: 10px"><strong>units: </strong>ppb
+<p style="margin-left: 10px"><strong>description: </strong>Ca 2+ concentration (ppb)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### thickness (mwe)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### dust (permil)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### F (ppb)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### Cl (ppb)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### sulfate (ppb)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### nitrate (ppb)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### Na (ppb)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### ammonium (ppb)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### K (ppb)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### Mg (ppb)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### Ca (ppb)
+```{r}
+plotCol(thisTS,ind = 13)
+```

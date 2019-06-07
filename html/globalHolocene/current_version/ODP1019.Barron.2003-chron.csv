@@ -1,0 +1,21 @@
+depth (cm),age (yr BP),hole-core-section-interval (unitless),material (unitless),age_uncorrected (unitless),error_unc (unitless),reservoir (yr),error (yr),notes (unitless)
+0.16,290,1019D-1H-1 14-20,Globobulimina spp.,2040,40,1750,40,NA
+0.16,380,1019D-1H-1 14-20,mixed benthic forams,2130,40,1750,40,NA
+0.57,1290,1019D-1H-1 54-60,Globobulimina spp.,3040,40,1750,40,NA
+1.16,3350,1019D-1H-1 114-120,mixed benthic forams,5100,700,1750,700,NA
+2.07,4650,1019D-1H-2 53-60,mixed benthic forams,6400,40,1750,40,NA
+2.84,6030,1019A-1H-1 40-46,bark,6030,150,NA,150,Data from Mix et al. 1999
+4.17,9150,1019A-1H-2 22-28,mixed planktic,9950,110,800,110,Data from Mix et al. 1999
+4.17,9060,1019A-1H-2 22-28,mixed benthic,10810,120,1750,120,Data from Mix et al. 1999
+4.92,9410,1019A-1H-2 97-103,mixed planktic,10210,120,800,120,Data from Mix et al. 1999
+4.92,9380,1019A-1H-2 97-103,mixed benthic,11130,80,1750,80,Data from Mix et al. 1999
+5.16,10610,1019A-1H-2 122-128,mixed planktic,11410,170,800,170,Data from Mix et al. 1999
+5.16,9790,1019A-1H-2 122-128,mixed benthic,11540,90,1750,90,Data from Mix et al. 1999
+5.81,10780,1019A-1H-3 38-44,mixed planktic,11580,140,800,140,Data from Mix et al. 1999
+5.81,11540,1019A-1H-3 38-44,mixed benthic,13290,220,1750,220,Data from Mix et al. 1999
+6.21,11150,1019A-1H-3 78-84,mixed planktic,11950,110,800,110,Data from Mix et al. 1999
+6.21,11080,1019A-1H-3 78-84,mixed benthic,12830,90,1750,90,Data from Mix et al. 1999
+7.11,12250,1019A-1H-4 24-30,mixed planktic,13350,120,1100,120,Data from Mix et al. 1999
+7.11,12510,1019A-1H-4 24-30,mixed benthic,14260,140,1750,140,Data from Mix et al. 1999
+8.21,13980,1019A-1H-4 128-134,mixed planktic,15080,120,1100,120,Data from Mix et al. 1999
+8.21,14460,1019A-1H-4 128-134,mixed benthic,16210,190,1750,190,Data from Mix et al. 1999

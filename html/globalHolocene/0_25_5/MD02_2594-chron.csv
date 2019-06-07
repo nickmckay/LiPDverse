@@ -1,0 +1,12 @@
+depth (cm),dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr)
+50.5,14C,50,51,1,planktic foraminifera,G. inflata,OS-65271,3.34,0.03
+110.5,14C,110,111,1,planktic foraminifera,G. inflata,OS-65271,6.75,0.04
+155.5,14C,155,156,1,planktic foraminifera,G. inflata,OS-65271,9.05,0.035
+165.5,14C,165,166,1,planktic foraminifera,G. inflata,OS-65271,9.48,0.075
+210.5,14C,210,211,1,planktic foraminifera,G. inflata,OS-65269,11.3,0.065
+245.5,14C,245,246,1,planktic foraminifera,G. inflata,OS-65111,14.2,0.085
+255.5,14C,255,256,1,planktic foraminifera,G. inflata,OS-64824,15,0.05
+295.5,14C,295,296,1,planktic foraminifera,G. inflata,OS-65113,16.25,0.06
+345.5,14C,345,346,1,planktic foraminifera,G. inflata,OS-65274,26,0.14
+405.5,14C,405,406,1,planktic foraminifera,G. inflata,OS-64965,33.1,0.19
+465.5,14C,465,466,1,planktic foraminifera,G. inflata,OS-65112,40.8,0.37

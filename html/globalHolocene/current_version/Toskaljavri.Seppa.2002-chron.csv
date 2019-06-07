@@ -1,0 +1,10 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),IncludeYN ()
+NA,0,0,Core top,-48,NA,Y
+Hela-384,19,19,C14 Uncalibrated,1025,75,Y
+Hela-385,41,41,C14 Uncalibrated,2725,85,Y
+Hela-386,59,59,C14 Uncalibrated,3405,75,Y
+Hela-387,86,86,C14 Uncalibrated,4535,90,Y
+Hela-388,105,105,C14 Uncalibrated,5680,95,Y
+Hela-389,121,121,C14 Uncalibrated,6110,80,Y
+Hela-390,143,143,C14 Uncalibrated,7505,105,Y
+Hela-391,159,159,C14 Uncalibrated,9470,200,N

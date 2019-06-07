@@ -1,0 +1,20 @@
+depth (cm),age (yrBP),type (NA),core (NA),thickness (cm),Material (NA),error (yr),Lab ID (NA),rejected (NA),notes (NA)
+0,-55,surface,NA,0,NA,0,NA,NA,surface captured in 2005
+52.5,820,AMS14C,F,3,Picea pollen,50,CAMS-56316,NA,NA
+76.5,1210,AMS14C,F,1,Picea pollen,50,CAMS-56368,NA,NA
+77.5,940,AMS14C,F,3,Picea pollen,60,CAMS-56363,NA,NA
+110,1840,AMS14C,A,6,Picea pollen,60,CAMS-29561,NA,NA
+199,3650,AMS14C,A,2,>500 <U+00B5> aquatics,60,CAMS-20680,X,not used - reservoir effected
+209,2880,AMS14C,A,3,Picea pollen,60,CAMS-29562,NA,NA
+256.5,2970,AMS14C,A,1,>500<U+00B5> aquatics,60,CAMS-20681,X,not used - reservoir effected
+297,4050,AMS14C,A,2,Picea pollen,40,CAMS-56309,NA,NA
+388,5150,AMS14C,A,2,Picea pollen,50,CAMS-56310,NA,NA
+388,4810,AMS14C,A,2,NA,90,CAMS-56311,NA,NA
+414.25,5740,AMS14C,A,2.5,Picea pollen,50,CAMS-56312,NA,NA
+414.25,5520,AMS14C,A,2.5,3 Betula seeds,120,CAMS-56313,NA,NA
+444,6670,AMS14C,A,2,Picea pollen,50,CAMS-56314,NA,NA
+444,6410,AMS14C,A,2,3 Betula seeds,200,CAMS-56315,NA,NA
+457.5,7420,AMS14C,A,3,Picea pollen,60,CAMS-29559,NA,NA
+485.5,8670,AMS14C,A,6,Picea pollen,60,CAMS-22020,NA,NA
+548,9780,AMS14C,A,2,bark,90,CAMS-31082,NA,NA
+434,6000,tephra,A,NA,oshetna tephra,NA,NA,NA,Mean radiocarbon years (Child et al.(1998)

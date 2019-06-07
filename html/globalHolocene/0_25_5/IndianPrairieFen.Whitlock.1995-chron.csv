@@ -1,0 +1,6 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+181,Carbon-14,109793,60,2880,wood,NA
+235,Carbon-14,109794,60,4950,bulk lake sediment,NA
+505,Carbon-14,109795,80,8770,bulk lake sediment,NA
+595,Carbon-14,109796,70,9830,bulk lake sediment,NA
+720,Carbon-14,109797,110,12300,bulk lake sediment,NA

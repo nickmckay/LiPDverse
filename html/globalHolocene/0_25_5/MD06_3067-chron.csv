@@ -1,0 +1,10 @@
+depth (cm),dateType (),thickness (cm),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CHi (kyr),age14CLow (kyr),reservoirAge (kyr),notes ()
+11,14C,1,planktic foraminifera calcite,"Globigerinoides ruber, G. sacculifer",KIA 33257,3.655,0.03,0.03,0.48,1;11-12
+60,14C,1,planktic foraminifera calcite,mixed surface dwelling planktonic foraminifers,KIA 33258,4.655,0.03,0.03,0.48,1;60-61
+110,14C,1,planktic foraminifera calcite,Globigerinoides ruber,KIA 33788,7.87,0.04,0.04,0.48,1;110-111
+160,14C,1,planktic foraminifera calcite,Globigerinoides ruber,KIA 33789,10.1,0.045,0.045,0.48,2;10-11
+210,14C,1,planktic foraminifera calcite,"Globigerinoides ruber, G. sacculifer",KIA 33790,13.725,0.065,0.065,0.63,2;60-61
+260,14C,1,planktic foraminifera calcite,Globigerinoides ruber,KIA 35211,16.97,0.09,0.08,0.63,2;110-111
+280,14C,1,planktic foraminifera calcite,Globigerinoides ruber,KIA 35212,19.11,0.1,0.1,0.63,2;130131
+370,14C,1,planktic foraminifera calcite,Globigerinoides ruber,KIA 35214,25.41,0.19,0.18,0.63,3;70-71
+420,14C,1,planktic foraminifera calcite,Globigerinoides ruber,KIA 35215,29.69,0.3,0.29,0.63,3;120121

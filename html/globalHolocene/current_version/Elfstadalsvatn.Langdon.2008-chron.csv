@@ -1,0 +1,5 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+AAR-3714,23,24,C14 Uncalibrated,3895,50,50,Y
+AAR-4340,131,132,C14 Uncalibrated,7065,65,65,Y
+AAR-4341,202,205,C14 Uncalibrated,9050,70,70,Y
+AAR-4342,258,260,C14 Uncalibrated,9470,70,70,Y

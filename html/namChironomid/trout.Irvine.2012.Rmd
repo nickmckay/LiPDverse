@@ -1,0 +1,448 @@
+---
+title: "trout.Irvine.2012"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 9
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#trout.Irvine.2012
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](trout.Irvine.2012.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/namChironomid/trout.Irvine.2012.lpd)
+            
+
+[Download paleoData only (csv)](trout.Irvine.2012.csv)
+            
+
+[Download chronData only (csv)](trout.Irvine.2012-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/15444
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>pubYear: </strong>2012
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>68.828
+<p style="margin-left: 0px"><strong>longitude: </strong>-138.75
+<p style="margin-left: 0px"><strong>elevation: </strong>150
+<p style="margin-left: 0px"><strong>siteName: </strong>trout
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>Temp (Â°c) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>Temp
+<p style="margin-left: 10px"><strong>units: </strong>Â°c
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>seasonality: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>Temp (Â°c) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>Temp
+<p style="margin-left: 10px"><strong>units: </strong>Â°c
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>seasonality: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>age (bp) [3-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>Temp (Â°c) [3-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>Temp
+<p style="margin-left: 10px"><strong>units: </strong>Â°c
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>seasonality: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (1_s) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>1_s
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_error (2s) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_error
+<p style="margin-left: 10px"><strong>units: </strong>2s
+</details>
+<details style="margin-left: 10px">
+<summary>sample_id () [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>sample_id
+<p style="margin-left: 10px"><strong>units: </strong>
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (mm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (mm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (1_s) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>1_s
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_error (2s) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_error
+<p style="margin-left: 10px"><strong>units: </strong>2s
+</details>
+<details style="margin-left: 10px">
+<summary>sample_id () [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>sample_id
+<p style="margin-left: 10px"><strong>units: </strong>
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age_type () [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>age_type
+</details>
+<details style="margin-left: 10px">
+<summary>rejected_dates () [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>rejected_dates
+</details>
+<details style="margin-left: 10px">
+<summary>material_dated () [2-1]</summary>
+<p style="margin-left: 10px"><strong>variableName: </strong>material_dated
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Temp (Â°c) [1-1]
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### Temp (Â°c) [2-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### Temp (Â°c) [3-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### age (bp) [1-1]
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### depth (cm) [1-1]
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### depth_top (mm) [1-1]
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### depth_bot (mm) [1-1]
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age14C (bp) [1-1]
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### age_error (1_s) [1-1]
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### cal_age_error (2s) [1-1]
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### sample_id () [1-1]
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### thickness (mm) [1-1]
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### age (bp) [2-1]
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### depth (cm) [2-1]
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### depth_top (mm) [2-1]
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### depth_bot (mm) [2-1]
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### age14C (bp) [2-1]
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### age_error (1_s) [2-1]
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### cal_age_error (2s) [2-1]
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### sample_id () [2-1]
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### thickness (mm) [2-1]
+```{r}
+plotCol(chronTS,ind = 18)
+```
+
+### age_type () [2-1]
+```{r}
+plotCol(chronTS,ind = 19)
+```
+
+### rejected_dates () [2-1]
+```{r}
+plotCol(chronTS,ind = 20)
+```
+
+### material_dated () [2-1]
+```{r}
+plotCol(chronTS,ind = 21)
+```

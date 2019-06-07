@@ -1,0 +1,14 @@
+depth (cm),age (yrBP),Core (NA),material (NA),top_depth (cm),bottom_depth (cm),sampleDepth (cm),youngest14Cage (yrBP),oldest14Cage (yrBP),type (NA),rejected (NA)
+0,-46,TN062-O550BX,Sediment-water interface (AD 1996),0,0,0,NA,NA,surface,NA
+75,840,TN062-O450A,Wood fragment,28,29,50,810,870,AMS14C,NA
+128.5,1770,TN062-O550,Planktic foraminifera (mixed),102,105,103.5,1700,1840,AMS14C,NA
+NA,2290,TN062-O550,Benthic foraminifera (Uvigerina peregrina)#,102,105,103.5,2210,2370,AMS14C,rejected
+209,3090,TN062-O475,Bivalve shell,152,153,184,3055,3125,AMS14C,NA
+328.5,3750,TN062-O550,Planktic foraminifera (mixed),302,305,303.5,3675,3825,AMS14C,NA
+NA,4490,TN062-O550,Benthic foraminifera (U. peregrina)#,302,305,303.5,4455,4525,AMS14C,rejected
+374,3950,TN062-O475,Bivalve shell,256,257,349,3890,4010,AMS14C,NA
+390,3720,TN062-O450A,Wood fragment,366,367,365,3680,3760,AMS14C,NA
+643,6430,TN062-Q400,Planktic foraminifera (mixed),132,135,618,6340,6520,AMS14C,NA
+650,6680,TN062-Q450,Planktic foraminifera (Neogloboquadrina pachyderma),160,163,625,6510,6850,AMS14C,NA
+696.5,7030,TN062-O550,Planktic foraminifera (mixed),670,673,671.5,6910,7150,AMS14C,NA
+NA,7760,TN062-O550,Benthic foraminifera (U. peregrina)#,670,673,671.5,7695,7825,AMS14C,rejected

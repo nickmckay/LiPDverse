@@ -1,0 +1,9 @@
+OriginalDateID (),TopDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+NA,0,Core top,-49,-49,-49,Y
+KIA10040,9,C14 Uncalibrated,690,720,660,Y
+KIA8915,99,C14 Uncalibrated,2460,2500,2420,Y
+KIA10041,201,C14 Uncalibrated,5140,5200,5080,Y
+KIA8916,299,C14 Uncalibrated,6730,6800,6660,Y
+KIA8920,399,C14 Uncalibrated,8550,8650,8450,Y
+KIA8917,501,C14 Uncalibrated,9230,9320,9140,Y
+KIA12135,1035,C14 Uncalibrated,9490,9550,9430,Y

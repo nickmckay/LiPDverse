@@ -1,0 +1,7 @@
+depth (cm),age (bp),age14C (bp),age_error (years),cal_age_error (2s),cal_age_range_old (bp),cal_age_range_young (2_s),age_type (),lab_id (),material_dated (),note ()
+0,-54,NA,NA,0,NA,NA,2,NA,NA,2
+20,1135,NA,NA,121,1256,1014,3,NA,3,1
+53,NA,2180,50,160,2330,2010,1,4,2,NA
+135,NA,4740,60,130,5590,5330,1,3,1,NA
+178,NA,7050,100,185,8040,7670,1,2,4,NA
+214,NA,8460,80,135,9550,9280,1,1,1,NA

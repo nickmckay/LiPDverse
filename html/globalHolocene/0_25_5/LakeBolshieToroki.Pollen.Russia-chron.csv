@@ -1,0 +1,6 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+0.0,0,0,Core top,-62,0,0,N
+soan-8913,30,32,C14 Uncalibrated,1880,1940,1820,Y
+soan-8914,70,72,C14 Uncalibrated,3080,3125,3035,Y
+soan-8915,122,125,C14 Uncalibrated,5330,5410,5250,Y
+soan-8916,140,142,C14 Uncalibrated,5740,5835,5645,Y

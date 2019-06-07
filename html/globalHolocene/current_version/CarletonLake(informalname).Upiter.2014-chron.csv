@@ -1,0 +1,8 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+P49-1B-F1_0cm,0,0.5,Core top,-60,NA,NA,Y,NA
+P49-1B-F1_10cm,9.5,10.5,C14 Uncalibrated,1046,1070,1022,Y,14C age (BP ± 1 sigma)
+P49-1B-F1_19.5cm,19,29,C14 Uncalibrated,1925,1950,1900,Y,14C age (BP ± 1 sigma)
+P49-1B-F1_40cm,39.5,40.5,C14 Uncalibrated,2762,2797,2727,Y,14C age (BP ± 1 sigma)
+P49-1B-F1_64.5cm,64,65,C14 Uncalibrated,3675,3699,3651,Y,14C age (BP ± 1 sigma)
+P49-1B-F1_80cm,79.5,80.5,C14 Uncalibrated,4635,4667,4603,Y,14C age (BP ± 1 sigma)
+P49-1B-F1_100cm,99.5,100.5,C14 Uncalibrated,5663,5689,5637,Y,14C age (BP ± 1 sigma)

@@ -1,0 +1,7 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+255,Carbon-14,110901,80,3180,gyttja,Dunwiddie (1990) regards the date 9950Â±130 (Beta-20275) as erroneously young.
+360,Carbon-14,110902,70,4860,gyttja,NA
+385.5,Carbon-14,110903,100,5520,gyttja,NA
+445,Carbon-14,110904,110,9230,silt,NA
+517.5,Carbon-14,110905,130,9950,silt,NA
+547,Carbon-14,110906,160,13790,silt,NA

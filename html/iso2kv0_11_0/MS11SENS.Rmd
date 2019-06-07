@@ -1,0 +1,287 @@
+---
+title: "MS11SENS"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 398
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MS11SENS
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MS11SENS.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/iso2kv0_11_0/MS11SENS.lpd)
+            
+
+[Download data only (csv)](MS11SENS.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>marine sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Sejrup, H.P.
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.quascirev.2011.07.025
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>63.76
+<p style="margin-left: 0px"><strong>longitude: </strong>5.25
+<p style="margin-left: 0px"><strong>elevation: </strong>-875
+<p style="margin-left: 0px"><strong>siteName: </strong>Norwegian Sea
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT34dc3c9f88
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT72174380d3
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MS11SENS01
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>salinity/d18Ow influence thought to be minor
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease/increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer (JAS)
+<p style="margin-left: 20px"><strong>variable: </strong>temperature/d18Osw
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sub surface (~50 m)
+<p style="margin-left: 20px"><strong>direction: </strong>decrease/increase
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Urey, H. C. 1948. Oxygen isotopes in nature and in the laboratory. Science, 108:489?496.
+<p style="margin-left: 20px"><strong>coefficient: </strong>NaN
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>NaN
+<p style="margin-left: 20px"><strong>fraction: </strong>NaN
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>NaN
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>nonlinear
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>not applicable (always)
+<p style="margin-left: 20px"><strong>variable: </strong>T_water
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Urey, H. C. 1948. Oxygen isotopes in nature and in the laboratory. Science, 108:489?496.
+<p style="margin-left: 20px"><strong>coefficient: </strong>NaN
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>NaN
+<p style="margin-left: 20px"><strong>fraction: </strong>NaN
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>calcite, sub surface
+<p style="margin-left: 20px"><strong>integrationTime: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>NaN
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>non-linear
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>not applicable (always)
+<p style="margin-left: 20px"><strong>variable: </strong>seawater_isotope
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>Spero, H.J., Bijma, J., Lea, D.W., Bemis, B.E., 1997. Effect of seawater carbonate concentration on foraminiferal carbon and oxygen isotopes. Nature 390, 497-500.
+<p style="margin-left: 20px"><strong>coefficient: </strong>NaN
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>equilibriumEvidence: </strong>NaN
+<p style="margin-left: 20px"><strong>fraction: </strong>NaN
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>calcite, sub surface
+<p style="margin-left: 20px"><strong>integrationTime: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUncertainty: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>NaN
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>NaN
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>not applicable (always)
+<p style="margin-left: 20px"><strong>variable: </strong>Carbonate_ion_concentration
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>core ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6c1fc0ed6
+<p style="margin-left: 10px"><strong>variableName: </strong>core
+<p style="margin-left: 10px"><strong>description: </strong>P1003MC or P1003SC in splice
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### core ()
+```{r}
+plotCol(thisTS,ind = 4)
+```

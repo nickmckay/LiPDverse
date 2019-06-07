@@ -1,0 +1,272 @@
+---
+title: "LakeStowel.Lemmen.2018"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 58
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LakeStowel.Lemmen.2018
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LakeStowel.Lemmen.2018.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/LakeStowel.Lemmen.2018.lpd)
+            
+
+[Download data only (csv)](LakeStowel.Lemmen.2018.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Journal of Paleolimnology
+<p style="margin-left: 10px"><strong>volume: </strong>59
+<p style="margin-left: 10px"><strong>pages: </strong>427-442
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Fossil chironomid assemblages and inferred summer temperatures for the past 14,000 years from a low-elevation lake in Pacific Canada
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>48.7817
+<p style="margin-left: 0px"><strong>longitude: </strong>-123.4439
+<p style="margin-left: 0px"><strong>elevation: </strong>70
+<p style="margin-left: 0px"><strong>siteName: </strong>Lake Stowel
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB08e0ac6f
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfc3647fd
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Fortin (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6157a58d
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Fortin
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_FortinSE (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBc9615a3b
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_FortinSE
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_FortinLOWESS (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBdde95f09
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_FortinLOWESS
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Fortin_Anom (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBd5f128ae
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Fortin_Anom
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Fortin_anom_LOWESS (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfea43e78
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Fortin_anom_LOWESS
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Barley (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa7346940
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Barley
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Barley_SE (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9d32bf76
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Barley_SE
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Barley_LOWESS (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB300d0181
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Barley_LOWESS
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Barley_Anom (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1f68a94b
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Barley_Anom
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+<details style="margin-left: 10px">
+<summary>MJAT_Barley_Anom_LOWESS (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfd249547
+<p style="margin-left: 10px"><strong>variableName: </strong>MJAT_Barley_Anom_LOWESS
+<p style="margin-left: 10px"><strong>units: </strong>degC
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### MJAT_Fortin (degC)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### MJAT_FortinSE (degC)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### MJAT_FortinLOWESS (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### MJAT_Fortin_Anom (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### MJAT_Fortin_anom_LOWESS (degC)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### MJAT_Barley (degC)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### MJAT_Barley_SE (degC)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### MJAT_Barley_LOWESS (degC)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### MJAT_Barley_Anom (degC)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### MJAT_Barley_Anom_LOWESS (degC)
+```{r}
+plotCol(thisTS,ind = 12)
+```

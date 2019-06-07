@@ -1,0 +1,12 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+52.5,Carbon-14,108253,90,780,NA,NA
+122.5,Carbon-14,108254,80,1540,NA,NA
+202.5,Carbon-14,108255,80,2680,NA,A second sample at this depth (120-125cm SI-3811) measured at 150% modern.
+237.5,Carbon-14,108256,65,2825,NA,NA
+277.5,Carbon-14,108257,80,3635,NA,NA
+301,Carbon-14,108258,100,4150,NA,NA
+335.5,Carbon-14,108259,95,3955,NA,NA
+346,Carbon-14,108260,95,4645,NA,NA
+370.5,Carbon-14,108261,110,5010,NA,NA
+435,Carbon-14,108262,110,4320,NA,NA
+455,Carbon-14,108263,135,10565,NA,NA

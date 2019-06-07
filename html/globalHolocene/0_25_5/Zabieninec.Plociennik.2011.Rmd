@@ -1,0 +1,628 @@
+---
+title: "Zabieninec.Plociennik.2011"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 873
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Zabieninec.Plociennik.2011
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Zabieninec.Plociennik.2011.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Zabieninec.Plociennik.2011.lpd)
+            
+
+[Download paleoData only (csv)](Zabieninec.Plociennik.2011.csv)
+            
+
+[Download chronData only (csv)](Zabieninec.Plociennik.2011-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Peat
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Plociennik, Mateusz"), list(name = "Self, Angela"), list(name = "Birks, H. John B."), list(name = "Brooks, Stephen J."))
+<p style="margin-left: 10px"><strong>journal: </strong>Palaeogeography, Palaeoclimatology, Palaeoecology
+<p style="margin-left: 10px"><strong>volume: </strong>307
+<p style="margin-left: 10px"><strong>title: </strong>Chironomidae (Insecta: Diptera) succession in Żabieniec bog and its palaeo-lake (central Poland) through the Late Weichselian and Holocene
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Luoto, TP"), list(name = "Kotrys, B"), list(name = "Plociennik, M"))
+<p style="margin-left: 10px"><strong>journal: </strong>Climate Research
+<p style="margin-left: 10px"><strong>volume: </strong>77
+<p style="margin-left: 10px"><strong>title: </strong>East European chironomid-based calibration model for past summer temperature reconstructions
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>51.8519
+<p style="margin-left: 0px"><strong>longitude: </strong>19.7811
+<p style="margin-left: 0px"><strong>elevation: </strong>180
+<p style="margin-left: 0px"><strong>siteName: </strong>Zabieninec
+<p style="margin-left: 0px"><strong>country: </strong>Poland
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RiT7TdI5cX1
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ra8Io53GoRD
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>age (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RSdnmDKDz2J
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>missing
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RzYn1VqHzJi
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE-1
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R9Mayq8oKWg
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE-2
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RDIGASkcKy7
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE-3
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R6p203ipUkR
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE-4
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>nonReliabletemperature (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rl7vdOkM7TW
+<p style="margin-left: 10px"><strong>variableName: </strong>nonReliabletemperature
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperatureComposite (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RC2dWewDD1P
+<p style="margin-left: 10px"><strong>variableName: </strong>temperatureComposite
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>Jul
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>OriginalSampleID (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RnEyr4dAhC9
+<p style="margin-left: 10px"><strong>variableName: </strong>OriginalSampleID
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ageMin (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RdG7Iz4aG7B
+<p style="margin-left: 10px"><strong>variableName: </strong>ageMin
+<p style="margin-left: 10px"><strong>units: </strong>missing
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RfYI7qOocxj
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RC8VaI5vUOe
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>reliable (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RXfrSGkiyfI
+<p style="margin-left: 10px"><strong>variableName: </strong>reliable
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Commentregardingreliability1 (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RL8nL4ngSSf
+<p style="margin-left: 10px"><strong>variableName: </strong>Commentregardingreliability1
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RrULkNobJIl
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RbNH9STuM1l
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>reliable (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rz6u1YVZkYo
+<p style="margin-left: 10px"><strong>variableName: </strong>reliable
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Commentregardingreliability2 (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RmAMTY2bTnC
+<p style="margin-left: 10px"><strong>variableName: </strong>Commentregardingreliability2
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RX2w1yp3qXu
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rxo1bQlRA9z
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>reliable (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RDArZCK9MVJ
+<p style="margin-left: 10px"><strong>variableName: </strong>reliable
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Commentregardingreliability3 (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RqBk8QDblKC
+<p style="margin-left: 10px"><strong>variableName: </strong>Commentregardingreliability3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RPY5umRUwzQ
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R8iJT4hyk8Q
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>reliable (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RuZhepF7fKt
+<p style="margin-left: 10px"><strong>variableName: </strong>reliable
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Commentregardingreliability3 (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RZ6MaXGjQSg
+<p style="margin-left: 10px"><strong>variableName: </strong>Commentregardingreliability3
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>OriginalDateID ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RA8fcp2Ye7h
+<p style="margin-left: 10px"><strong>variableName: </strong>OriginalDateID
+</details>
+<details style="margin-left: 10px">
+<summary>TopDepthofDate (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rth0b3696Xp
+<p style="margin-left: 10px"><strong>variableName: </strong>TopDepthofDate
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>BottomDepthofDate (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R6U2ZpQoOmD
+<p style="margin-left: 10px"><strong>variableName: </strong>BottomDepthofDate
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>DateType ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RpOUeFj31K3
+<p style="margin-left: 10px"><strong>variableName: </strong>DateType
+</details>
+<details style="margin-left: 10px">
+<summary>DateBP ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RFBfBZe6iii
+<p style="margin-left: 10px"><strong>variableName: </strong>DateBP
+</details>
+<details style="margin-left: 10px">
+<summary>Uncertaintyplus ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RPMoa6pzgEn
+<p style="margin-left: 10px"><strong>variableName: </strong>Uncertaintyplus
+</details>
+<details style="margin-left: 10px">
+<summary>Uncertaintyminus ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RkASSdBvgr7
+<p style="margin-left: 10px"><strong>variableName: </strong>Uncertaintyminus
+</details>
+<details style="margin-left: 10px">
+<summary>IncludeYN ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RQyRX7KixVE
+<p style="margin-left: 10px"><strong>variableName: </strong>IncludeYN
+</details>
+<details style="margin-left: 10px">
+<summary>AdditionalNotes ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RexgndtXPOM
+<p style="margin-left: 10px"><strong>variableName: </strong>AdditionalNotes
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### temperature (missing)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### temperature (missing)
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### temperature (missing)
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### nonReliabletemperature (missing)
+```{r}
+plotCol(thisTS,ind = 26)
+```
+
+### temperatureComposite (degC)
+```{r}
+plotCol(thisTS,ind = 27)
+```
+
+### OriginalSampleID (missing)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### ageMin (missing)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### reliable (missing)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### Commentregardingreliability1 (missing)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### reliable (missing)
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Commentregardingreliability2 (missing)
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### reliable (missing)
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### Commentregardingreliability3 (missing)
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 22)
+```
+
+### uncertainty (missing)
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### reliable (missing)
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### Commentregardingreliability3 (missing)
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### OriginalDateID ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### TopDepthofDate (cm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### BottomDepthofDate (cm)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### DateType ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### DateBP ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### Uncertaintyplus ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### Uncertaintyminus ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### IncludeYN ()
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### AdditionalNotes ()
+```{r}
+plotCol(chronTS,ind = 9)
+```

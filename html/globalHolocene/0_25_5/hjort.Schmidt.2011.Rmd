@@ -1,0 +1,316 @@
+---
+title: "hjort.Schmidt.2011"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 314
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#hjort.Schmidt.2011
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](hjort.Schmidt.2011.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/hjort.Schmidt.2011.lpd)
+            
+
+[Download paleoData only (csv)](hjort.Schmidt.2011.csv)
+            
+
+[Download chronData only (csv)](hjort.Schmidt.2011-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/15444
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "SCHMIDT, STEFFI"), list(name = "WAGNER, BERND"), list(name = "HEIRI, OLIVER"), list(name = "KLUG, MARTIN"), list(name = "BENNIKE, OLE"), list(name = "MELLES, MARTIN"))
+<p style="margin-left: 10px"><strong>journal: </strong>Boreas
+<p style="margin-left: 10px"><strong>volume: </strong>40
+<p style="margin-left: 10px"><strong>title: </strong>Chironomids as indicators of the Holocene climatic and environmental history of two lakes in Northeast Greenland
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>76.433
+<p style="margin-left: 0px"><strong>longitude: </strong>-18.767
+<p style="margin-left: 0px"><strong>elevation: </strong>114
+<p style="margin-left: 0px"><strong>siteName: </strong>hjort
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT485UDDL4
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT1JZ8LCCF
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>CCA1 (sd units)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT88A4DF9B
+<p style="margin-left: 10px"><strong>variableName: </strong>CCA1
+<p style="margin-left: 10px"><strong>units: </strong>sd units
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>LOOKUP
+<p style="margin-left: 20px"><strong>interpDirection: </strong>-1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTHPRFTY41
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTDVV376P2
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT5FJ0QG27
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTFFGYD1TB
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (years)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTK510G1I1
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>years
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_old (bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTJTEFBB44
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_old
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_young (2_s)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTS6VO0HRI
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_young
+<p style="margin-left: 10px"><strong>units: </strong>2_s
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (mm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTPVKDYDWM
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>mm
+</details>
+<details style="margin-left: 10px">
+<summary>age_type ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTXZW3A0OD
+<p style="margin-left: 10px"><strong>variableName: </strong>age_type
+</details>
+<details style="margin-left: 10px">
+<summary>lab_id ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTVF3CE9GQ
+<p style="margin-left: 10px"><strong>variableName: </strong>lab_id
+</details>
+<details style="margin-left: 10px">
+<summary>material_dated ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTP9JSBLCN
+<p style="margin-left: 10px"><strong>variableName: </strong>material_dated
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### CCA1 (sd units)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### depth_bot (mm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### depth_top (mm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age14C (bp)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### age_error (years)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### cal_age_range_old (bp)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### cal_age_range_young (2_s)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### thickness (mm)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### age_type ()
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### lab_id ()
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### material_dated ()
+```{r}
+plotCol(chronTS,ind = 11)
+```

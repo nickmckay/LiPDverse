@@ -1,0 +1,17 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+22,2230,30,AMS14C,G. sacculifer
+52,4010,50,AMS14C,G. sacculifer
+62,4220,30,AMS14C,G. sacculifer
+90,6280,40,AMS14C,G. sacculifer
+119,6910,60,AMS14C,G. sacculifer
+207,9560,80,AMS14C,G. sacculifer
+241,10050,60,AMS14C,G. sacculifer
+307,10310,60,AMS14C,G. sacculifer
+329,10830,60,AMS14C,G. sacculifer
+452,11010,70,AMS14C,G. sacculifer
+491,12000,70,AMS14C,G. sacculifer
+523,12440,70,AMS14C,G. sacculifer
+548,12780,50,AMS14C,G. sacculifer
+543,13080,80,AMS14C,G. sacculifer
+648,14560,110,AMS14C,G. sacculifer
+665,17320,90,AMS14C,G. sacculifer

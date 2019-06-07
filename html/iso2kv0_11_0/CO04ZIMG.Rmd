@@ -1,0 +1,236 @@
+---
+title: "CO04ZIMG"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 19
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO04ZIMG
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO04ZIMG.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/iso2kv0_11_0/CO04ZIMG.lpd)
+            
+
+[Download data only (csv)](CO04ZIMG.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/16438
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>JZ
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Zinke
+<p style="margin-left: 10px"><strong>citeKey: </strong>zinke2004enso
+<p style="margin-left: 10px"><strong>journal: </strong>Earth and Planetary Science Letters
+<p style="margin-left: 10px"><strong>volume: </strong>228
+<p style="margin-left: 10px"><strong>pages: </strong>-17
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>ENSO and Indian Ocean subtropical dipole variability is recorded in a coral record off southwest Madagascar for the period 1659 to 1995
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/j.epsl.2004.09.028, 10.1038/srep04393
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Tierney, Jessica E. , Abram, Nerilie J. , Anchukaitis, Kevin J. , Evans, Michael N. , Giry, Cyril , Kilbourne, K. Halimeda , Saenger, Casey P. , Wu, Henry C. , Zinke, Jens
+<p style="margin-left: 10px"><strong>citeKey: </strong>tierney2015tropical
+<p style="margin-left: 10px"><strong>pubYear: </strong>2015
+<p style="margin-left: 10px"><strong>title: </strong>Ocean2kHR-IndianIfatyTulearZinke2014if4
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1002/2014PA002717
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-23.15
+<p style="margin-left: 0px"><strong>longitude: </strong>43.58
+<p style="margin-left: 0px"><strong>elevation: </strong>-1.1
+<p style="margin-left: 0px"><strong>siteName: </strong>Ifaty Reef, SW Madagascar
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Ocean
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT4c306207d3
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_020
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease/increase
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>not applicable (subannually resolved)
+<p style="margin-left: 20px"><strong>variable: </strong>temperature and salinity
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea surface
+<p style="margin-left: 20px"><strong>direction: </strong>decrease/increase
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>A correlation of seasonal mean rainfall anomalies derived from the NCEP/NCAR reanalysis data set (1948-1995; averaged over 3545E, 20-30S; http://www. cdc.noaa.gov/cdc/data.ncep.reanalysis.derived.html) with coral d18O shows a clear relationship during austral summer (NDJF) significant above the 90% level (Fig. 6). This also holds for a correlation with South African summer rainfall averaged over 25-30E and 15-25S (significant N95%) (Fig. 6). Thus, summer coral d18O is also related to changes in the regional hydrologic (P/E) balance
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>2-Jan
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>We use the pronounced seasonal cycle in d18O and Sr/Ca to develop the final chronology of the coral core and assigned the highest d18O and Sr/Ca values to august 15 of each year, which is on average the coldest month. [...] The d18O and Sr/Ca time series were interpolated linearly into 6 and 12 equi- distant points for any given year between these anchor points using the Analyseries software,.083 to 0.167 yrs,chronological,months,on a seasonal scale coral d18O  and Sr/Ca at this location primarily reflects SST variability (Fig. 5; Table 1). "
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>decrease
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>variable: </strong>T_water
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>direction: </strong>2
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>2-Jan
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>We use the pronounced seasonal cycle in d18O and Sr/Ca to develop the final chronology of the coral core and assigned the highest d18O and Sr/Ca values to august 15 of each year, which is on average the coldest month. [...] The d18O and Sr/Ca time series were interpolated linearly into 6 and 12 equi- distant points for any given year between these anchor points using the Analyseries software|.083 to 0.167 yrs|chronological|months|on a seasonal scale coral d18O  and Sr/Ca at this location primarily reflects SST variability (Fig. 5; Table 1). "
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>2-Jan
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>We use the pronounced seasonal cycle in d18O and Sr/Ca to develop the final chronology of the coral core and assigned the highest d18O and Sr/Ca values to august 15 of each year, which is on average the coldest month. [...] The d18O and Sr/Ca time series were interpolated linearly into 6 and 12 equi- distant points for any given year between these anchor points using the Analyseries software|.083 to 0.167 yrs|chronological|months|on a seasonal scale coral d18O  and Sr/Ca at this location primarily reflects SST variability (Fig. 5; Table 1). "
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>decrease
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>Sr/Ca avaiable for select intervals
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>JZ, NJA
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 1)
+```

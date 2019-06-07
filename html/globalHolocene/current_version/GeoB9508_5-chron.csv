@@ -1,0 +1,13 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CHi (kyr),age14CLow (kyr),reservoirAge (kyr)
+3,14C,planktonic foraminifera,mixed,KIA 31283,0.92,0.03,0.03,0.4
+68,14C,planktonic foraminifera,mixed,KIA 31282,6.145,0.05,0.05,0.4
+98,14C,planktonic foraminifera,mixed,KIA 33724,9.23,0.06,0.06,0.4
+123,14C,planktonic foraminifera,mixed,KIA 33725,10.56,0.08,0.08,0.4
+163,14C,planktonic foraminifera,mixed,KIA 33726,11.48,0.08,0.08,0.4
+308,14C,planktonic foraminifera,mixed,KIA 31770,16.65,0.09,0.09,0.4
+343,14C,planktonic foraminifera,mixed,KIA 31769,19.59,0.12,0.12,0.4
+388,14C,planktonic foraminifera,mixed,KIA 31768,22.03,0.12,0.12,0.4
+483,14C,planktonic foraminifera,mixed,KIA 31766,26.81,0.21,0.2,0.4
+583,14C,planktonic foraminifera,mixed,KIA 31765,32.09,0.35,0.34,0.4
+663,14C,planktonic foraminifera,mixed,KIA 31764,37,0.64,0.59,0.4
+778,14C,planktonic foraminifera,mixed,KIA 31281,43.34,1.66,1.37,0.4

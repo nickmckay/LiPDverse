@@ -1,0 +1,810 @@
+---
+title: "MD01_2378"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 514
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MD01_2378
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MD01_2378.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/MD01_2378.lpd)
+            
+
+[Download paleoData only (csv)](MD01_2378.csv)
+            
+
+[Download chronData only (csv)](MD01_2378-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>c("https://doi.pangaea.de/10.1594/PANGAEA.263755", "https://doi.pangaea.de/10.1594/PANGAEA.472294", "https://doi.pangaea.de/10.1594/PANGAEA.712513", "https://doi.pangaea.de/10.1594/PANGAEA.831197", "https://doi.pangaea.de/10.1594/PANGAEA.263757", "https://doi.pangaea.de/10.1594/PANGAEA.263759", "https://doi.pangaea.de/10.1594/PANGAEA.263758", "https://doi.pangaea.de/10.1594/PANGAEA.666556", "https://doi.pangaea.de/10.1594/PANGAEA.666553")
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Holbourn, Ann"), list(name = "Kuhnt, Wolfgang"), list(name = "Kawamura, Hiroshi"), list(name = "Jian, Zhimin"), list(name = "Grootes, Piet"), list(name = "Erlenkeuser, Helmut"), list(name = "Xu, Jian"))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>20
+<p style="margin-left: 10px"><strong>title: </strong>Orbitally paced paleoproductivity variations in the Timor Sea and Indonesian Throughflow variability during the last 460 kyr
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Xu, Jian"), list(name = "Kuhnt, Wolfgang"), list(name = "Holbourn, Ann"), list(name = "Andersen, Nils"), list(name = "Bartoli, Gretta"))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>21
+<p style="margin-left: 10px"><strong>title: </strong>Changes in the vertical profile of the Indonesian Throughflow during Termination II: Evidence from the Timor Sea
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Zuraida, Rina"), list(name = "Holbourn, Ann"), list(name = "Nürnberg, Dirk"), list(name = "Kuhnt, Wolfgang"), list(name = "Dürkop, Anke"), list(name = "Erichsen, A."))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>24
+<p style="margin-left: 10px"><strong>title: </strong>Evidence for Indonesian Throughflow slowdown during Heinrich events 3-5
+</details>
+<details style="margin-left: 10px">
+<summary>pub4</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Xu, Jian"), list(name = "Holbourn, Ann"), list(name = "Kuhnt, Wolfgang"), list(name = "Jian, Zhimin"), list(name = "Kawamura, Hiroshi"))
+<p style="margin-left: 10px"><strong>journal: </strong>Earth and Planetary Science Letters
+<p style="margin-left: 10px"><strong>volume: </strong>273
+<p style="margin-left: 10px"><strong>title: </strong>Changes in the thermocline structure of the Indonesian outflow during Terminations I and II
+</details>
+<details style="margin-left: 10px">
+<summary>pub5</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Kawamura, Hiroshi"), list(name = "Holbourn, Ann"), list(name = "Kuhnt, Wolfgang"))
+<p style="margin-left: 10px"><strong>journal: </strong>Marine Micropaleontology
+<p style="margin-left: 10px"><strong>volume: </strong>59
+<p style="margin-left: 10px"><strong>title: </strong>Climate variability and land–ocean interactions in the Indo Pacific Warm Pool: A 460-ka palynological and organic geochemical record from the Timor Sea
+</details>
+<details style="margin-left: 10px">
+<summary>pub6</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Dürkop, Anke"), list(name = "Holbourn, Ann"), list(name = "Kuhnt, Wolfgang"), list(name = "Zuraida, Rina"), list(name = "Andersen, Nils"), list(name = "Grootes, Pieter M."))
+<p style="margin-left: 10px"><strong>journal: </strong>Marine Micropaleontology
+<p style="margin-left: 10px"><strong>volume: </strong>66
+<p style="margin-left: 10px"><strong>title: </strong>Centennial-scale climate variability in the Timor Sea during Marine Isotope Stage 3
+</details>
+<details style="margin-left: 10px">
+<summary>pub7</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Dürkop, Anke"), list(name = "Holbourn, Ann"), list(name = "Kuhnt, Wolfgang"), list(name = "Zuraida, Rina"), list(name = "Andersen, Nils"), list(name = "Grootes, Pieter M."))
+<p style="margin-left: 10px"><strong>journal: </strong>Marine Micropaleontology
+<p style="margin-left: 10px"><strong>volume: </strong>66
+<p style="margin-left: 10px"><strong>title: </strong>Centennial-scale climate variability in the Timor Sea during Marine Isotope Stage 3
+</details>
+<details style="margin-left: 10px">
+<summary>pub8</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Sarnthein, M."), list(name = "Grootes, P.M."), list(name = "Holbourn, A."), list(name = "Kuhnt, W."), list(name = "Kühn, H."))
+<p style="margin-left: 10px"><strong>journal: </strong>Earth and Planetary Science Letters
+<p style="margin-left: 10px"><strong>volume: </strong>302
+<p style="margin-left: 10px"><strong>title: </strong>Tropical warming in the Timor Sea led deglacial Antarctic warming and atmospheric CO2 rise by more than 500yr
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-13.0825
+<p style="margin-left: 0px"><strong>longitude: </strong>121.788
+<p style="margin-left: 0px"><strong>elevation: </strong>-1783
+<p style="margin-left: 0px"><strong>siteName: </strong>MD01_2378
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>ROWM7qHuBCo
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RaqJOkfsTYw
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RMjUks7cU05
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RSgSD1mJnnW
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d13C (permil) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RDk2rH43Os5
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>G_ruber_w_d13C_per_mil_PDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>ROvmmXp7x40
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RSVZ1qOiDLt
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (percent) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R5tB2eSqeqf
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>TOC_percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RlHmp9GEaaB
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R38keDgk6Np
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>CaCO3 (percent) [1-4]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RRc0JRaqpDw
+<p style="margin-left: 10px"><strong>variableName: </strong>CaCO3
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>CaCO3_percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RLnIkqaWuZL
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R0AL9YLkpIS
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RsLnvWTKxH5
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>TT_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-5]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RaFQKq8j02P
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>SST_1_12_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rm4ncp90lOc
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RzWBK57mTjZ
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RSlSF7IhEUX
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>TT_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RazJflUVEh7
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>SST_1_12_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>surface.temp
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.MgCa (mmol_mol) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RelARRdOCVN
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.MgCa
+<p style="margin-left: 10px"><strong>units: </strong>mmol_mol
+<p style="margin-left: 10px"><strong>description: </strong>P_obliqu_Mg_Ca_mmol_mol
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.MgCa (mmol_mol) [1-6]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RB9odQrtVrH
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.MgCa
+<p style="margin-left: 10px"><strong>units: </strong>mmol_mol
+<p style="margin-left: 10px"><strong>description: </strong>G_ruber_Mg_Ca_mmol_mol
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RHpxGt8wKHw
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RkhkxqdcKUo
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RGjzfXMedwV
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>SST_1_12_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>surface.temp
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-7]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RngO0tVRof1
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>TT_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-8]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RjKVkjRSEkW
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil) [1-8]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RTfm55oecMv
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>merged benthic d18O
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil) [1-8]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RuiPAhMsaKu
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>merged benthic d13C
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-9]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R0Rb0GIyiqP
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d18O (permil) [1-9]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RD9xZJN6B8T
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>merged obl 18O
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d13C (permil) [1-9]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RpBYYglPm4F
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>merged obl 13C
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-10]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RdRl95IoVbv
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d18O (permil) [1-10]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RjO8ZOIvEMX
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>merged ruber 18O (all)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d13C (permil) [1-10]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R1JemqRcMtX
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>merged ruber 13C (8 and 9)
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-11]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RV51LAcbtoK
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.MgCa (mmol_mol) [1-11]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R2sStCJp6fT
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.MgCa
+<p style="margin-left: 10px"><strong>units: </strong>mmol_mol
+<p style="margin-left: 10px"><strong>description: </strong>G_ruber_Mg_Ca_mmol_mol merged 8 and 25
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-12]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RcmzgS5yUQ5
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.MgCa (mmol_mol) [1-12]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RG3Q0KPVl65
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.MgCa
+<p style="margin-left: 10px"><strong>units: </strong>mmol_mol
+<p style="margin-left: 10px"><strong>description: </strong>P_obliqu_Mg_Ca_mmol_mol. Merged 8 and 25
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RCurWEXcRkR
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R5TVfmpmtY0
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>dateType ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RhMm5814LgL
+<p style="margin-left: 10px"><strong>variableName: </strong>dateType
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rav3RG845aV
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>measurementMaterial ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R6yu2nAPFZ6
+<p style="margin-left: 10px"><strong>variableName: </strong>measurementMaterial
+</details>
+<details style="margin-left: 10px">
+<summary>sensorSpecies ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RXzwTY5TZ89
+<p style="margin-left: 10px"><strong>variableName: </strong>sensorSpecies
+</details>
+<details style="margin-left: 10px">
+<summary>measurementN ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RRbXHHydunl
+<p style="margin-left: 10px"><strong>variableName: </strong>measurementN
+</details>
+<details style="margin-left: 10px">
+<summary>labID ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RTyNg5lbmTw
+<p style="margin-left: 10px"><strong>variableName: </strong>labID
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R9ehygIyfVS
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>age14CUncertainty (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RsVV6VH988a
+<p style="margin-left: 10px"><strong>variableName: </strong>age14CUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>age14CHi (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RFW8JOATntN
+<p style="margin-left: 10px"><strong>variableName: </strong>age14CHi
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>age14CLow (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RZZtmR6kpsC
+<p style="margin-left: 10px"><strong>variableName: </strong>age14CLow
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>reservoirAge (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RjPNLexLwL6
+<p style="margin-left: 10px"><strong>variableName: </strong>reservoirAge
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>reservoirAgeUncertainty (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RIWbqrn4npB
+<p style="margin-left: 10px"><strong>variableName: </strong>reservoirAgeUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>calibrationCurve ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rzhswv1ZoyV
+<p style="margin-left: 10px"><strong>variableName: </strong>calibrationCurve
+</details>
+<details style="margin-left: 10px">
+<summary>ageUncertainty2sigLo (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RlJ3tCtWKoT
+<p style="margin-left: 10px"><strong>variableName: </strong>ageUncertainty2sigLo
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>ageUncertainty2sigHi (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RS3scNcbDvO
+<p style="margin-left: 10px"><strong>variableName: </strong>ageUncertainty2sigHi
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>notes ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RCaNPoGHi3l
+<p style="margin-left: 10px"><strong>variableName: </strong>notes
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### planktic.d13C (permil)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### TOC (percent)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### CaCO3 (percent)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 21)
+```
+
+### planktic.MgCa (mmol_mol)
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### planktic.MgCa (mmol_mol)
+```{r}
+plotCol(thisTS,ind = 20)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 25)
+```
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 27)
+```
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 28)
+```
+
+### planktic.d18O (permil)
+```{r}
+plotCol(thisTS,ind = 30)
+```
+
+### planktic.d13C (permil)
+```{r}
+plotCol(thisTS,ind = 31)
+```
+
+### planktic.d18O (permil)
+```{r}
+plotCol(thisTS,ind = 33)
+```
+
+### planktic.d13C (permil)
+```{r}
+plotCol(thisTS,ind = 34)
+```
+
+### planktic.MgCa (mmol_mol)
+```{r}
+plotCol(thisTS,ind = 36)
+```
+
+### planktic.MgCa (mmol_mol)
+```{r}
+plotCol(thisTS,ind = 38)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age (kyr)
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### dateType ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### thickness (cm)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### measurementMaterial ()
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### sensorSpecies ()
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### measurementN ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### labID ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### age14C (kyr)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### age14CUncertainty (kyr)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### age14CHi (kyr)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### age14CLow (kyr)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### reservoirAge (kyr)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### reservoirAgeUncertainty (kyr)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### calibrationCurve ()
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### ageUncertainty2sigLo (kyr)
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### ageUncertainty2sigHi (kyr)
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### notes ()
+```{r}
+plotCol(chronTS,ind = 18)
+```

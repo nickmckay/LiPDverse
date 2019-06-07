@@ -1,0 +1,13 @@
+depth (cm),LabNo_ (unitless),Top (unitless),Bottom (unitless),Age (yr BP),error (yr),CalAgeLower (unitless),CalAge (unitless),CalAgeUpper (unitless),MaterialDated (unitless)
+346,NA,NA,NA,-45,0,-45,-45,-45,Top of core
+385,NA,NA,NA,70,10,60,70,80,Salsolarise
+401,CAMS-118863,399,403,1055,35,923,964,1055,charcoal
+439.5,CAMS-118864,439,440,1310,35,1178,1248,1294,charcoal
+485,CAMS-42475,484,486,1740,50,1538,1652,1811,2 Schoenoplectusseeds charcoal
+519.5,CAMS-118865,519,520,3125,35,3260,3355,3442,Schoenoplectusseed charcoal
+553,CAMS-42476,552,554,3440,50,3578,3704,3835,~20 Sagittariaseeds
+599.5,CAMS-118866,599,600,3960,35,4294,4430,4521,SchoenoplectusseedChenopodiumseeds charcoal
+651,CAMS-42477,650,652,4480,50,4894,5145,5308,5 Schoenoplectusseeds 3Chenopodiumseeds
+651,CAMS-42478,650,652,4550,50,5041,5174,5444,charcoal
+651,CAMS-42477/42478 Pooled Mean,650,652,NA,NA,5041,5161,5301,pooled mean from Bcal
+979,CAMS-25282,979,979,10980,60,12846,12917,13047,cf. Schoenoplectusrhizome

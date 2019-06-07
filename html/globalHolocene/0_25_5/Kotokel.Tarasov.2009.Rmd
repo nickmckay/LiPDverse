@@ -1,0 +1,423 @@
+---
+title: "Kotokel.Tarasov.2009"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 395
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Kotokel.Tarasov.2009
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Kotokel.Tarasov.2009.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/Kotokel.Tarasov.2009.lpd)
+            
+
+[Download paleoData only (csv)](Kotokel.Tarasov.2009.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Tarasov, P. E."), list(name = "Bezrukova, E. V."), list(name = "Krivonogov, S. K."))
+<p style="margin-left: 10px"><strong>citeKey: </strong>tarasov2009lateglacialandholocenecha
+<p style="margin-left: 10px"><strong>journal: </strong>Climate of the Past
+<p style="margin-left: 10px"><strong>volume: </strong>5
+<p style="margin-left: 10px"><strong>pages: </strong>285-295
+<p style="margin-left: 10px"><strong>title: </strong>Late Glacial and Holocene changes in vegetation cover and climate in southern Siberia derived from a 15 kyr long pollen record from Lake Kotokel
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>52.7928
+<p style="margin-left: 0px"><strong>longitude: </strong>108.1244
+<p style="margin-left: 0px"><strong>elevation: </strong>458
+<p style="margin-left: 0px"><strong>siteName: </strong>LakeKotokel
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ru5vvaHj39H
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RhWZvVN69ra
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>map_mm (mm/yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHa91c9112
+<p style="margin-left: 10px"><strong>variableName: </strong>map_mm
+<p style="margin-left: 10px"><strong>units: </strong>mm/yr
+<p style="margin-left: 10px"><strong>description: </strong>Precipitation
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>M
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHc1441dab
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>wintertemperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>winter
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHa85a120f
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>summertemperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHf27a4b77
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>annualtemperature
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>BroadleavedWoodyCover___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH4beb6e47
+<p style="margin-left: 10px"><strong>variableName: </strong>BroadleavedWoodyCover___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>stdDev___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GHf44e1593
+<p style="margin-left: 10px"><strong>variableName: </strong>stdDev___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>NeedleleavedWoodyCover___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH9c8ac391
+<p style="margin-left: 10px"><strong>variableName: </strong>NeedleleavedWoodyCover___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>NeedleavedWoodyCoverStdDev___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH8de84ae8
+<p style="margin-left: 10px"><strong>variableName: </strong>NeedleavedWoodyCoverStdDev___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>WoodyCover___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro237
+<p style="margin-left: 10px"><strong>variableName: </strong>WoodyCover___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>OpenVegetation___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro238
+<p style="margin-left: 10px"><strong>variableName: </strong>OpenVegetation___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Score_Tundra_ (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>NAm2kHydro239
+<p style="margin-left: 10px"><strong>variableName: </strong>Score_Tundra_
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Score_Taiga_ (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>GH46d7498e
+<p style="margin-left: 10px"><strong>variableName: </strong>Score_Taiga_
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Score_Steppe_ (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa7ecbe2b
+<p style="margin-left: 10px"><strong>variableName: </strong>Score_Steppe_
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>BorealTrees___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb3fd6c2c
+<p style="margin-left: 10px"><strong>variableName: </strong>BorealTrees___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>BorealShrubs___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD267e1654
+<p style="margin-left: 10px"><strong>variableName: </strong>BorealShrubs___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Herbs___ (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb1ac0aee
+<p style="margin-left: 10px"><strong>variableName: </strong>Herbs___
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Pollen_spores_Total___ (total)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD481e546f
+<p style="margin-left: 10px"><strong>variableName: </strong>Pollen_spores_Total___
+<p style="margin-left: 10px"><strong>units: </strong>total
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### map_mm (mm/yr)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### BroadleavedWoodyCover___ (missing)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### stdDev___ (missing)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### NeedleleavedWoodyCover___ (missing)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### NeedleavedWoodyCoverStdDev___ (missing)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### WoodyCover___ (missing)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### OpenVegetation___ (missing)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### Score_Tundra_ (degC)
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### Score_Taiga_ (degC)
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Score_Steppe_ (degC)
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### BorealTrees___ (missing)
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### BorealShrubs___ (missing)
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### Herbs___ (missing)
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### Pollen_spores_Total___ (total)
+```{r}
+plotCol(thisTS,ind = 19)
+```

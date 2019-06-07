@@ -1,0 +1,17 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),rejected (),notes ()
+3,14C,"unknown, probably planktonic foraminifera",NA,NA,0.95,0.055,NA,NA
+16,14C,planktonic foraminifera calcite,mixed,NOSAMS 34259,1.68,0.035,NA,NA
+39,14C,planktonic foraminifera calcite,G. bulloides and N. dutertrei,NOSAMS 34260,2.01,0.045,NA,NA
+64,14C,planktonic foraminifera calcite,G. bulloides and N. dutertrei,NOSAMS 34261,2.76,0.03,NA,NA
+96,14C,planktonic foraminifera calcite,G. bulloides and N. dutertrei,NOSAMS 34262,3.89,0.045,NA,NA
+121,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34263,4.67,0.04,NA,NA
+154,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34264,6,0.03,NA,NA
+154,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34265,6.07,0.03,NA,NA
+160,14C,"unknown, probably planktonic foraminifera",NA,NA,5.865,0.065,TRUE,"excluded by Naida and Malmgren, 2005"
+186,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34266,7.7,0.045,NA,NA
+218,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34267,8.11,0.04,NA,NA
+274,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34268,9.51,0.04,NA,NA
+290,14C,"unknown, probably planktonic foraminifera",NA,NA,9.1,0.09,NA,NA
+316,14C,planktonic foraminifera calcite,G. bulloides,NOSAMS 34269,10.5,0.04,NA,NA
+520,14C,"unknown, probably planktonic foraminifera",NA,NA,15.92,0.125,NA,NA
+740,14C,"unknown, probably planktonic foraminifera",NA,NA,19.13,0.275,NA,NA

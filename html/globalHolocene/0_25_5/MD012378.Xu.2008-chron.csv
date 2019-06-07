@@ -1,0 +1,21 @@
+depth (cm),age (yr bp),error (yr),type (unitless),material (unitless)
+0.5,1515,30,AMS14C,G. ruber
+14.5,2130,40,AMS14C,G. ruber
+34.5,2780,40,AMS14C,G. ruber
+52.5,3465,35,AMS14C,G. ruber
+72.5,4295,30,AMS14C,G. ruber
+104.5,5405,35,AMS14C,G. ruber
+120.5,6190,35,AMS14C,G. ruber
+149.5,7485,45,AMS14C,G. ruber
+167.5,8575,40,AMS14C,G. ruber
+201.5,9660,45,AMS14C,G. ruber
+227.5,10370,50,AMS14C,G. ruber
+251.5,11415,50,AMS14C,G. ruber
+275.5,12705,55,AMS14C,G. ruber
+291.5,13020,55,AMS14C,G. ruber
+316.5,14260,70,AMS14C,G. ruber
+338.5,15410,70,AMS14C,G. ruber
+364.5,16340,80,AMS14C,G. ruber
+390.5,17440,90,AMS14C,G. ruber
+424.5,18990,100,AMS14C,G. ruber
+440.5,19960,110,AMS14C,G. ruber

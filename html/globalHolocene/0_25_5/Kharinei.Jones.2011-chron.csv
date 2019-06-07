@@ -1,0 +1,29 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,NA,Core top,-57,NA,NA,NA,NA,Y,modelled from Pb-210 data
+NA,0.25,NA,Pb210-Lead,-53,-51,-55,2,2,Y,modelled from Pb-210 data
+NA,0.75,NA,Pb210-Lead,-40,-37,-43,3,3,Y,modelled from Pb-210 data
+NA,1.25,NA,Pb210-Lead,-13,-7,-19,6,6,Y,modelled from Pb-210 data
+NA,1.75,NA,Pb210-Lead,4,14,-6,10,10,Y,modelled from Pb-210 data
+NA,2.25,NA,Pb210-Lead,26,44,8,18,18,Y,modelled from Pb-210 data
+NA,2.75,NA,Pb210-Lead,76,104,48,28,28,Y,modelled from Pb-210 data
+SUERC-21513,20,21,NA,2663,2700,2626,37,37,N,Bulk sediment
+SUERC-21516,30,31,NA,2256,2293,2219,37,37,N,Bulk sediment
+SUERC-17505,40,41,NA,2411,2448,2374,37,37,N,Bulk sediment
+SUERC-21517,72,73,NA,4640,4678,4602,38,38,N,Bulk sediment
+SUERC-21518,100,101,NA,3571,3611,3531,40,40,N,Bulk sediment
+SUERC-17506,128,129,NA,5555,5593,5517,38,38,N,Bulk sediment
+SUERC-21519,152,153,NA,6878,6917,6839,39,39,N,Bulk sediment
+SUERC-21520,172,173,NA,7039,7078,7000,39,39,N,Bulk sediment
+SUERC-17509,200,201,NA,7304,7341,7267,37,37,N,Bulk sediment
+SUERC-21521,228,229,NA,8661,8705,8617,44,44,N,Bulk sediment
+SUERC-21522,254,255,NA,10212,10257,10167,45,45,N,Bulk sediment
+SUERC-17510,284,285,NA,9738,9781,9695,43,43,N,Bulk sediment
+SUERC-21523,300,301,NA,10213,10258,10168,45,45,N,Bulk sediment
+SUERC-21526,314,315,NA,10610,10654,10566,44,44,N,Bulk sediment
+Poz-34966,63,64,NA,5080,5120,5040,40,40,N,Mixed terrestrial plant material
+Poz-34208,99,100,NA,3590,3630,3550,40,40,Y,"Betula bark, picea needles"
+Poz-34967,179,180,NA,5460,5500,5420,40,40,Y,Mixed terrestrial plant material
+Poz-34209,223,224,NA,6250,6290,6210,40,40,Y,"Picea needles, Alnus catkin scale"
+Poz-34968,139,240,NA,6780,6830,6730,50,50,Y,Mixed terrestrial plant material
+Poz-34210,289,290,NA,9440,9490,9390,50,50,Y,"Wood, bark"
+Poz-34969,297,298,NA,9200,9250,9150,50,50,Y,Mixed terrestrial plant material

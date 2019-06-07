@@ -1,0 +1,5 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,NA,Core top,NA,NA,NA,NA,NA
+62,63,C14 Uncalibrated,4030,60,60,N,"Sample depths not digitised from original figure, but can be done"
+111,112,C14 Uncalibrated,7260,75,75,N,"Final age/depth model of this site based on pollen-based comparison to nearby site, as these bulk dates were considered too old. Only date at 111cm considered reliable"
+132,133,C14 Uncalibrated,9070,75,75,N,NA

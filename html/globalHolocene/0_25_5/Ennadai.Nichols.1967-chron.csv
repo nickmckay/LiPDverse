@@ -1,0 +1,13 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+5,Carbon-14,109260,70,630,humified Sphagnum peat,"WIS-127 was dated twice but not published as such, see Nichols 1967:192."
+21,Carbon-14,109261,80,1510,peat,NA
+33,Carbon-14,109262,80,1530,humified Sphagnum peat,NA
+35,Carbon-14,109263,75,1250,humified Sphagnum peat,NA
+35,Carbon-14,109264,75,1280,humified Sphagnum peat,NA
+55,Carbon-14,109265,105,2670,peat,NA
+73,Carbon-14,109266,105,3140,unhumified Sphagnum peat,NA
+89,Carbon-14,109267,100,3650,wood of Larix,NA
+109,Carbon-14,109268,90,4800,Sphagnum peat,NA
+131,Carbon-14,109269,100,5570,fossil Sphagnum peat,NA
+131,Carbon-14,109270,110,5720,fossil Sphagnum peat,NA
+149,Carbon-14,109271,110,5780,fossil Sphagnum peat,NA

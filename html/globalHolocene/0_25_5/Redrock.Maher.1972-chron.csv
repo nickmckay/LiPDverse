@@ -1,0 +1,11 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+37.5,Carbon-14,111388,95,1590,NA,NA
+57.5,Carbon-14,111389,100,2450,NA,NA
+69,Carbon-14,111390,100,3970,NA,NA
+81.5,Carbon-14,111391,105,4290,NA,NA
+94,Carbon-14,111392,100,4830,NA,NA
+106.5,Carbon-14,111393,105,5150,NA,NA
+118.5,Carbon-14,111394,105,5260,NA,NA
+131.5,Carbon-14,111395,115,6870,NA,NA
+152.5,Carbon-14,111396,125,8460,NA,NA
+167.5,Carbon-14,111397,150,9490,NA,NA

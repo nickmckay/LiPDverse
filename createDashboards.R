@@ -8,12 +8,16 @@ library(plotly)
 library(lipdR)
 library(dygraphs)
 library(geoChronR)
+#setwd("~/Github/lipdverse")
 library(here)
 source(here("functions.R"))
 #prepare LiPD data..
 
-project <- "iso2kv0_9_0"
-lipdDir <- "~/Dropbox/LiPD/iso2k/Library0_8_5_1/"
+#project <- "iso2kv0_11_0"
+#lipdDir <- "/Users/npm4/Dropbox/LiPD/iso2k/Library0_11_0_1"
+
+project <- "namChironomid"
+lipdDir <- "/Users/npm4/Dropbox/LiPD/namChironomid/"
 
 #if there's no html directory, create one
 if(!dir.exists(here("html",project))){
@@ -35,8 +39,8 @@ save(list = c("D","TS"),file = here("temp.RData"))
 #remove columns we don't want to plot
 varNames <- sapply(TS, "[[","paleoData_variableName")
 
-good <- which(!(varNames %in% c("year","depth","age")))
-TS <- TS[good]
+#good <- which(!(varNames %in% c("year","depth","age")))
+#TS <- TS[good]
 
 
 #All datasets
@@ -68,7 +72,7 @@ map.meta <- data.frame(dataSetName = udsn, #datasetname
 
 #make project Rmd
 createProjectRmd(project = project)
-rmarkdown::render(here("html",project,str_c(project,".Rmd")))
+rmarkdown::render(here("html",project,"index.Rmd"))
 failed = c()
 for(i in 1:nrow(map.meta)){
   print(i)
@@ -77,16 +81,30 @@ for(i in 1:nrow(map.meta)){
     
     #thisTS <- filterTs(TS, str_c("dataSetName == ",udsn[i]))
     thisTS <- TS[which(udsn[i] == dsn)]
-    test = try(createDashboardRmd(thisTS = thisTS,i = i,project = project))
+    
+    #look for chronTS
+    chronTS <- extractTs(D[[udsn[i]]],whichtables = "meas",mode = "chron")
+    
+    
+    test = try(createDashboardRmd(thisTS = thisTS,i = i,project = project,chronTS = chronTS))
     Sys.sleep(1)
     test = try(rmarkdown::render(here("html",project,str_c(fname,".Rmd"))))
-    #writeLipd(D[[thisTS[[1]]$dataSetName]],path = here("html"))
+    
+   
     if(grepl(class(test),"try-error")){
       failed = c(failed, udsn[i])
+    }else{
+      print(str_c("http://lipdverse.org/",project,"/",fname,".html"))
+      D[[map.meta$dataSetName[i]]]$lipdverseLink <- str_c("http://lipdverse.org/",project,"/",fname,".html")
+      writeLipd(D[[map.meta$dataSetName[i]]],path = here("html",project))
     }
   }
   #copy the lipd file if it's not already there
-  if(!file.exists(here("html",project,str_c(fname,".lpd")))){
-    file.copy(from = str_c(lipdDir,fname,".lpd"),to = here("html",project))
-  }
+  # if(!file.exists(here("html",project,str_c(fname,".lpd")))){
+  #   file.copy(from = str_c(lipdDir,fname,".lpd"),to = here("html",project))
+  # }
 }
+setwd(here("html",project))
+zip(zipfile = here("html",project,str_c(project,".zip")),files = list.files(here("html",project),pattern= "*.lpd"))
+
+#Create QC Sheet!

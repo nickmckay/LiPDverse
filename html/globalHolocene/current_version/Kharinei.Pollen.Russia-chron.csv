@@ -1,0 +1,8 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+0,1,Core top,-55,NA,NA,Y,Lake cored in April 2007; Modern age of top sediment confirmed by Pb-210 dating and by a well-resolved Cs-137 spike
+99,100,C14 Uncalibrated,3590,3630,3550,Y,Plant macrofossils
+179,180,C14 Uncalibrated,5460,5500,5420,Y,Plant macrofossils
+223,224,C14 Uncalibrated,6250,6290,6210,Y,Plant macrofossils
+239,240,C14 Uncalibrated,6780,6830,7230,Y,Plant macrofossils
+289,290,C14 Uncalibrated,9440,9490,9390,Y,Plant macrofossils
+297,298,C14 Uncalibrated,9200,9250,9150,Y,Plant macrofossils

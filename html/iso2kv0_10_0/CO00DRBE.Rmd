@@ -1,0 +1,299 @@
+---
+title: "CO00DRBE"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 4
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#CO00DRBE
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](CO00DRBE.lpd)
+            
+
+[Download data only (csv)](CO00DRBE.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>coral
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>http://doi.pangaea.de/10.1594/PANGAEA.711835
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+<p style="margin-left: 0px"><strong>dataContributor: </strong>CS
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Draschba
+<p style="margin-left: 10px"><strong>citeKey: </strong>draschba2000north
+<p style="margin-left: 10px"><strong>journal: </strong>International Journal of Earth Sciences
+<p style="margin-left: 10px"><strong>volume: </strong>88
+<p style="margin-left: 10px"><strong>pages: </strong>-8
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>North Atlantic climate variability since AD 1350 recorded in ? 18 O and skeletal density of Bermuda corals
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1007/s005310050301
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Draschba, S
+<p style="margin-left: 10px"><strong>pubYear: </strong>NA
+<p style="margin-left: 10px"><strong>title: </strong>Ocean2kHR-AtlanticBermudaDraschba2000b
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>32.3
+<p style="margin-left: 0px"><strong>longitude: </strong>-64.7
+<p style="margin-left: 0px"><strong>elevation: </strong>-25
+<p style="margin-left: 0px"><strong>siteName: </strong>Northeast Breakers, Bermuda
+<p style="margin-left: 0px"><strong>pages2kRegion: </strong>Ocean
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT489b5e257f
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MATa3aa118919
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_124
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>d18O (3 yr mean) calibration to SST (3 yr mean). SST is inferred from air temperature
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>temperature
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea surface
+<p style="margin-left: 20px"><strong>direction: </strong>decrease
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The availability of instrumental climate data allow the comparison with the coral signal and supports the interpretation of reconstructed past temperature anomalies. The use of air temperatures is justified by the strong long-term correspondence between Bermuda SST (COADS) of a 2 latitude by 2 longitude area and Bermuda air temperature during a 40-year period.
+<p style="margin-left: 20px"><strong>coefficient: </strong>0.58
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>fraction: </strong>0.81
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>3
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>X-radiographs were assessed from the skeleton slices to expose density banding. Chronologies were achieved by counting the well-developed density couplets. BDA 210 revealed continuous growth between 1825 and 1993, whereas BDA 215 and BDA 221 contain hiatuses. The bases of the colonies, which were separated from the upper living parts by algal growth, were 14C dated by AMS in the Leibnitz Laboratory in Kiel. Precision of Dating came to  30 years. The stratigraphy obtained from 14C dating was confirmed by the strong correspondence of the present proxy time series with a continuous 800-year coral skeletal chronology from Bermuda, presented by P�tzold et al. (1998; see Fig. 3c).
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological and radiocarbon dating �30 years
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>T_water
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the salinity effect on the isotopic pool of the ambient seawater is considered a negligible background signal and variations in coral d18O can be attributed to be primarily driven by changes in SST.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>3
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>X-radiographs were assessed from the skeleton slices to expose density banding. Chronologies were achieved by counting the well-developed density couplets. BDA 210 revealed continuous growth between 1825 and 1993, whereas BDA 215 and BDA 221 contain hiatuses. The bases of the colonies, which were separated from the upper living parts by algal growth, were 14C dated by AMS in the Leibnitz Laboratory in Kiel. Precision of Dating came to  30 years. The stratigraphy obtained from 14C dating was confirmed by the strong correspondence of the present proxy time series with a continuous 800-year coral skeletal chronology from Bermuda, presented by P�tzold et al. (1998; see Fig. 3c).
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological and radiocarbon dating �30 years
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Salinity_water
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ocean2kHR_125
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>d18O (3 yr mean) calibration to SST (3 yr mean). SST is inferred from air temperature
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>temperature
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea surface
+<p style="margin-left: 20px"><strong>direction: </strong>decrease
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The availability of instrumental climate data allow the comparison with the coral signal and supports the interpretation of reconstructed past temperature anomalies. The use of air temperatures is justified by the strong long-term correspondence between Bermuda SST (COADS) of a 2 latitude by 2 longitude area and Bermuda air temperature during a 40-year period.
+<p style="margin-left: 20px"><strong>coefficient: </strong>0.58
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>fraction: </strong>0.81
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>3
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>X-radiographs were assessed from the skeleton slices to expose density banding. Chronologies were achieved by counting the well-developed density couplets. BDA 210 revealed continuous growth between 1825 and 1993, whereas BDA 215 and BDA 221 contain hiatuses. The bases of the colonies, which were separated from the upper living parts by algal growth, were 14C dated by AMS in the Leibnitz Laboratory in Kiel. Precision of Dating came to  30 years. The stratigraphy obtained from 14C dating was confirmed by the strong correspondence of the present proxy time series with a continuous 800-year coral skeletal chronology from Bermuda, presented by P�tzold et al. (1998; see Fig. 3c).
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological and radiocarbon dating �30 years
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>T_water
+</details>
+<details style="margin-left: 20px">
+<summary>3</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>the salinity effect on the isotopic pool of the ambient seawater is considered a negligible background signal and variations in coral d18O can be attributed to be primarily driven by changes in SST.
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>seawater
+<p style="margin-left: 20px"><strong>integrationTime: </strong>3
+<p style="margin-left: 20px"><strong>integrationTimeBasis: </strong>X-radiographs were assessed from the skeleton slices to expose density banding. Chronologies were achieved by counting the well-developed density couplets. BDA 210 revealed continuous growth between 1825 and 1993, whereas BDA 215 and BDA 221 contain hiatuses. The bases of the colonies, which were separated from the upper living parts by algal growth, were 14C dated by AMS in the Leibnitz Laboratory in Kiel. Precision of Dating came to  30 years. The stratigraphy obtained from 14C dating was confirmed by the strong correspondence of the present proxy time series with a continuous 800-year coral skeletal chronology from Bermuda, presented by P�tzold et al. (1998; see Fig. 3c).
+<p style="margin-left: 20px"><strong>integrationTimeUncertaintyType: </strong>chronological and radiocarbon dating �30 years
+<p style="margin-left: 20px"><strong>integrationTimeUnits: </strong>years
+<p style="margin-left: 20px"><strong>mathematicalRelation: </strong>linear
+<p style="margin-left: 20px"><strong>rank: </strong>2
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>variable: </strong>Salinity_water
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+</details>
+<details style="margin-left: 20px">
+<summary>4</summary>
+<p style="margin-left: 20px"><strong>coefficient: </strong>NA
+<p style="margin-left: 20px"><strong>fraction: </strong>NA
+<p style="margin-left: 20px"><strong>rank: </strong>NA
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 3)
+```

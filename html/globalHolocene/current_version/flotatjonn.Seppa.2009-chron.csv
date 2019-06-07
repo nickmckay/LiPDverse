@@ -1,0 +1,7 @@
+depth (cm),depth_bot (mm),depth_top (mm),age14C (bp),age_error (1 sd),cal_age_range_old (bp),cal_age_range_young (bp),thickness (mm),age_type (),material_dated (),note ()
+808,8080,8080,NA,NA,-43.5,-43.5,0,2,NA,1
+842.5,8420,8430,1600,65,NA,NA,10,1,1,NA
+899.5,8990,9000,3700,65,NA,NA,10,1,1,NA
+944.5,9440,9450,6500,70,NA,NA,10,1,1,NA
+959.5,9590,9600,7900,75,NA,NA,10,1,1,NA
+971.5,9710,9720,9145,75,NA,NA,10,1,1,NA

@@ -1,0 +1,12 @@
+depth (cm),age (yr bp),Core (unitless),depth_top (cm),depth_bot (cm),error (unitless),material (unitless)
+43.25,3720,Lz1104-1,43,43.5,45,Salix actica
+47,3820,Lz1104-1,46,48,55,Dryas octopetala
+62.25,5695,Lz1104-1,62,62.5,40,Salix actica
+15,1135,Lz1104-5,13,17,30,Warnstorfia exannulata
+29.5,1505,Lz1104-5,27,32,30,Warnstorfia exannulata
+58.5,2475,Lz1104-5,56,61,35,Dryas octopetala
+82.5,3590,Lz1104-5,81,84,35,Dryas octopetala
+114,5060,Lz1104-5,112,116,40,Dryas octopetala
+143.5,6630,Lz1104-5,142,145,40,Warnstorfia exannulata
+143.5,6440,Lz1104-5,142,145,40,E. nigrum
+172,8260,Lz1104-5,170,174,50,Warnstorfia exannulata

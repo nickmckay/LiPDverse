@@ -1,0 +1,28 @@
+depth (cm),age (yr bp),type (unitless),material (unitless)
+14,1980,AMS14C,G. bulloides
+54,3216,AMS14C,G. bulloides
+96,4275,AMS14C,G. bulloides
+178,5652,AMS14C,G. bulloides
+238,6870,AMS14C,G. bulloides
+298,8530,AMS14C,N. pachyderma
+248,9200,AMS14C,G. bulloides
+418,9970,AMS14C,N. pachyderma
+487,10560,AMS14C,N. pachyderma
+512,10750,AMS14C,N. pachyderma
+588,11590,AMS14C,N. pachyderma
+595,11880,AMS14C,G. bulloides
+682,12790,AMS14C,G. bulloides
+708,13100,AMS14C,N. pachyderma
+758,14350,AMS14C,N. pachyderma
+802,15440,AMS14C,N. pachyderma
+858,18260,AMS14C,N. pachyderma
+870,21310,GISP2tuning,NA
+894,23410,GISP2tuning,NA
+914,24000,GISP2tuning,NA
+940,24740,GISP2tuning,NA
+950,25530,GISP2tuning,NA
+984,26850,GISP2tuning,NA
+1000,27740,GISP2tuning,NA
+1010,28290,GISP2tuning,NA
+1040,29030,GISP2tuning,NA
+1054,30100,GISP2tuning,NA

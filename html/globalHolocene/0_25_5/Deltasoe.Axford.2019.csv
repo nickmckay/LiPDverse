@@ -1,0 +1,34 @@
+depth (cm),age (Calibrated),temperature (degC),temperature (missing),ReliabIeYN1 (missing),ReliabIeYN2 (missing),Commentregardingreliability2 (missing)
+0,-62,0,0,Y,N,too cold to quantify
+0.875,-47.098,0.588,0.111,Y,N,too cold to quantify
+1.875,-28.818,0.417,-0.153,Y,N,too cold to quantify
+2.875,-10.538,-0.491,-0.381,Y,N,too cold to quantify
+4.125,12.312,0.252,-0.555,Y,N,too cold to quantify
+5.375,38.492,-0.223,-0.458,Y,N,too cold to quantify
+12.75,470.772,-0.666,-0.492,Y,N,too cold to quantify
+20.75,1408.21,0.048,-0.333,Y,N,too cold to quantify
+25,2018.25,0.34,-0.114,Y,N,too cold to quantify
+31.75,2974,1.014,-0.171,Y,N,too cold to quantify
+34,3316.21,0.855,-0.184,Y,N,too cold to quantify
+40,4036.38,0.661,-0.241,Y,N,too cold to quantify
+43,4380.17,0.346,0.038,Y,N,too cold to quantify
+49,5039.36,1.126,-0.177,Y,N,too cold to quantify
+55,5395.44,1.335,-0.516,Y,N,too cold to quantify
+61,5610.3,1.733,1.027,Y,Y,NA
+64,5720.35,2.083,1.489,Y,Y,NA
+70,5937.29,1.31,0.494,Y,Y,NA
+73,6041.43,1.406,0.333,Y,Y,NA
+79,6249.85,2.116,2.199,Y,Y,NA
+85,6505.49,2.565,2.649,Y,Y,NA
+88,6706.04,2.655,2.166,Y,Y,NA
+94,7112.54,2.445,3.197,Y,Y,NA
+100,7511.42,2.139,2.247,Y,Y,NA
+103,7710.44,1.225,1.77,Y,Y,NA
+109,8114.88,2.006,3.119,Y,Y,NA
+115,8556.78,2.28,0.391,Y,Y,NA
+124,9193.19,2.676,1.991,Y,Y,NA
+130,9473.19,2.318,3.673,Y,Y,NA
+136,9753.19,2.19,2.437,Y,Y,NA
+139,10033.2,2.041,1.851,Y,Y,NA
+142,10313.2,1.383,1.579,Y,Y,NA
+145,10593.2,1.611,1.188,Y,Y,NA

@@ -1,0 +1,5 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+27,Carbon-14,109342,NA,0,Pinus contorta needles,CAMS-13577 is post AD 1950
+39,Carbon-14,109343,60,1650,charcoal,NA
+56,Carbon-14,109344,60,4170,charcoal,NA
+77.5,Carbon-14,109345,80,8600,bulk sediment,NA

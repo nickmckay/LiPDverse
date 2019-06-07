@@ -1,0 +1,5 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+405,Carbon-14,112701,110,3400,gyttja,NA
+505,Carbon-14,112702,150,2940,NA,Rejected as too young by McAndrews.
+715,Carbon-14,112703,140,8140,NA,NA
+815,Carbon-14,112704,150,10730,NA,NA

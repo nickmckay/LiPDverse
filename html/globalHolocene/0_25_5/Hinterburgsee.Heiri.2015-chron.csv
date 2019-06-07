@@ -1,0 +1,20 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-47,NA,NA,Y,NA
+Ua-14630,45,45,C14 Uncalibrated,805,865,745,Y,Terrestrial plant remains
+Ua-14631,78,78,C14 Uncalibrated,1425,1485,1365,Y,Terrestrial plant remains
+Ua-14632,138,138,C14 Uncalibrated,2665,2730,2600,Y,Terrestrial plant remains
+Ua-13347,183,183,C14 Uncalibrated,3625,3690,3560,Y,Terrestrial plant remains
+Ua-13642,226,226,C14 Uncalibrated,4215,4310,4120,Y,Terrestrial plant remains
+Ua-14633,262,262,C14 Uncalibrated,5145,5225,5065,Y,Terrestrial plant remains
+Ua-13348,277,277,C14 Uncalibrated,8000,8090,7910,N,"Terrestrial plant remains, outlier"
+Ua-14634,290,290,C14 Uncalibrated,6375,6470,6280,Y,Terrestrial plant remains
+Ua-14635,347,347,C14 Uncalibrated,7835,7925,7745,N,"Terrestrial plant remains, rejected for linear interpolation"
+Ua-14636,371,371,C14 Uncalibrated,7880,7960,7800,Y,Terrestrial plant remains
+Ua-13643,427,427,C14 Uncalibrated,7835,7975,7695,N,"Terrestrial plant remains, rejected for linear interpolation"
+Ua-14637,454,454,C14 Uncalibrated,8105,8190,8020,Y,Terrestrial plant remains
+Ua-13644,498,498,C14 Uncalibrated,8660,8770,8550,Y,Terrestrial plant remains
+Ua-14638,534,534,C14 Uncalibrated,8560,8645,8475,N,"Terrestrial plant remains, rejected for linear interpolation"
+Ua-13349,552,552,C14 Uncalibrated,9190,9270,9110,Y,Terrestrial plant remains
+Ua-13350,664,664,C14 Uncalibrated,9635,9730,9540,N,"Terrestrial plant remains, rejected for linear interpolation"
+Ua-13645,678,678,C14 Uncalibrated,9370,9485,9255,Y,Terrestrial plant remains
+NA,820,820,Regional Pollen Event,11630,NA,NA,Y,"Pollen inferred age, cal. BP"

@@ -1,0 +1,1206 @@
+---
+title: "MV99-GC31.Barron.2012"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 598
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MV99-GC31.Barron.2012
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MV99-GC31.Barron.2012.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/MV99-GC31.Barron.2012.lpd)
+            
+
+[Download paleoData only (csv)](MV99-GC31.Barron.2012.csv)
+            
+
+[Download chronData only (csv)](MV99-GC31.Barron.2012-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://doi.pangaea.de/10.1594/PANGAEA.824830?format=html#download
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Barron, John A."), list(name = "Metcalfe, Sarah E."), list(name = "Addison, Jason A."))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>27
+<p style="margin-left: 10px"><strong>pages: </strong>n/a-n/a
+<p style="margin-left: 10px"><strong>title: </strong>Response of the North American monsoon to regional changes in ocean surface temperature
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details>
+<summary>funding</summary>
+<details style="margin-left: 10px">
+<summary>funding1</summary>
+<p style="margin-left: 10px"><strong>agency: </strong>Funding Agency
+<p style="margin-left: 10px"><strong>grant: </strong>Grant name or number
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>23.4672
+<p style="margin-left: 0px"><strong>longitude: </strong>-111.5985
+<p style="margin-left: 0px"><strong>elevation: </strong>-705
+<p style="margin-left: 0px"><strong>siteName: </strong>MV99-GC31
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB1f20b950
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb12a627e
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa8270941
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>SumDiatoms (number/cm2) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbc86d401
+<p style="margin-left: 10px"><strong>variableName: </strong>SumDiatoms
+<p style="margin-left: 10px"><strong>units: </strong>number/cm2
+<p style="margin-left: 10px"><strong>description: </strong>Percent opal and number of diatoms/gram interpreted as inversly related to SST. Infering relative SST from upwelling. Chronology is well constrained. Passes length and resolution criteria.
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>not specified
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>upwelling
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD071ba777
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Acinocyclus. curvatulus (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD60dfeb45
+<p style="margin-left: 10px"><strong>variableName: </strong>Acinocyclus. curvatulus
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>A. octonarius (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD8794764f
+<p style="margin-left: 10px"><strong>variableName: </strong>A. octonarius
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Actinoptychus spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa61506bc
+<p style="margin-left: 10px"><strong>variableName: </strong>Actinoptychus spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Azpeitia nodulifer (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1ea1bbc9
+<p style="margin-left: 10px"><strong>variableName: </strong>Azpeitia nodulifer
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>tropcial, oligotrophic
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Az. tabularis (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7df02d0a
+<p style="margin-left: 10px"><strong>variableName: </strong>Az. tabularis
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Coscinodiscus spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd6b6e880
+<p style="margin-left: 10px"><strong>variableName: </strong>Coscinodiscus spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Cyclotella spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3c17a70a
+<p style="margin-left: 10px"><strong>variableName: </strong>Cyclotella spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>warm, stratified waters
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Hemidiscus cuneiformis (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD33179137
+<p style="margin-left: 10px"><strong>variableName: </strong>Hemidiscus cuneiformis
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Paralia sulcata (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD2ee728c9
+<p style="margin-left: 10px"><strong>variableName: </strong>Paralia sulcata
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>transported
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Roperia tesselata (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa7b4083f
+<p style="margin-left: 10px"><strong>variableName: </strong>Roperia tesselata
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Stephanopyxis spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb96e7b65
+<p style="margin-left: 10px"><strong>variableName: </strong>Stephanopyxis spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Thalassiosira spp. (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDbc6c866e
+<p style="margin-left: 10px"><strong>variableName: </strong>Thalassiosira spp.
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Chaetoceros spores (unitless) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDcf87a317
+<p style="margin-left: 10px"><strong>variableName: </strong>Chaetoceros spores
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>upwelling record -implies cool spring SSTs
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBafb3732b
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4df0bf9e
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa43d9d15
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>percentOpal (percent) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD4d80bd37
+<p style="margin-left: 10px"><strong>variableName: </strong>percentOpal
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>Percent opal and number of diatoms/gram interpreted as inversly related to SST. Infering relative SST from upwelling. Chronology is well constrained. Passes length and resolution criteria.
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>interpDirection: </strong>negative
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>not specified
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>upwelling
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (unitless) [2-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD85779bfd
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb36ffb42
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb0a96e1c
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe3464f3c
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>CAL (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD90380814
+<p style="margin-left: 10px"><strong>variableName: </strong>CAL
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>LSR (cm/ky) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD726ed772
+<p style="margin-left: 10px"><strong>variableName: </strong>LSR (cm/ky)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Bulk MAR (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD87573da3
+<p style="margin-left: 10px"><strong>variableName: </strong>Bulk MAR
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Al (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9a0848fc
+<p style="margin-left: 10px"><strong>variableName: </strong>Al
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Fe (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDde5d433d
+<p style="margin-left: 10px"><strong>variableName: </strong>Fe
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% Mg (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD76d3e724
+<p style="margin-left: 10px"><strong>variableName: </strong>% Mg
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Na (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD29cdd38a
+<p style="margin-left: 10px"><strong>variableName: </strong>Na
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% Ca-detr (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa876031c
+<p style="margin-left: 10px"><strong>variableName: </strong>% Ca-detr
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% Ca-ex (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD605de7d8
+<p style="margin-left: 10px"><strong>variableName: </strong>% Ca-ex
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% CaCO3-ex (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe484d854
+<p style="margin-left: 10px"><strong>variableName: </strong>% CaCO3-ex
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% K (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD17567730
+<p style="margin-left: 10px"><strong>variableName: </strong>% K
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>P (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD04a5bc00
+<p style="margin-left: 10px"><strong>variableName: </strong>P
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% Ti (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDba7e2f30
+<p style="margin-left: 10px"><strong>variableName: </strong>% Ti
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% Mn (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3b5b919b
+<p style="margin-left: 10px"><strong>variableName: </strong>% Mn
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Mn (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd0283d75
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Mn
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm As (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD75d47c64
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm As
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Ba (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD63793db5
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Ba
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Be (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc7a4bbb3
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Be
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Cd (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD27b03bf3
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Cd
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Co (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD352577e1
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Co
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Cr (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD16ae04fb
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Cr
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Cu (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD00e608fe
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Cu
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm La (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD0e839d7e
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm La
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Mo (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7dbaea3a
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Mo
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Ni (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD4769fcbd
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Ni
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Pb (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD476959ce
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Pb
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Sc (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa336cc92
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Sc
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Sr (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD3d870b87
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Sr
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm V (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf538e744
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm V
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Y (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7c0b6b9a
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Y
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Zr (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf80d99b7
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Zr
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Zn (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD171b0f6f
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Zn
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% TC (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb18da1e0
+<p style="margin-left: 10px"><strong>variableName: </strong>% TC
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% IC (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfad2ad32
+<p style="margin-left: 10px"><strong>variableName: </strong>% IC
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>CaCO3-IC (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD091c71b7
+<p style="margin-left: 10px"><strong>variableName: </strong>CaCO3-IC
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>% OC (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDaceadfb7
+<p style="margin-left: 10px"><strong>variableName: </strong>% OC
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppm Cd/% Mn (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDf33f8463
+<p style="margin-left: 10px"><strong>variableName: </strong>ppm Cd/% Mn
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>ppmBa/%Al (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5a9149dc
+<p style="margin-left: 10px"><strong>variableName: </strong>ppmBa/%Al
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>OC-MAR (g) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD68c324f7
+<p style="margin-left: 10px"><strong>variableName: </strong>OC-MAR (g)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>OC-MAR (mg) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDaa917599
+<p style="margin-left: 10px"><strong>variableName: </strong>OC-MAR (mg)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Cd MAR (ug/cm2/ky) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD5d203752
+<p style="margin-left: 10px"><strong>variableName: </strong>Cd MAR (ug/cm2/ky)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>description: </strong>coastal upwelling
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Mo MAR (ug/cm2/ky) (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD94588022
+<p style="margin-left: 10px"><strong>variableName: </strong>Mo MAR (ug/cm2/ky)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>Mn/Mo (unitless) [3-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb383a9dd
+<p style="margin-left: 10px"><strong>variableName: </strong>Mn/Mo
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDca1f55a2
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD4a74f7bd
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>14C age
+</details>
+<details style="margin-left: 10px">
+<summary>Reference (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDfc151a75
+<p style="margin-left: 10px"><strong>variableName: </strong>Reference
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Site Name (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc034b657
+<p style="margin-left: 10px"><strong>variableName: </strong>Site Name
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>State (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD577ff765
+<p style="margin-left: 10px"><strong>variableName: </strong>State
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Core ID (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD8d1855bd
+<p style="margin-left: 10px"><strong>variableName: </strong>Core ID
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Lab ID (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb2f78614
+<p style="margin-left: 10px"><strong>variableName: </strong>Lab ID
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Type of material dated (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD6c03a0ca
+<p style="margin-left: 10px"><strong>variableName: </strong>Type of material dated
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Depth of top of sample (cm) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDb8f379ae
+<p style="margin-left: 10px"><strong>variableName: </strong>Depth of top of sample (cm)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Depth of bottom of sample (cm) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe1984b8a
+<p style="margin-left: 10px"><strong>variableName: </strong>Depth of bottom of sample (cm)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>error (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa84ad8e1
+<p style="margin-left: 10px"><strong>variableName: </strong>error
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>14C age youngest (yrs before 1950 AD) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD8e8841a2
+<p style="margin-left: 10px"><strong>variableName: </strong>14C age youngest (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>14C age oldest (yrs before 1950 AD) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD177f7160
+<p style="margin-left: 10px"><strong>variableName: </strong>14C age oldest (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>calibrated age (yrs before 1950 AD) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD7ff24fc9
+<p style="margin-left: 10px"><strong>variableName: </strong>calibrated age (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>youngest calibrated age (yrs before 1950 AD) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDdaef00b9
+<p style="margin-left: 10px"><strong>variableName: </strong>youngest calibrated age (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>oldest calibrated age (yrs before 1950 AD) (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD771c6ed9
+<p style="margin-left: 10px"><strong>variableName: </strong>oldest calibrated age (yrs before 1950 AD)
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>1 sigma or 2 sigma? (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD1402d2dd
+<p style="margin-left: 10px"><strong>variableName: </strong>1 sigma or 2 sigma?
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Reservoir Correction/R (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe0c3027c
+<p style="margin-left: 10px"><strong>variableName: </strong>Reservoir Correction/R
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Calibration used (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDc5b59737
+<p style="margin-left: 10px"><strong>variableName: </strong>Calibration used
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>Comments (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9db37cb4
+<p style="margin-left: 10px"><strong>variableName: </strong>Comments
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### SumDiatoms (number/cm2) [1-1]
+```{r}
+plotCol(thisTS,ind = 17)
+```
+
+### CAL (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+### Acinocyclus. curvatulus (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### A. octonarius (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### Actinoptychus spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### Azpeitia nodulifer (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### Az. tabularis (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### Coscinodiscus spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### Cyclotella spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### Hemidiscus cuneiformis (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+### Paralia sulcata (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### Roperia tesselata (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 14)
+```
+
+### Stephanopyxis spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 15)
+```
+
+### Thalassiosira spp. (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 16)
+```
+
+### Chaetoceros spores (unitless) [1-1]
+```{r}
+plotCol(thisTS,ind = 18)
+```
+
+### percentOpal (percent) [2-1]
+```{r}
+plotCol(thisTS,ind = 23)
+```
+
+### CAL (unitless) [2-1]
+```{r}
+plotCol(thisTS,ind = 19)
+```
+
+### CAL (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 24)
+```
+
+### LSR (cm/ky) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 28)
+```
+
+### Bulk MAR (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 29)
+```
+
+### Al (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 30)
+```
+
+### Fe (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 31)
+```
+
+### % Mg (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 32)
+```
+
+### Na (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 33)
+```
+
+### % Ca-detr (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 34)
+```
+
+### % Ca-ex (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 35)
+```
+
+### % CaCO3-ex (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 36)
+```
+
+### % K (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 37)
+```
+
+### P (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 38)
+```
+
+### % Ti (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 39)
+```
+
+### % Mn (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 40)
+```
+
+### ppm Mn (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 41)
+```
+
+### ppm As (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 42)
+```
+
+### ppm Ba (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 43)
+```
+
+### ppm Be (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 44)
+```
+
+### ppm Cd (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 45)
+```
+
+### ppm Co (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 46)
+```
+
+### ppm Cr (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 47)
+```
+
+### ppm Cu (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 48)
+```
+
+### ppm La (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 49)
+```
+
+### ppm Mo (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 50)
+```
+
+### ppm Ni (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 51)
+```
+
+### ppm Pb (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 52)
+```
+
+### ppm Sc (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 53)
+```
+
+### ppm Sr (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 54)
+```
+
+### ppm V (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 55)
+```
+
+### ppm Y (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 56)
+```
+
+### ppm Zr (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 57)
+```
+
+### ppm Zn (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 58)
+```
+
+### % TC (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 59)
+```
+
+### % IC (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 60)
+```
+
+### CaCO3-IC (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 61)
+```
+
+### % OC (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 62)
+```
+
+### ppm Cd/% Mn (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 63)
+```
+
+### ppmBa/%Al (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 64)
+```
+
+### OC-MAR (g) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 65)
+```
+
+### OC-MAR (mg) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 66)
+```
+
+### Cd MAR (ug/cm2/ky) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 67)
+```
+
+### Mo MAR (ug/cm2/ky) (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 68)
+```
+
+### Mn/Mo (unitless) [3-1]
+```{r}
+plotCol(thisTS,ind = 69)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### age (yr BP)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### Reference (unitless)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### Site Name (unitless)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### State (unitless)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### Core ID (unitless)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### Lab ID (unitless)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### Type of material dated (unitless)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### Depth of top of sample (cm) (unitless)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### Depth of bottom of sample (cm) (unitless)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### error (yr)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### 14C age youngest (yrs before 1950 AD) (unitless)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### 14C age oldest (yrs before 1950 AD) (unitless)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### calibrated age (yrs before 1950 AD) (unitless)
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### youngest calibrated age (yrs before 1950 AD) (unitless)
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### oldest calibrated age (yrs before 1950 AD) (unitless)
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### 1 sigma or 2 sigma? (unitless)
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### Reservoir Correction/R (unitless)
+```{r}
+plotCol(chronTS,ind = 18)
+```
+
+### Calibration used (unitless)
+```{r}
+plotCol(chronTS,ind = 19)
+```
+
+### Comments (unitless)
+```{r}
+plotCol(chronTS,ind = 20)
+```

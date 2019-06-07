@@ -1,0 +1,17 @@
+depth (cm),age (kyr),dateType (),ageUncertainty (kyr),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),notes ()
+10.5,NA,14C,NA,planktic foraminifera,N. incompta,GifA96471,0.98,0.06,0.4,spliced with JM97_948_2A
+24.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 5600,1.59,0.04,0.4,not used in age model. spliced with JM97_948_2A
+30.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 3925,1.04,0.04,0.4,spliced with JM97_948_2A
+47.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 5601,1.16,0.03,0.4,spliced with JM97_948_2A
+70.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 3926,1.46,0.05,0.4,spliced with JM97_948_2A
+89.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 6286,1.59,0.03,0.4,spliced with JM97_948_2A
+130.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 3927,2.35,0.04,0.4,not used in age model. spliced with JM97_948_2A
+154,NA,14C,NA,planktic foraminifera,N. incompta,KIA6287,2.335,0.025,0.4,spliced with JM97_948_2A
+170.5,NA,14C,NA,planktic foraminifera,N. incompta,GifA96472,2.62,0.06,0.4,spliced with JM97_948_2A
+269.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 10011,3.82,0.035,0.4,spliced with JM97_948_2A
+320.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 463,4.33,0.05,0.4,spliced with JM97_948_2A
+520.5,NA,14C,NA,planktic foraminifera,N. incompta,KIA 464,7.26,0.06,0.4,spliced with JM97_948_2A
+703.5,NA,14C,NA,planktic foraminifera,N. pachyderma sinistral,TUa-3315,10.775,0.085,0.4,not used in age model. spliced with JM97_948_2A
+709.5,12.171,tephra,0.057,tephra,NA,NA,NA,NA,NA,"Vedde ash. Age from Svensson et al., 2008"
+730.5,NA,14C,NA,planktic foraminifera,N. pachyderma sinistral,TUa-3316,11.875,0.14,0.4,spliced with JM97_948_2A
+750.5,NA,14C,NA,planktic foraminifera,N. pachyderma sinistral,KIA 465,12.22,0.09,0.4,spliced with JM97_948_2A

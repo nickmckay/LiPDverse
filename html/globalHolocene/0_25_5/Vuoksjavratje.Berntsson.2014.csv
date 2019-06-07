@@ -1,0 +1,44 @@
+age (Calibrated),temperature (degC),ReliabIeYN1 (missing),Commentregardingreliability1 (missing)
+-44.444,8.856,Y,NA
+-33.333,9.206,N,Based on G-O-F test
+-16.667,9.673,N,Based on G-O-F test
+138.889,9.731,N,Based on G-O-F test
+288.889,10.927,N,Based on G-O-F test
+383.333,11.481,N,Based on G-O-F test
+483.333,9.412,N,Based on G-O-F test
+527.778,11.657,Y,NA
+655.556,10.112,N,Based on G-O-F test
+744.444,9.864,Y,NA
+838.889,9.835,N,Based on G-O-F test
+983.333,11.191,N,Based on G-O-F test
+1050,11.221,N,Based on G-O-F test
+1077.778,8.889,Y,NA
+1144.444,9.297,Y,NA
+1211.111,8.656,Y,NA
+1300,9.808,Y,NA
+1372.222,9.662,Y,NA
+1583.333,9.59,Y,NA
+1716.667,9.619,N,Based on G-O-F test
+1983.333,9.503,Y,NA
+2100,10.087,Y,NA
+2150,9.927,Y,NA
+2366.667,10.86,N,Based on G-O-F test
+2494.444,11.138,N,Based on G-O-F test
+2505.556,9.811,Y,NA
+2594.444,10.526,N,Based on G-O-F test
+2650,13.252,N,Based on G-O-F test
+3227.778,9.026,Y,NA
+3327.778,9.901,Y,NA
+3400,9.449,Y,NA
+3705.556,8.576,Y,NA
+3933.333,8.766,Y,NA
+4088.889,8.868,Y,NA
+4355.556,9.452,Y,NA
+4422.222,8.68,Y,NA
+4522.222,9.132,Y,NA
+4638.889,10.881,Y,NA
+4666.667,9.672,Y,NA
+4705.556,9.147,Y,NA
+4788.889,9.541,Y,NA
+4911.111,9.425,Y,NA
+5083.333,9.746,Y,NA

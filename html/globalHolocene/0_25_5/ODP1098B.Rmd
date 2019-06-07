@@ -1,0 +1,323 @@
+---
+title: "ODP1098B"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 645
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#ODP1098B
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](ODP1098B.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/ODP1098B.lpd)
+            
+
+[Download paleoData only (csv)](ODP1098B.csv)
+            
+
+[Download chronData only (csv)](ODP1098B-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "NEEDS AUTHORS!"))
+<p style="margin-left: 10px"><strong>citeKey: </strong>needs2007orbitalandatmosphericforc
+<p style="margin-left: 10px"><strong>title: </strong>Orbital and atmospheric forcing of western Antarctic Peninsula climate in the Holocene: The TEX86 paleotemperature record of Palmer Deep
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Domack, E."), list(name = "Leventer, A."), list(name = "Dunbar, R."), list(name = "Taylor, F."), list(name = "Brachfeld, S."), list(name = "Sjunneskog, C."))
+<p style="margin-left: 10px"><strong>citeKey: </strong>needs2007orbitalandatmosphericforc
+<p style="margin-left: 10px"><strong>journal: </strong>The Holocene
+<p style="margin-left: 10px"><strong>volume: </strong>11
+<p style="margin-left: 10px"><strong>title: </strong>Chronology of the Palmer Deep site, Antarctic Peninsula: a Holocene                 palaeoenvironmental reference for the circum-Antarctic
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-64.2
+<p style="margin-left: 0px"><strong>longitude: </strong>-64.86
+<p style="margin-left: 0px"><strong>elevation: </strong>-1011
+<p style="margin-left: 0px"><strong>siteName: </strong>ODP1098B
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD23d73becdp
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>description: </strong>composite depth
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R76szyQuPgG
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RQhLINe7yrV
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Years before present (1950) BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (unknown)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RLojrGiZ1e7
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>unknown
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD81e7ab49
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>dir: </strong>positive
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+<p style="margin-left: 20px"><strong>variableDetailOriginal: </strong>SST
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>TEX86 (missing)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDa7f3eab6
+<p style="margin-left: 10px"><strong>variableName: </strong>TEX86
+<p style="margin-left: 10px"><strong>units: </strong>missing
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (mbsf)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD23f54a01
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>mbsf
+<p style="margin-left: 10px"><strong>description: </strong>mid point depth in meters below sea floor
+</details>
+<details style="margin-left: 10px">
+<summary>age (yr14C BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD53aad777
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr14C BP
+<p style="margin-left: 10px"><strong>description: </strong>14C years before 1950
+</details>
+<details style="margin-left: 10px">
+<summary>labID ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD797006f7
+<p style="margin-left: 10px"><strong>variableName: </strong>labID
+<p style="margin-left: 10px"><strong>description: </strong>laboratory ID from radiocarbon facility
+</details>
+<details style="margin-left: 10px">
+<summary>Core ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDe54dc6d7
+<p style="margin-left: 10px"><strong>variableName: </strong>Core
+<p style="margin-left: 10px"><strong>description: </strong>corename
+</details>
+<details style="margin-left: 10px">
+<summary>materialDated ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD777a1b28
+<p style="margin-left: 10px"><strong>variableName: </strong>materialDated
+<p style="margin-left: 10px"><strong>description: </strong>code for dated material
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (m)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD493f1394
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>m
+<p style="margin-left: 10px"><strong>description: </strong>thickness of samples
+</details>
+<details style="margin-left: 10px">
+<summary>age14Cuncertainty (yr14C BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPDd7695163
+<p style="margin-left: 10px"><strong>variableName: </strong>age14Cuncertainty
+<p style="margin-left: 10px"><strong>units: </strong>yr14C BP
+<p style="margin-left: 10px"><strong>description: </strong>14C years uncertainty
+</details>
+<details style="margin-left: 10px">
+<summary>reservoirAge14C (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LPD9c79485d
+<p style="margin-left: 10px"><strong>variableName: </strong>reservoirAge14C
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>14C reservoir age
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### TEX86 (missing)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (mbsf)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### age (yr14C BP)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### labID ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### Core ()
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### materialDated ()
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### thickness (m)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### age14Cuncertainty (yr14C BP)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### reservoirAge14C (yr BP)
+```{r}
+plotCol(chronTS,ind = 7)
+```

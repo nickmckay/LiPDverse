@@ -1,0 +1,441 @@
+---
+title: "akvaquak.Frechette.2009"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 16
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#akvaquak.Frechette.2009
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](akvaquak.Frechette.2009.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/akvaquak.Frechette.2009.lpd)
+            
+
+[Download paleoData only (csv)](akvaquak.Frechette.2009.csv)
+            
+
+[Download chronData only (csv)](akvaquak.Frechette.2009-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>LakeSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo-search/study/15444
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Frechette, B."), list(name = "de Vernal, A."))
+<p style="margin-left: 10px"><strong>journal: </strong>Climate of the Past
+<p style="margin-left: 10px"><strong>volume: </strong>5
+<p style="margin-left: 10px"><strong>title: </strong>Relationship between Holocene climate variations over southern Greenland and eastern Baffin Island and synoptic circulation pattern
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>66.7833
+<p style="margin-left: 0px"><strong>longitude: </strong>-63.95
+<p style="margin-left: 0px"><strong>elevation: </strong>17
+<p style="margin-left: 0px"><strong>siteName: </strong>akvaquak
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT2KSRC23W
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTPPRQ3XRR
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTHL70XHKP
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE-1
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperature (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTMUTG3NU9
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE-2
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>SunFracMin (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTBPHOL9XL
+<p style="margin-left: 10px"><strong>variableName: </strong>SunFracMin
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>6 7 8 9
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JJAS
+<p style="margin-left: 20px"><strong>variable: </strong>SUN
+<p style="margin-left: 20px"><strong>variableDetail: </strong>surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>SunFracMax (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTRO9SKJ1N
+<p style="margin-left: 10px"><strong>variableName: </strong>SunFracMax
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>6 7 8 9
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JJAS
+<p style="margin-left: 20px"><strong>variable: </strong>SUN
+<p style="margin-left: 20px"><strong>variableDetail: </strong>surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>uncertainty.temperatureComposite (degC)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RAdkAjjn94R
+<p style="margin-left: 10px"><strong>variableName: </strong>uncertainty.temperatureComposite
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>interpDirection: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>7
+<p style="margin-left: 20px"><strong>seasonalityOriginal: </strong>JUL
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>hobdob (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTPGT6SKN4
+<p style="margin-left: 10px"><strong>variableName: </strong>hobdob
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTW0R86GQH
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>age (bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTBSQNFZST
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age14C_orig (bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTFCJ2M77A
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C_orig
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>age_error (years)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTRBE94YSE
+<p style="margin-left: 10px"><strong>variableName: </strong>age_error
+<p style="margin-left: 10px"><strong>units: </strong>years
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (bp14C)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTBXK7W0UB
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>bp14C
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_old (bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTGI4DPCO4
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_old
+<p style="margin-left: 10px"><strong>units: </strong>bp
+</details>
+<details style="margin-left: 10px">
+<summary>cal_age_range_young (2_s)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT5DGW0ZBN
+<p style="margin-left: 10px"><strong>variableName: </strong>cal_age_range_young
+<p style="margin-left: 10px"><strong>units: </strong>2_s
+</details>
+<details style="margin-left: 10px">
+<summary>age_type (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTZ04GF1Q4
+<p style="margin-left: 10px"><strong>variableName: </strong>age_type
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>lab_id (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT2DTRN94B
+<p style="margin-left: 10px"><strong>variableName: </strong>lab_id
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>rejected_dates (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYT9PV4HWC6
+<p style="margin-left: 10px"><strong>variableName: </strong>rejected_dates
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>material_dated (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTQEKBRL8D
+<p style="margin-left: 10px"><strong>variableName: </strong>material_dated
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>note (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>PYTYGUKOH7R
+<p style="margin-left: 10px"><strong>variableName: </strong>note
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### uncertainty.temperature (degC)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### SunFracMin (unitless)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### SunFracMax (unitless)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### uncertainty.temperatureComposite (degC)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### hobdob (unitless)
+```{r}
+plotCol(thisTS,ind = 1)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### age (bp)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### age14C_orig (bp)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### age_error (years)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### age14C (bp14C)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### cal_age_range_old (bp)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### cal_age_range_young (2_s)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### age_type (unitless)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### lab_id (unitless)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### rejected_dates (unitless)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### material_dated (unitless)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### note (unitless)
+```{r}
+plotCol(chronTS,ind = 12)
+```

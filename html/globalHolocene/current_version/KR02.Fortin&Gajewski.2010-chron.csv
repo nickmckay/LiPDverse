@@ -1,0 +1,25 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN ()
+coretop,0,0,Core top,-54,-54,-54,Y
+Beta-199874,37.5,39.5,C14 Uncalibrated,890,930,850,Y
+Beta-199875,70,73,C14 Uncalibrated,1680,1730,1630,Y
+Beta-199877,208,209,C14 Uncalibrated,3500,3540,3460,Y
+Beta-206009,241,243,C14 Uncalibrated,4270,4310,4230,Y
+Beta-199878,291,293,C14 Uncalibrated,5760,5810,5710,Y
+Beta-206010,314,317,C14 Uncalibrated,6150,6200,6100,Y
+Beta-206011,333,335,C14 Uncalibrated,7050,7100,7000,Y
+Beta-213872,349,351,C14 Uncalibrated,8590,8630,8550,Y
+Beta-199879,362,364,C14 Uncalibrated,8730,8790,8670,Y
+Beta-206012,404,407,C14 Uncalibrated,18950,19120,18780,N
+NA,2,3,Pb210-Lead,-45,NA,NA,Y
+NA,3,4,Pb210-Lead,-43,NA,NA,Y
+NA,4,5,Pb210-Lead,-40,NA,NA,Y
+NA,5,6,Pb210-Lead,-35,NA,NA,Y
+NA,6,7,Pb210-Lead,-30,NA,NA,Y
+NA,7,8,Pb210-Lead,-26,NA,NA,Y
+NA,8,9,Pb210-Lead,-22,NA,NA,Y
+NA,9,10,Pb210-Lead,-7,NA,NA,Y
+NA,12,13,Pb210-Lead,16,NA,NA,Y
+NA,14,15,Pb210-Lead,30,NA,NA,Y
+NA,16,17,Pb210-Lead,49,NA,NA,Y
+NA,18,19,Pb210-Lead,77,NA,NA,Y
+NA,20,21,Pb210-Lead,113,NA,NA,Y

@@ -1,0 +1,7 @@
+age (yr BP),depth (mm),material (unitless),error (yr),calibrated (yr BP),calError (yr),calRangeOld (yr BP),calRangeYoung (yr BP)
+NA,0,210Pb,NA,-52,NA,NA,NA
+NA,165,210Pb,NA,110,NA,NA,NA
+930,410,Wood,25,830,62,915,791
+980,440,Wood,60,925,79,951,793
+NA,640,Tephra,NA,1150,121,1256,1014
+4080,1330,Wood,35,4545,165,4781,4451

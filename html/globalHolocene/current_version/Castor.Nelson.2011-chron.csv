@@ -1,0 +1,18 @@
+depth (cm),age (y BP),Core (N/A),Drive Depth (cm),error (yr),type (N/A),material (N/A)
+0,-55,D,0,1,top,top
+6,-15,D,6,1,137Cs,bulk
+7.95,-10,D,7.95,1,137Cs,bulk
+8.5,-5,D,8.5,1,137Cs,bulk
+41,435,A,22.5,40,AMS14C,grass
+52,470,A,33.5,1,tephra,tephra
+93.75,1530,A,75.25,35,AMS14C,charcoal
+123,1890,B(2),9,35,AMS14C,pine needle
+189,3385,B(2),75,35,AMS14C,charcoal
+214.4,4095,B(3),8,45,AMS14C,seed
+242.4,5160,B(3),36,100,AMS14C,charcoal
+262.4,5815,B(3),56,25,AMS14C,seed
+286.5,6730,B(4),32,40,tephra,tephra
+306.5,6720,B(4),52,80,AMS14C,seed
+342.5,9425,B(4),88,30,AMS14C,seed
+364.5,10025,B(5),16,35,AMS14C,seed
+388.5,11020,B(5),40,35,AMS14C,seed

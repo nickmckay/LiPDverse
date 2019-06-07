@@ -1,0 +1,21 @@
+TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,1.5,Pb210-Lead,-45.3,-44.6,-46,Y,NA
+NA,2.5,Pb210-Lead,-36,-34.8,-37.2,Y,NA
+NA,3.5,Pb210-Lead,-26.9,-25.3,-28.5,Y,NA
+NA,4.5,Pb210-Lead,-17.9,-16,-19.8,Y,NA
+NA,5.5,Pb210-Lead,-8.2,-6.1,-10.3,Y,NA
+NA,6.5,Pb210-Lead,1,3.3,-1.3,Y,NA
+NA,7.5,Pb210-Lead,10.5,13,8,Y,NA
+NA,8.5,Pb210-Lead,28.3,31,25.6,Y,NA
+NA,9.5,Pb210-Lead,48.9,51.8,46,Y,NA
+NA,11,Pb210-Lead,63.6,66.7,60.5,Y,NA
+24,25,C14 Uncalibrated,320,355,285,Y,charcoal
+29,30,C14 Uncalibrated,370,405,335,Y,lignified material
+34,36,C14 Uncalibrated,1030,1070,990,N,pollen (date excluded)
+40,41,C14 Uncalibrated,600,645,555,Y,wood
+51,52,C14 Uncalibrated,1575,1610,1540,Y,needle
+55,56,C14 Uncalibrated,1730,1770,1690,Y,wood
+78,79,C14 Uncalibrated,2970,3020,2920,Y,epithelium
+110,111,C14 Uncalibrated,3485,3525,3445,Y,needle
+130,131,C14 Uncalibrated,4005,4050,3960,Y,wood
+168,169,C14 Uncalibrated,5250,5290,5210,Y,wood

@@ -1,0 +1,13 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),IncludeYN (),AdditionalNotes ()
+Poz-11778,1190,1191,C14 Uncalibrated,8360,50,Y,NA
+Poz-11779,1204,1205,C14 Uncalibrated,8860,50,Y,NA
+Poz-11862,1222,1223,C14 Uncalibrated,11720,60,N,NA
+GICC05,1223,1223,Other,11653,NA,Y,Imported from GICC05/NGRIP based on pollen-strat
+Poz-12584,1223,1224,C14 Uncalibrated,12210,60,N,NA
+Poz-11863,1260,1261,C14 Uncalibrated,10360,50,Y,NA
+Poz-11864,1280,1281,C14 Uncalibrated,10430,50,Y,NA
+Poz-11866,1294,1295,C14 Uncalibrated,10960,60,Y,NA
+Poz-11867,1316,1317,C14 Uncalibrated,12280,60,Y,NA
+GICC05,1340,1340,Other,14600,NA,Y,Imported from GICC05/NGRIP based on pollen-strat
+Poz-11868,1339,1341,C14 Uncalibrated,14660,70,N,NA
+Poz-11870,1393,1401,C14 Uncalibrated,9130,50,N,NA

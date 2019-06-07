@@ -1,0 +1,18 @@
+depth (cm),age (yrBP),type (NA),labID (NA),error (yr),material (NA),rejected (NA),notes (NA)
+0,-56,surface,NA,NA,NA,NA,Assumed top age based on collection year (2006)
+4.25,285,AMS14C,29509,15,Wood,NA,NA
+24.5,1350,AMS14C,29510,15,Hemlock needles,x,Age rejected by authors
+25.25,1180,AMS14C,134202,20,Hemlock needles,x,Age rejected by authors
+24,1500,AMS14C,134203,35,Mixed macrofossils,x,Age rejected by authors
+26,1200,AMS14C,33147,40,Hemlock needles,NA,NA
+36,1390,AMS14C,29511,20,Hemlock needles,NA,NA
+54.25,1565,AMS14C,134204,15,Mixed macrofossils,NA,NA
+55,1655,AMS14C,33148,40,Hemlock needles,NA,NA
+65,2040,AMS14C,134205,60,Aquatic moss,NA,NA
+74.75,2390,AMS14C,134206,70,Mixed macrofossils,NA,NA
+85,2790,AMS14C,134207,70,Aquatic moss,NA,NA
+133.5,3580,AMS14C,29512,15,Bark,NA,NA
+149.75,4135,AMS14C,33149,20,Hemlock needles,NA,NA
+177.5,5975,AMS14C,29513,25,Bark,x,Age rejected by authors
+188.25,5135,AMS14C,33150,20,Aquatic moss,NA,NA
+276.75,8500,AMS14C,34298,60,Mixed macrofossils,NA,NA

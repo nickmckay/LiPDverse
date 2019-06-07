@@ -1,0 +1,15 @@
+depth (cm),age (yrBP),material (unitless),error (yr),type (NA),rejected (NA)
+10,1230,Aquatic Macrofossil,70,AMS14C,NA
+27,1590,Aquatic Macrofossil,50,AMS14C,NA
+32,1750,Aquatic Macrofossil,100,AMS14C,NA
+40,1680,Aquatic Macrofossil,65,AMS14C,x
+58.5,1430,Aquatic Macrofossil,50,AMS14C,x
+60,2340,Aquatic Macrofossil,40,AMS14C,NA
+94,3030,Aquatic Macrofossil,70,AMS14C,x
+136.5,3030,Aquatic Macrofossil,70,AMS14C,NA
+171,3170,Wood,50,AMS14C,NA
+171,3200,Aquatic Macrofossil,35,AMS14C,x
+240,4010,Aquatic Macrofossil,55,AMS14C,x
+287.5,3690,Aquatic Macrofossil,100,AMS14C,NA
+308,4290,Aquatic Macrofossil,70,AMS14C,NA
+320,5000,Terrestrial Macrofossil,50,AMS14C,NA

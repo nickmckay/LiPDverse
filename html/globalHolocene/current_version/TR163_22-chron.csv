@@ -1,0 +1,10 @@
+depth (cm),dateType (),measurementMaterial (),sensorSpecies (),labID (),age14C (kyr),age14CUncertainty (kyr)
+1,14C,planktic foraminifera,N. dutertrei,CAMS-22382,1.56,0.06
+43.5,14C,planktic foraminifera,N. dutertrei,CAMS-59169,6.19,0.04
+89,14C,planktic foraminifera,N. dutertrei,CAMS-59170,10.99,0.04
+139,14C,planktic foraminifera,N. dutertrei,CAMS-59171,14.64,0.04
+189,14C,planktic foraminifera,N. dutertrei,CAMS-59172,18.77,0.06
+249,14C,planktic foraminifera,N. dutertrei,CAMS-59173,23.58,0.09
+319,14C,planktic foraminifera,N. dutertrei,CAMS-94703,32.13,0.28
+335,14C,planktic foraminifera,N. dutertrei,CAMS-94702,30.5,0.23
+399,14C,planktic foraminifera,N. dutertrei,CAMS-94704,42.97,1.05

@@ -1,0 +1,11 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+65,Carbon-14,110942,55,390,bulk sediment,NA
+125,Carbon-14,110943,55,995,bulk sediment,NA
+255,Carbon-14,110944,60,2745,bulk sediment,NA
+330,Carbon-14,110945,65,3240,bulk sediment,NA
+455,Carbon-14,110946,70,5205,bulk sediment,NA
+583,Carbon-14,110947,70,6210,bulk sediment,NA
+745,Carbon-14,110948,80,7730,bulk sediment,NA
+935,Carbon-14,110949,90,9075,bulk sediment,NA
+1045,Carbon-14,110950,110,11800,bulk sediment,NA
+1115,Carbon-14,110951,135,13990,bulk sediment,NA

@@ -1,0 +1,5 @@
+depth (cm),ageType (),labID (),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (),notes ()
+30,Carbon-14,111046,70,5910,charcoal,NA
+60,Carbon-14,111047,80,9000,twig,NA
+62,Carbon-14,111048,70,9310,wood,NA
+117.5,Carbon-14,111049,100,10630,bulk sediment,NA

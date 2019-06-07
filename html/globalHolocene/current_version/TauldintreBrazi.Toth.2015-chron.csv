@@ -1,0 +1,19 @@
+OriginalDateID (),TopDepthofDate (cm),BottomDepthofDate (cm),DateType (),DateBP (),Uncertaintyplus (),Uncertaintyminus (),IncludeYN (),AdditionalNotes ()
+NA,0,0,Core top,-19,NA,NA,Y,NA
+Poz-26103,118,119,C14 Uncalibrated,725,755,695,N,"Outlier, Picea abies needles"
+I/338/1#,126,127,C14 Uncalibrated,375,400,350,Y,">180 um fraction, plant macrofossil"
+I/338/2#,126,127,C14 Uncalibrated,1018,1041,995,N,"Outlier, >180 um fraction, particular organic matter"
+Poz-26104,159,160,C14 Uncalibrated,1735,1765,1705,Y,Pinus mugo cone scale
+I/338/3#,203,204,C14 Uncalibrated,2611,2634,2588,Y,Pinus mugo shoot
+Poz-206106,237,238,C14 Uncalibrated,3045,3075,3015,Y,Pinus mugo cone
+I/338/4#,279,280,C14 Uncalibrated,3962,3992,3932,N,"Outlier, >180 um fraction, plant macrofossil"
+I/338/5#,279,280,C14 Uncalibrated,3987,4013,3961,Y,">180 um fraction, particular organic matter"
+Poz-26107,314,315,C14 Uncalibrated,5040,5080,5000,Y,Pinus twig
+Poz-26108,354,355,C14 Uncalibrated,6320,6360,6280,Y,Picea abies needles
+I/338/6#,390,391,C14 Uncalibrated,6925,6955,6895,Y,">180 um fraction, plant macrofossil"
+Poz-26109,392,393,C14 Uncalibrated,6130,6170,6090,N,"Outlier, Picea abies needles"
+Poz-26110,449,450,C14 Uncalibrated,8240,8290,8190,Y,Picea abies needles and seed
+Poz-26111,504,505,C14 Uncalibrated,8810,8860,8760,Y,Picea abies needles
+Poz-31714,520,521,C14 Uncalibrated,9150,9200,9100,Y,Pinus mugo needles
+Poz-26112,544,545,C14 Uncalibrated,9610,9660,9560,Y,Picea abies cone
+Poz-31715,556,557,C14 Uncalibrated,9980,10080,9880,Y,Pinus mugo needles

@@ -1,0 +1,21 @@
+depth (cm),age (BP),age (BP),temperature (degC),ageMin (missing),uncertainty (missing),uncertainty (missing),reliable (missing),Commentregardingreliability1 (missing)
+0,-56,-54,11.78,-58,1.029,1.029,Y,No reason to reject but did not pass Birks & Telford test
+1.5,-36,-34,12.35,-38,1.058,1.058,Y,No reason to reject but did not pass Birks & Telford test
+2.25,-22,-20,12.424,-24,1.044,1.044,Y,No reason to reject but did not pass Birks & Telford test
+3,-1,2,12.043,-4,1.009,1.009,Y,No reason to reject but did not pass Birks & Telford test
+4.25,78,97,12.148,59,1.022,1.022,Y,No reason to reject but did not pass Birks & Telford test
+6,386,406,13.472,366,1.057,1.057,Y,No reason to reject but did not pass Birks & Telford test
+7.5,658,697,11.814,619,1.088,1.088,Y,No reason to reject but did not pass Birks & Telford test
+9.5,1020,1084,11.739,956,1.005,1.005,Y,No reason to reject but did not pass Birks & Telford test
+11.5,1382,1469,10.975,1295,1.02,1.02,Y,Yes using Birks and Telford 2011
+13.5,1706,1788,10.933,1624,1.008,1.008,Y,Yes using Birks and Telford 2012
+15.5,2025,2126,10.741,1924,1.029,1.029,Y,Yes using Birks and Telford 2013
+17.5,2344,2492,12.044,2196,1.043,1.043,Y,Yes using Birks and Telford 2014
+19.5,2616,2799,11.193,2433,1.064,1.064,Y,Yes using Birks and Telford 2015
+21.5,2746,2898,12.391,2594,0.992,0.992,Y,Yes using Birks and Telford 2016
+23.5,2876,2998,12.088,2754,0.991,0.991,Y,Yes using Birks and Telford 2017
+25.5,3006,3101,12.904,2911,0.979,0.979,Y,Yes using Birks and Telford 2018
+27.5,3135,3207,12.521,3063,0.986,0.986,Y,Yes using Birks and Telford 2019
+29.5,3265,3319,12.949,3211,0.978,0.978,Y,Yes using Birks and Telford 2020
+31,3363,3413,13.899,3313,1.043,1.043,Y,Yes using Birks and Telford 2021
+32.75,3476,3536,11.354,3416,1.001,1.001,Y,Yes using Birks and Telford 2022

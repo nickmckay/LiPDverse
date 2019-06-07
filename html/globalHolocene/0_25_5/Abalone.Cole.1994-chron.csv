@@ -1,0 +1,11 @@
+depth (cm),ageType (unitless),labID (unitless),age14Cuncertainty (yr 14C),age14C (yr 14C BP),measurementMaterial (unitless),notes (unitless)
+16.5,Carbon-14,108003,NA,-50,twig,Date AA-7199 was 121% modern carbon (post-bomb).
+60,Carbon-14,108004,160,1315,bulk sediment,NA
+103,Carbon-14,108005,155,1045,bulk sediment,NA
+138,Carbon-14,108006,135,1630,bulk sediment,NA
+203,Carbon-14,108007,220,3010,bulk sediment,NA
+270,Carbon-14,108008,210,3940,bulk sediment,NA
+327,Carbon-14,108009,255,4665,bulk sediment,NA
+402,Carbon-14,108010,180,3785,bulk sediment,NA
+477.5,Carbon-14,108011,85,4355,charcoal fragments,NA
+526,Carbon-14,108012,235,5040,bulk sediment,NA

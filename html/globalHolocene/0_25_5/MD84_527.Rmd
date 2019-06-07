@@ -1,0 +1,419 @@
+---
+title: "MD84_527"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 538
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#MD84_527
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](MD84_527.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/MD84_527.lpd)
+            
+
+[Download paleoData only (csv)](MD84_527.csv)
+            
+
+[Download chronData only (csv)](MD84_527-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>MarineSediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>c("https://doi.pangaea.de/10.1594/PANGAEA.52302", "https://doi.pangaea.de/10.1594/PANGAEA.52483", "https://doi.pangaea.de/10.1594/PANGAEA.863097")
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Sarnthein, Michael"), list(name = "Winn, Kyaw"), list(name = "Duplessy, Jean-Claude"), list(name = "Fontugne, Michael R."))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>3
+<p style="margin-left: 10px"><strong>title: </strong>Global variations of surface ocean productivity in low and mid latitudes: Influence on CO2reservoirs of the deep ocean and atmosphere during the last 21,000 years
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Pichon, Jean-Jacques"), list(name = "Labeyrie, Laurent D."), list(name = "Bareille, Gilles"), list(name = "Labracherie, Monique"), list(name = "Duprat, Josette"), list(name = "Jouzel, Jean"))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>7
+<p style="margin-left: 10px"><strong>title: </strong>Surface water temperature changes in the high latitudes of the southern hemisphere over the Last Glacial-Interglacial Cycle
+</details>
+<details style="margin-left: 10px">
+<summary>pub3</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Duplessy, J. C."), list(name = "Shackleton, N. J."), list(name = "Fairbanks, R. G."), list(name = "Labeyrie, L."), list(name = "Oppo, D."), list(name = "Kallel, N."))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>3
+<p style="margin-left: 10px"><strong>title: </strong>Deepwater source variations during the last climatic cycle and their impact on the global deepwater circulation
+</details>
+<details style="margin-left: 10px">
+<summary>pub4</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Labracherie, Monique"), list(name = "Labeyrie, Laurent D."), list(name = "Duprat, Josette"), list(name = "Bard, Edouard"), list(name = "Arnold, Maurice"), list(name = "Pichon, Jean-Jacques"), list(name = "Duplessy, Jean-Claude"))
+<p style="margin-left: 10px"><strong>journal: </strong>Paleoceanography
+<p style="margin-left: 10px"><strong>volume: </strong>4
+<p style="margin-left: 10px"><strong>title: </strong>The Last Deglaciation in the Southern Ocean
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>-43.8217
+<p style="margin-left: 0px"><strong>longitude: </strong>51.3183
+<p style="margin-left: 0px"><strong>elevation: </strong>-3262
+<p style="margin-left: 0px"><strong>siteName: </strong>MD84_527
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RurJw4angCz
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-1]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RvWNXAkbARN
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_ka_BP
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RmVRyTw4avB
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>age (BP) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R7xBL8G6TrR
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>BP
+<p style="margin-left: 10px"><strong>description: </strong>Age_model_ka
+</details>
+<details style="margin-left: 10px">
+<summary>temperature (degC) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Ri4npkyUs4u
+<p style="margin-left: 10px"><strong>variableName: </strong>temperature
+<p style="margin-left: 10px"><strong>units: </strong>degC
+<p style="margin-left: 10px"><strong>description: </strong>SST_sum_degC
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>Summer
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>sea@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RdQHbcTXMsF
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Foram_bent_d18O_per_mil_PDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RXJGyRzBUGX
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>Foram_bent_d13C_per_mil_PDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d18O (permil) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R6BoFBVSKhs
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>N_pachyderma_s_d18O_per_mil_PDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>planktic.d13C (permil) [1-2]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RRamJIVCPGW
+<p style="margin-left: 10px"><strong>variableName: </strong>planktic.d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>N_pachyderma_s_d13C_per_mil_PDB
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>depth (m) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RuqftWLyLAN
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>m
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (percent) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RPz7x80pgzE
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>TOC_percent
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details style="margin-left: 10px">
+<summary>DBD (g_cm3) [1-3]</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RP7pDFGLzJU
+<p style="margin-left: 10px"><strong>variableName: </strong>DBD
+<p style="margin-left: 10px"><strong>units: </strong>g_cm3
+<p style="margin-left: 10px"><strong>description: </strong>DBD_g_cm3
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RUMbVtzvYt7
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>dateType ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RK2k1jUn6gi
+<p style="margin-left: 10px"><strong>variableName: </strong>dateType
+</details>
+<details style="margin-left: 10px">
+<summary>depthTop (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R9b33Kvwxod
+<p style="margin-left: 10px"><strong>variableName: </strong>depthTop
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depthBottom (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RST4IGjdF5d
+<p style="margin-left: 10px"><strong>variableName: </strong>depthBottom
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>thickness (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>Rwy72vDUlcM
+<p style="margin-left: 10px"><strong>variableName: </strong>thickness
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>measurementMaterial ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RTxTUE2xKHs
+<p style="margin-left: 10px"><strong>variableName: </strong>measurementMaterial
+</details>
+<details style="margin-left: 10px">
+<summary>sensorSpecies ()</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RFVRePiUmH1
+<p style="margin-left: 10px"><strong>variableName: </strong>sensorSpecies
+</details>
+<details style="margin-left: 10px">
+<summary>age14C (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>R1nzya9C2Gu
+<p style="margin-left: 10px"><strong>variableName: </strong>age14C
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>age14CUncertainty (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RwGhCK7Wzol
+<p style="margin-left: 10px"><strong>variableName: </strong>age14CUncertainty
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+<details style="margin-left: 10px">
+<summary>reservoirAge (kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>RJgV9cvASJ2
+<p style="margin-left: 10px"><strong>variableName: </strong>reservoirAge
+<p style="margin-left: 10px"><strong>units: </strong>kyr
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### temperature (degC)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### planktic.d18O (permil)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### planktic.d13C (permil)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### TOC (percent)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### DBD (g_cm3)
+```{r}
+plotCol(thisTS,ind = 12)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### dateType ()
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### depthTop (cm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### depthBottom (cm)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### thickness (cm)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### measurementMaterial ()
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### sensorSpecies ()
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### age14C (kyr)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### age14CUncertainty (kyr)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### reservoirAge (kyr)
+```{r}
+plotCol(chronTS,ind = 10)
+```

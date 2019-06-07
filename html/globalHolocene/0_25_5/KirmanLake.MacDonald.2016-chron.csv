@@ -1,0 +1,9 @@
+depth (cm),age (yr BP),ID (ID),depth_interval (cm),material (unitless),error (yr),cal_error (yr),cal_age (yr BP)
+26.5,1130,UCIAMS115838,-1,Bulk Sediment,20,-181,1028
+50.25,1765,UCIAMS115839,-0.5,Bulk Sediment,20,-213,1700
+75.5,2680,UCIAMS115840,-1,Bulk Sediment,20,-336,2782
+96,2830,BETA179735,-2,Bulk Sediment,40,-291,3043
+146.75,3710,BETA179736,-0.5,Bulk Sediment,40,-323,4065
+182.5,4220,BETA179737,-1,Bulk Sediment,40,-414,4815
+247.75,7015,WSU GeoAnalytical,-1.5,Tsoyawata Tephra,45,-495,78151
+256,8720,NSRL12147,-2,Bulk Sediment,50,-1022,9220

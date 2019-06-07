@@ -1,0 +1,412 @@
+---
+title: "PolevaCave.Constantin.2007"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+library(lipdverseR)
+#read functions
+load("../../temp.Rdata")
+load("../../chronTemp.Rdata")
+
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 691
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#PolevaCave.Constantin.2007
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](PolevaCave.Constantin.2007.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/globalHolocene/0_25_5/PolevaCave.Constantin.2007.lpd)
+            
+
+[Download paleoData only (csv)](PolevaCave.Constantin.2007.csv)
+            
+
+[Download chronData only (csv)](PolevaCave.Constantin.2007-chron.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>Speleothem
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = "Constantin, Silviu"), list(name = "Bojar, Ana-Voica"), list(name = "Lauritzen, Stein-Erik"), list(name = "Lundberg, Joyce"))
+<p style="margin-left: 10px"><strong>journal: </strong>Palaeogeography, Palaeoclimatology, Palaeoecology
+<p style="margin-left: 10px"><strong>volume: </strong>243
+<p style="margin-left: 10px"><strong>pages: </strong>322-338
+<p style="margin-left: 10px"><strong>title: </strong>Holocene and Late Pleistocene climate in the sub-Mediterranean continental environment: A speleothem record from Poleva Cave (Southern Carpathians, Romania)
+</details>
+<details style="margin-left: 10px">
+<summary>pub2</summary>
+<p style="margin-left: 10px"><strong>author: </strong>list(list(name = NA))
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>44.7144
+<p style="margin-left: 0px"><strong>longitude: </strong>21.747
+<p style="margin-left: 0px"><strong>elevation: </strong>390
+<p style="margin-left: 0px"><strong>siteName: </strong>Poleva Cave
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (yr bo)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB00f8bf96
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr bo
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB21765f70
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>1 2 3 4 5 6 7 8 9 10 11 12
+<p style="margin-left: 20px"><strong>variable: </strong>T
+<p style="margin-left: 20px"><strong>variableDetail: </strong>air@surface
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB2fbf3af7
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>FALSE
+</details>
+<details>
+<summary>ChronData columns</summary>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9e8b5067
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>Lab# (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6059d811
+<p style="margin-left: 10px"><strong>variableName: </strong>Lab#
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>depth_top (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfe64a33d
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_top
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>depth_bot (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBccb01568
+<p style="margin-left: 10px"><strong>variableName: </strong>depth_bot
+<p style="margin-left: 10px"><strong>units: </strong>cm
+</details>
+<details style="margin-left: 10px">
+<summary>U (ppm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB43376eab
+<p style="margin-left: 10px"><strong>variableName: </strong>U
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>U_error (ppm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB131a10b4
+<p style="margin-left: 10px"><strong>variableName: </strong>U_error
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>232Th (ppm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBcdd11558
+<p style="margin-left: 10px"><strong>variableName: </strong>232Th
+<p style="margin-left: 10px"><strong>units: </strong>ppm
+</details>
+<details style="margin-left: 10px">
+<summary>234U/238U (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB598a66f8
+<p style="margin-left: 10px"><strong>variableName: </strong>234U/238U
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>234U/238U_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB84a2cde0
+<p style="margin-left: 10px"><strong>variableName: </strong>234U/238U_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/234U (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB52e6682f
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/234U
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/234U_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBcc8e22d1
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/234U_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/232Th (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBe37410bc
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/232Th
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>230Th/232Th_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBcdfbdd9a
+<p style="margin-left: 10px"><strong>variableName: </strong>230Th/232Th_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>234U/232Th (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9f2f5b25
+<p style="margin-left: 10px"><strong>variableName: </strong>234U/232Th
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>234U/232Th_error (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBced4a624
+<p style="margin-left: 10px"><strong>variableName: </strong>234U/232Th_error
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>calclulated_age (unitless)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5bc91753
+<p style="margin-left: 10px"><strong>variableName: </strong>calclulated_age
+<p style="margin-left: 10px"><strong>units: </strong>unitless
+</details>
+<details style="margin-left: 10px">
+<summary>calculated_age_error (yr bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB28130e8a
+<p style="margin-left: 10px"><strong>variableName: </strong>calculated_age_error
+<p style="margin-left: 10px"><strong>units: </strong>yr bp
+</details>
+<details style="margin-left: 10px">
+<summary>corrected_age (yr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBfde05f99
+<p style="margin-left: 10px"><strong>variableName: </strong>corrected_age
+<p style="margin-left: 10px"><strong>units: </strong>yr
+</details>
+<details style="margin-left: 10px">
+<summary>corrected_age_error (yr bp)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBb5c01448
+<p style="margin-left: 10px"><strong>variableName: </strong>corrected_age_error
+<p style="margin-left: 10px"><strong>units: </strong>yr bp
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O (permil)
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### depth (cm)
+```{r}
+plotCol(chronTS,ind = 19)
+```
+
+### Lab# (unitless)
+```{r}
+plotCol(chronTS,ind = 1)
+```
+
+### depth_top (cm)
+```{r}
+plotCol(chronTS,ind = 2)
+```
+
+### depth_bot (cm)
+```{r}
+plotCol(chronTS,ind = 3)
+```
+
+### U (ppm)
+```{r}
+plotCol(chronTS,ind = 4)
+```
+
+### U_error (ppm)
+```{r}
+plotCol(chronTS,ind = 5)
+```
+
+### 232Th (ppm)
+```{r}
+plotCol(chronTS,ind = 6)
+```
+
+### 234U/238U (unitless)
+```{r}
+plotCol(chronTS,ind = 7)
+```
+
+### 234U/238U_error (unitless)
+```{r}
+plotCol(chronTS,ind = 8)
+```
+
+### 230Th/234U (unitless)
+```{r}
+plotCol(chronTS,ind = 9)
+```
+
+### 230Th/234U_error (unitless)
+```{r}
+plotCol(chronTS,ind = 10)
+```
+
+### 230Th/232Th (unitless)
+```{r}
+plotCol(chronTS,ind = 11)
+```
+
+### 230Th/232Th_error (unitless)
+```{r}
+plotCol(chronTS,ind = 12)
+```
+
+### 234U/232Th (unitless)
+```{r}
+plotCol(chronTS,ind = 13)
+```
+
+### 234U/232Th_error (unitless)
+```{r}
+plotCol(chronTS,ind = 14)
+```
+
+### calclulated_age (unitless)
+```{r}
+plotCol(chronTS,ind = 15)
+```
+
+### calculated_age_error (yr bp)
+```{r}
+plotCol(chronTS,ind = 16)
+```
+
+### corrected_age (yr)
+```{r}
+plotCol(chronTS,ind = 17)
+```
+
+### corrected_age_error (yr bp)
+```{r}
+plotCol(chronTS,ind = 18)
+```

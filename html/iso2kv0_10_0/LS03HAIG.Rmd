@@ -1,0 +1,196 @@
+---
+title: "LS03HAIG"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 262
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#LS03HAIG
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](LS03HAIG.lpd)
+            
+
+[Download data only (csv)](LS03HAIG.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>author: </strong>Hammarlund, D
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>22
+<p style="margin-left: 10px"><strong>pages: </strong>353370
+<p style="margin-left: 10px"><strong>pubYear: </strong>2003
+<p style="margin-left: 10px"><strong>title: </strong>Rapid hydrological changes during the Holocene revealed by stable isotope records of lacustrine carbonates from Lake Igelsjdegreesn, southern Sweden
+<p style="margin-left: 10px"><strong>DOI: </strong>10.1016/S0277-3791(02)00091-4
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>58.47
+<p style="margin-left: 0px"><strong>longitude: </strong>13.73
+<p style="margin-left: 0px"><strong>elevation: </strong>111
+<p style="margin-left: 0px"><strong>siteName: </strong>Igelsjon
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>year (AD)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MATceb7a76232
+<p style="margin-left: 10px"><strong>variableName: </strong>year
+<p style="margin-left: 10px"><strong>units: </strong>AD
+<p style="margin-left: 10px"><strong>description: </strong>Year AD
+</details>
+<details style="margin-left: 10px">
+<summary>depth (cm)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>MAT31eb236b64
+<p style="margin-left: 10px"><strong>variableName: </strong>depth
+<p style="margin-left: 10px"><strong>units: </strong>cm
+<p style="margin-left: 10px"><strong>description: </strong>depth
+</details>
+<details style="margin-left: 10px">
+<summary>d18O (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>LS03HAIG
+<p style="margin-left: 10px"><strong>variableName: </strong>d18O
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>carbonate
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>The isotopic records from Lake Igelsj .on provide evidence ofsevera l rapid changes in net precipitation during the Holocene, the most extensive ofwhich occurred between 8300 and 8000 cal BP and around 4000 cal BP, respectively. These climatic shifts, which affected large parts of northern and central Europe, were probably related to large-scale rearrangements of atmospheric circulation patterns"For example, the widely recorded cooling shortly before 8000 cal BP, with inferred records of lowered growth-season temperatures distributed from northern Sweden to Switzerland (Snowball et al., 2002; Tinner and Lotter, 2001), seems to be associated with an increase in effective moisture of equally regional significance. This pattern suggests a  southward displacement ofthe Polar Front across most  of the North Atlantic region, giving rise to cooler summers and drastically altered cyclonic pathways, preferentially during winter seasons.
+<p style="margin-left: 20px"><strong>interpDirection: </strong>decrease
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>variable: </strong>lake level; net precipitation
+<p style="margin-left: 20px"><strong>variableDetail: </strong>atmospheric circulation; Aleutian Low Strength/position
+</details>
+<details style="margin-left: 20px">
+<summary>2</summary>
+<p style="margin-left: 20px"><strong>basis: </strong>and our interpretations are based on a simplistic climate-hydrology model in which variations in groundwater generation within the lake catchment produce changes in On a hydrogen-/oxygen-isotope cross-plot (Fig. 6) all groundwater samples as well as lake-water samples from January,March, and April plot close to the global meteoric water line (Craig, 1961), whereas lake-water samples from May to July fall along a local evaporation line with a slope near 5 as expected for water bodies affected by evaporation (Craig and Gordon, 1965). These results suggest that the water body is affected by a well-developed evaporative isotopic enrichment in spite ofthe rather short residence time (ca 20 days or less) as estimated from catchment size and meteorological data. Surface run-off from the catchment and direct precipitation seems to have no major impact on the isotopic composition oflake water during the ice-free season; groundwater level and related adjustments of lake level and surface/volume ratio of the basin during the ice-free season
+<p style="margin-left: 20px"><strong>direction: </strong>negative
+<p style="margin-left: 20px"><strong>inferredMaterial: </strong>lake water
+<p style="margin-left: 20px"><strong>rank: </strong>1
+<p style="margin-left: 20px"><strong>scope: </strong>isotope
+<p style="margin-left: 20px"><strong>seasonality: </strong>summer
+<p style="margin-left: 20px"><strong>variable: </strong>I_E
+</details>
+</details>
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### d18O
+```{r}
+plotCol(thisTS,ind = 1)
+```

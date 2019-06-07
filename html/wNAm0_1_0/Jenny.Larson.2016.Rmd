@@ -1,0 +1,314 @@
+---
+title: "Jenny.Larson.2016"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: bootstrap
+    source_code: embed
+    orientation: rows
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(maptools)
+library(tidyverse)
+library(purrr)
+library(leaflet)
+library(plotly)
+library(lipdR)
+library(dygraphs)
+library(geoChronR)
+
+#read functions
+source("../../functions.R")
+
+
+load("../../temp.Rdata")
+
+#remove columns we don't want to plot
+varNames <- sapply(TS, "[[","paleoData_variableName")
+
+# good <- which(!(varNames %in% c("year","depth","age")))
+# TS <- TS[good]
+
+
+#All datasets
+dsn <- sapply(TS,"[[","dataSetName")
+ui <- which(!duplicated(dsn))
+udsn <- dsn[ui]
+lat <- as.numeric(sapply(TS,"[[","geo_latitude")[ui])
+lon <- as.numeric(sapply(TS,"[[","geo_longitude")[ui])
+#elev <- sapply(TS,"[[","geo_elevation")[ui]
+archiveType <- sapply(TS,"[[","archiveType")[ui]
+link <- paste0(udsn,".html") %>% 
+  str_replace_all("'","_")
+
+#Organize metadata for map
+map.meta <- data.frame(dataSetName = udsn, #datasetname
+                       lat = lat,#lat
+                       lon = lon,#lon
+                      # elev = elev,#elevation
+                       archiveType = factor(archiveType),#archiveType
+                       link = link)#Link
+
+
+#set index number
+
+i = 48
+thisTS <- TS[which(udsn[i] == dsn)]
+```
+#Jenny.Larson.2016
+
+Metadata {.sidebar}
+-------------------------------------
+[Download LiPD file](Jenny.Larson.2016.lpd)
+            
+
+[Edit LiPD file](http://lipd.net/playground?source=http://lipdverse.org/wNAm0_1_0/Jenny.Larson.2016.lpd)
+            
+
+[Download data only (csv)](Jenny.Larson.2016.csv)
+            
+
+[Report an issue (include dataset name)](https://github.com/nickmckay/LiPDverse/issues)
+
+<details open style="margin-left: 0px">
+<summary>root</summary>
+<p style="margin-left: 0px"><strong>archiveType: </strong>lake sediment
+<p style="margin-left: 0px"><strong>originalDataURL: </strong>https://www.ncdc.noaa.gov/paleo/study/20128
+<p style="margin-left: 0px"><strong>lipdVersion: </strong>1.3
+</details>
+<details>
+<summary>pub</summary>
+<details style="margin-left: 10px">
+<summary>pub1</summary>
+<p style="margin-left: 10px"><strong>journal: </strong>Quaternary Science Reviews
+<p style="margin-left: 10px"><strong>volume: </strong>138
+<p style="margin-left: 10px"><strong>pages: </strong>62-75
+<p style="margin-left: 10px"><strong>pubYear: </strong>2016
+<p style="margin-left: 10px"><strong>title: </strong>Deglaciation and postglacial environmental changes in the Teton Mountain Range recorded at Jenny Lake, Grand Teton National Park, WY
+</details>
+</details>
+<details open style="margin-left: 0px">
+<summary>geo</summary>
+<p style="margin-left: 0px"><strong>latitude: </strong>43.7505
+<p style="margin-left: 0px"><strong>longitude: </strong>-110.7343
+<p style="margin-left: 0px"><strong>elevation: </strong>2070
+<p style="margin-left: 0px"><strong>siteName: </strong>Jenny Lake
+</details>
+<details open>
+<summary>PaleoData columns</summary>
+<details style="margin-left: 10px">
+<summary>age (yr BP)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9c68af15
+<p style="margin-left: 10px"><strong>variableName: </strong>age
+<p style="margin-left: 10px"><strong>units: </strong>yr BP
+<p style="margin-left: 10px"><strong>description: </strong>calendar years before present
+</details>
+<details style="margin-left: 10px">
+<summary>clastic_flux (g/cm2/kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB9887226c
+<p style="margin-left: 10px"><strong>variableName: </strong>clastic_flux
+<p style="margin-left: 10px"><strong>units: </strong>g/cm2/kyr
+<p style="margin-left: 10px"><strong>description: </strong>clasticflux Clastic fraction, , , g/cm2/kyr
+<p style="margin-left: 10px"><strong>useInGlobalTemperatureAnalysis: </strong>TRUE
+<details>
+<summary>interpretation</summary>
+<details style="margin-left: 20px">
+<summary>1</summary>
+<p style="margin-left: 20px"><strong>direction: </strong>positive
+<p style="margin-left: 20px"><strong>scope: </strong>climate
+<p style="margin-left: 20px"><strong>seasonality: </strong>annual
+<p style="margin-left: 20px"><strong>variable: </strong>ELA
+<p style="margin-left: 20px"><strong>variableDetail: </strong>Glacier Extent
+</details>
+</details>
+</details>
+<details style="margin-left: 10px">
+<summary>dbd (g/cm3)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB501638f3
+<p style="margin-left: 10px"><strong>variableName: </strong>dbd
+<p style="margin-left: 10px"><strong>units: </strong>g/cm3
+<p style="margin-left: 10px"><strong>description: </strong>dry bulk density, , , g/cm3
+</details>
+<details style="margin-left: 10px">
+<summary>LOI (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB456b60bf
+<p style="margin-left: 10px"><strong>variableName: </strong>LOI
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>loss-on-ignition at 550 degrees C
+</details>
+<details style="margin-left: 10px">
+<summary>BSI (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB8ba728c4
+<p style="margin-left: 10px"><strong>variableName: </strong>BSI
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>Biogenic silica
+</details>
+<details style="margin-left: 10px">
+<summary>clastic (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB705f9850
+<p style="margin-left: 10px"><strong>variableName: </strong>clastic
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>Clastic fraction
+</details>
+<details style="margin-left: 10px">
+<summary>d13C (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB4b5c6fb4
+<p style="margin-left: 10px"><strong>variableName: </strong>d13C
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d13CVPDB d13C, , , per mil VPDB
+</details>
+<details style="margin-left: 10px">
+<summary>TOC (percent)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB0e853c9d
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC
+<p style="margin-left: 10px"><strong>units: </strong>percent
+<p style="margin-left: 10px"><strong>description: </strong>Total organic carbon
+</details>
+<details style="margin-left: 10px">
+<summary>d15N (permil)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBda148bc7
+<p style="margin-left: 10px"><strong>variableName: </strong>d15N
+<p style="margin-left: 10px"><strong>units: </strong>permil
+<p style="margin-left: 10px"><strong>description: </strong>d15N d15N, , , per mil N2
+</details>
+<details style="margin-left: 10px">
+<summary>CN (ratio)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB5f7bbcf1
+<p style="margin-left: 10px"><strong>variableName: </strong>CN
+<p style="margin-left: 10px"><strong>units: </strong>ratio
+<p style="margin-left: 10px"><strong>description: </strong>c/n carbon/nitrogen ratio
+</details>
+<details style="margin-left: 10px">
+<summary>TOC_flux (g/cm2/kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEBa32e5310
+<p style="margin-left: 10px"><strong>variableName: </strong>TOC_flux
+<p style="margin-left: 10px"><strong>units: </strong>g/cm2/kyr
+<p style="margin-left: 10px"><strong>description: </strong>Total Organic Carbon flux, , , g/cm2/kyr
+</details>
+<details style="margin-left: 10px">
+<summary>LOI_flux (g/cm2/kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB25692838
+<p style="margin-left: 10px"><strong>variableName: </strong>LOI_flux
+<p style="margin-left: 10px"><strong>units: </strong>g/cm2/kyr
+<p style="margin-left: 10px"><strong>description: </strong>oss-on-ignition flux, , , g/cm2/kyr
+</details>
+<details style="margin-left: 10px">
+<summary>BSI_flux (g/cm2/kyr)</summary>
+<p style="margin-left: 10px"><strong>TSid: </strong>WEB6179cd65
+<p style="margin-left: 10px"><strong>variableName: </strong>BSI_flux
+<p style="margin-left: 10px"><strong>units: </strong>g/cm2/kyr
+<p style="margin-left: 10px"><strong>description: </strong>bio-siflux Biogenic Silica, , , g/cm2/kyr
+</details>
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Sitemap
+
+```{r}
+  map.meta.split <- split(map.meta, map.meta$archiveType)
+
+
+factpal <- colorFactor("Paired",map.meta$archiveType)
+buff <- 15
+l <- leaflet() %>% 
+  addTiles() %>% 
+  fitBounds(map.meta$lon[i]-buff,map.meta$lat[i]-buff,map.meta$lon[i]+buff,map.meta$lat[i]+buff)
+  
+
+  
+  
+names(map.meta.split) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=map.meta.split[[df]],
+                 lng=~lon, lat=~lat,
+                 label=~as.character(archiveType),
+                 popup=~paste(str_c('Dataset: <a href="',link,'">',dataSetName,'</a>'),
+                                 # str_c("Elevation: ",elev),
+                                  str_c("Archive Type: ",archiveType),
+                                  sep = "<br>"),
+                 group = df,
+                 clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                 labelOptions = labelOptions(noHide = F,
+                                             direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(position = "bottomleft",
+    overlayGroups = names(map.meta.split),
+    options = layersControlOptions(collapsed = FALSE,
+                                   opacity = 0.8)
+  )
+```
+
+### Search the LiPDverse (Beta! doesn't work well yet)
+```{r}
+#Add google search bar
+htmltools::includeHTML("../../googleSearchChunk.html")
+```
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### clastic_flux (g/cm2/kyr)
+```{r}
+plotCol(thisTS,ind = 13)
+```
+
+### dbd (g/cm3)
+```{r}
+plotCol(thisTS,ind = 2)
+```
+
+### LOI (percent)
+```{r}
+plotCol(thisTS,ind = 3)
+```
+
+### BSI (percent)
+```{r}
+plotCol(thisTS,ind = 4)
+```
+
+### clastic (percent)
+```{r}
+plotCol(thisTS,ind = 5)
+```
+
+### d13C (permil)
+```{r}
+plotCol(thisTS,ind = 6)
+```
+
+### TOC (percent)
+```{r}
+plotCol(thisTS,ind = 7)
+```
+
+### d15N (permil)
+```{r}
+plotCol(thisTS,ind = 8)
+```
+
+### CN (ratio)
+```{r}
+plotCol(thisTS,ind = 9)
+```
+
+### TOC_flux (g/cm2/kyr)
+```{r}
+plotCol(thisTS,ind = 10)
+```
+
+### LOI_flux (g/cm2/kyr)
+```{r}
+plotCol(thisTS,ind = 11)
+```
+
+### BSI_flux (g/cm2/kyr)
+```{r}
+plotCol(thisTS,ind = 12)
+```

@@ -1,0 +1,20 @@
+dateType (),depthTop (cm),depthBottom (cm),thickness (cm),measurementMaterial (),labID (),age14C (kyr),age14CUncertainty (kyr),reservoirAge (kyr),notes ()
+14C,35,45,10,bulk coarse fraction calcite,Hv 20436,1.04,0.16,0.64,conventional
+14C,51,60,9,planktic foraminifera,KIA 058,0.825,0.035,0.64,AMS
+14C,70,80,10,bulk coarse fraction calcite,Hv 20437,0.89,0.14,0.64,conventional
+14C,110,120,10,planktic foraminifera,KIA 059,1.465,0.04,0.64,AMS
+14C,120,130,10,bulk coarse fraction calcite,Hv 20438,1.55,0.155,0.64,conventional
+14C,164,169.5,5.5,planktic foraminifera,KIA 776,1.721,0.032,0.64,AMS
+14C,190,200,10,bulk coarse fraction calcite,Hv 20439,1.885,0.175,0.64,conventional
+14C,220,230,10,bulk coarse fraction calcite,Hv 20440,1.745,0.165,0.64,conventional
+14C,270,280,10,bulk coarse fraction calcite,Hv 20441,2.24,0.15,0.64,conventional
+14C,275.5,280.5,5,planktic foraminifera,KIA 777,1.858,0.091,0.64,AMS
+14C,321,331,10,planktic foraminifera,KIA 060,2.82,0.05,0.64,AMS
+14C,370,380,10,bulk coarse fraction calcite,Hv 20442,3.105,0.165,0.64,conventional
+14C,441,451,10,planktic foraminifera,KIA 061,3.79,0.05,0.64,AMS
+14C,470,480,10,bulk coarse fraction calcite,Hv 20443,3.595,0.17,0.64,conventional
+14C,528,531,3,planktic foraminifera,KIA 778,4.171,0.031,0.64,AMS
+14C,580,590,10,bulk coarse fraction calcite,Hv 20444,5.085,0.205,0.64,conventional
+14C,591,601,10,planktic foraminifera,KIA 062,5.12,0.055,0.64,AMS
+14C,635,645,10,bulk coarse fraction calcite,Hv 20445,5.57,0.2,0.64,conventional
+14C,635,645,10,bulk coarse fraction calcite,Hv 20446,5.4,0.19,0.64,conventional

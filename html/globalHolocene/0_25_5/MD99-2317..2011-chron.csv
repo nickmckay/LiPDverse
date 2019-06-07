@@ -1,0 +1,2 @@
+age (bp),depth (mm),depth_bot (mm),depth_top (mm),age14C (bp),age_error (years),cal_age_range_old (bp),cal_age_range_young (2_s),thickness (mm),age_type (),lab_id (),material_dated (),note (),rejected_dates ()
+2,0,2,2,6,0,2,4,1,0,0,0,N,a
